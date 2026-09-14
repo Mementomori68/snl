@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CNP — I want to be forever young</title>
+
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta http-equiv="X-Frame-Options" content="DENY" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://*; script-src 'self' 'unsafe-inline';" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,600;14..32,800&display=swap" rel="stylesheet" />
+    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+<script>
+  window.OneSignalDeferred = window.OneSignalDeferred || [];
+  OneSignalDeferred.push(async function(OneSignal) {
+    await OneSignal.init({
+      appId: "YOUR_ONESIGNAL_APP_ID",
+      // Указываем путь к service worker в подпапке вашего сайта
+      serviceWorkerParam: { scope: "/snl.com/" },
+      serviceWorkerPath: "/snl.com/OneSignalSDKWorker.js",
+    });
+  });
+</script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: #eee;
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            line-height: 1.6;
+            background: #0a0a0f;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            z-index: -2;
+            background-image: url('https://images.unsplash.com/photo-1557672172-298e090bd0f1?w=1200');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            filter: blur(8px) brightness(0.4);
+            transform: scale(1.1);
+        }
+
+        /* ================= КНОПКА НАЗАД ================= */
+        .back-link {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 100;
+            display: inline-block;
+            color: #6a8a7a;
+            text-decoration: none;
+            font-size: 0.9rem;
+            padding: 8px 14px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 20px;
+            border-bottom: 1px solid rgba(52, 211, 153, 0.2);
+            transition: border-color 0.3s, color 0.3s;
+            backdrop-filter: blur(6px);
+        }
+        .back-link:hover {
+            border-color: #34d399;
+            color: #34d399;
+        }
+
+        /* ================= РАЗБРОСАННЫЕ ФОТО ================= */
+        .scattered-photos {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            min-height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .scattered-photos .photo {
+            position: absolute;
+            width: 170px;
+            height: 170px;
+            background: #fff;
+            padding: 7px 7px 26px;
+            border-radius: 4px;
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.7);
+            pointer-events: auto;
+            transition: transform 0.35s ease, box-shadow 0.35s ease, z-index 0s;
+            cursor: pointer;
+        }
+
+        .scattered-photos .photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            border-radius: 2px;
+        }
+
+        .scattered-photos .photo:hover {
+            box-shadow: 0 20px 60px rgba(52, 211, 153, 0.55);
+            z-index: 999;
+            transform: scale(1.15) rotate(0deg) !important;
+        }
+
+        /* ===== ВЕРХНИЙ РЯД ===== */
+        .p1  { top: 14%; left: 0.5%;  transform: rotate(-14deg); }
+        .p2  { top: 14%; left: 16%;   transform: rotate(22deg); }
+        .p3  { top: 2%;  right: 16%;  transform: rotate(-8deg); }
+        .p4  { top: 2%;  right: 0.5%; transform: rotate(28deg); }
+
+        /* ===== СРЕДНИЙ РЯД ===== */
+        .p5  { top: 42%; left: 0.5%;  transform: rotate(-25deg); }
+        .p6  { top: 62%; left: 1%;    transform: rotate(180deg); }
+        .p7  { top: 38%; right: 0.5%; transform: rotate(160deg); }
+        .p8  { top: 58%; right: 1%;   transform: rotate(20deg); }
+
+        /* ===== НИЖНИЙ РЯД ===== */
+        .p9  { bottom: 4%; left: 0.5%;  transform: rotate(35deg); }
+        .p10 { bottom: 4%; left: 16%;   transform: rotate(190deg); }
+        .p11 { bottom: 4%; right: 16%;  transform: rotate(-30deg); }
+        .p12 { bottom: 4%; right: 0.5%; transform: rotate(175deg); }
+
+        /* ================= ОСНОВНОЙ КОНТЕНТ =================
+           ВАЖНО: container прозрачен для кликов, чтобы фото,
+           заходящие под него, оставались кликабельными. */
+        .container {
+            max-width: 720px;
+            margin: 0 auto;
+            animation: fadeUp 0.8s ease-out;
+            position: relative;
+            z-index: 2;
+            pointer-events: none;
+        }
+        .container .main-text,
+        .container .footer a {
+            pointer-events: auto;
+        }
+
+        @keyframes fadeUp {
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+        .header h1 {
+            font-size: clamp(2.8rem, 8vw, 4.5rem);
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            color: #34d399;
+            text-shadow: 0 0 40px rgba(52, 211, 153, 0.5), 0 0 10px rgba(0,0,0,0.8);
+            margin-bottom: 0.5rem;
+        }
+        .header .subhead {
+            font-size: 1.2rem;
+            color: #8aa8a0;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        .main-text {
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            border: 1px solid rgba(52, 211, 153, 0.25);
+            border-radius: 28px;
+            padding: 2.5rem;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.7);
+        }
+        .main-text p {
+            font-size: 1.1rem;
+            color: #d0e0d8;
+            line-height: 1.8;
+            font-weight: 300;
+            margin-bottom: 0.8rem;
+        }
+        .main-text p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* ================= ФУТЕР ================= */
+        .footer {
+            text-align: center;
+            color: #4a6a5a;
+            font-size: 0.85rem;
+            margin-top: 2rem;
+            padding-bottom: 1rem;
+        }
+        .footer a {
+            color: #6a8a7a;
+            text-decoration: none;
+            border-bottom: 1px dotted #2a4a3a;
+        }
+        .footer a:hover {
+            color: #34d399;
+        }
+        .footer .years {
+            margin-top: 0.5rem;
+            color: #6a8a7a;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        /* ================= АДАПТИВ ================= */
+        @media (max-width: 1200px) {
+            .scattered-photos .photo {
+                width: 140px;
+                height: 140px;
+                padding: 6px 6px 22px;
+            }
+        }
+
+        @media (max-width: 1000px) {
+            .scattered-photos .photo {
+                width: 115px;
+                height: 115px;
+                padding: 5px 5px 19px;
+            }
+        }
+
+        @media (max-width: 800px) {
+            .scattered-photos .photo {
+                width: 95px;
+                height: 95px;
+                padding: 4px 4px 16px;
+            }
+            .p5, .p6 { left: 0%; }
+            .p7, .p8 { right: 0%; }
+        }
+
+        @media (max-width: 640px) {
+            .scattered-photos .photo {
+                width: 78px;
+                height: 78px;
+                padding: 3px 3px 13px;
+            }
+            .p5, .p6, .p7, .p8 { display: none; }
+            .back-link {
+                top: 10px;
+                left: 10px;
+                font-size: 0.8rem;
+                padding: 6px 10px;
+            }
+            .main-text { padding: 1.5rem; }
+        }
+
+        /* ================= LIGHTBOX ================= */
+        .lightbox-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0);
+            z-index: 10000;
+            cursor: zoom-out;
+            transition: background 0.4s ease;
+            pointer-events: none;
+        }
+        .lightbox-overlay.active {
+            background: rgba(0, 0, 0, 0.92);
+            pointer-events: auto;
+        }
+        .lightbox-overlay img {
+            position: fixed;
+            object-fit: cover;
+            border-radius: 4px;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.85);
+            transition:
+                top 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+                left 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+                width 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+                height 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+                border-radius 0.45s ease,
+                box-shadow 0.45s ease;
+            pointer-events: none;
+            will-change: top, left, width, height;
+        }
+        .lightbox-close {
+            position: fixed;
+            top: 24px;
+            right: 28px;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
+            font-size: 24px;
+            line-height: 44px;
+            text-align: center;
+            cursor: pointer;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: opacity 0.35s ease 0.15s, transform 0.35s ease 0.15s, background 0.25s;
+            z-index: 10001;
+            user-select: none;
+            font-family: sans-serif;
+        }
+        .lightbox-overlay.active .lightbox-close {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .lightbox-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- КНОПКА НАЗАД -->
+    <a href="index.html" class="back-link">← Назад</a>
+
+    <!-- РАЗБРОСАННЫЕ ФОТО -->
+    <div class="scattered-photos">
+        <div class="photo p1"><img src="images/photo_2024-08-15_22-07-53.jpg" alt="CNP 1"></div>
+        <div class="photo p2"><img src="images/photo_2024-08-21_22-33-39.jpg" alt="CNP 2"></div>
+        <div class="photo p3"><img src="images/photo_2024-08-29_23-05-55.jpg" alt="CNP 3"></div>
+        <div class="photo p4"><img src="images/photo_2024-09-16_18-04-20.jpg" alt="CNP 4"></div>
+        <div class="photo p5"><img src="images/photo_2024-09-21_21-36-24.jpg" alt="CNP 5"></div>
+        <div class="photo p6"><img src="images/photo_2024-09-22_17-18-07.jpg" alt="CNP 6"></div>
+        <div class="photo p7"><img src="images/photo_2024-10-31_22-59-05.jpg" alt="CNP 7"></div>
+        <div class="photo p8"><img src="images/photo_2024-11-29_23-14-21.jpg" alt="CNP 8"></div>
+        <div class="photo p9"><img src="images/photo_2025-02-08_22-35-48.jpg" alt="CNP 9"></div>
+        <div class="photo p10"><img src="images/photo_2025-03-14_22-24-37.jpg" alt="CNP 10"></div>
+        <div class="photo p11"><img src="images/photo_2025-04-22_15-22-41.jpg" alt="CNP 11"></div>
+        <div class="photo p12"><img src="images/ua7bqz_nEsxatofAb0oklkw9Y70oSCtd6N9wLxMdovG4h8MBNGbhbsF1-O9mJsUdWeCWIKKzAc_3jCn0xxzsKNrW.jpg" alt="CNP 12"></div>
+    </div>
+
+    <!-- ОСНОВНОЙ КОНТЕНТ -->
+    <div class="container">
+        <header class="header">
+            <h1>CNP</h1>
+            <div class="subhead">Community of Normal People</div>
+        </header>
+
+        <div class="main-text">
+            <p>CNP — сообщество, основанное в 2024 году как отдельный проект.</p>
+            <p>В основе — уличная культура и творчество.</p>
+            <p>Мы снимали смешные пародии, рисовали стикеры, открывали для себя новые хобби.</p>
+            <p>Контент был рассчитан больше на мужскую аудиторию.</p>
+        </div>
+
+        <footer class="footer">
+            <p>
+                <a href="https://vk.ru/snl68" target="_blank">VK</a> ·
+                <a href="https://t.me/t_cnp" target="_blank">Telegram</a>
+                <br />© 2026 · I want to be forever young
+            </p>
+            <div class="years">CNP · 2024–2025</div>
+        </footer>
+    </div>
+
+    <!-- ================= LIGHTBOX SCRIPT ================= -->
+    <script>
+    (function () {
+        const overlay = document.createElement('div');
+        overlay.className = 'lightbox-overlay';
+        const closeBtn = document.createElement('div');
+        closeBtn.className = 'lightbox-close';
+        closeBtn.innerHTML = '×';
+        overlay.appendChild(closeBtn);
+        document.body.appendChild(overlay);
+
+        let activeImg = null;
+        let startRect = null;
+        let isClosing = false;
+
+        function openLightbox(photoEl) {
+            if (activeImg) return;
+
+            const img = photoEl.querySelector('img');
+            if (!img || !img.complete || img.naturalWidth === 0) return;
+
+            startRect = photoEl.getBoundingClientRect();
+
+            const aspect = img.naturalWidth / img.naturalHeight;
+            const maxW = window.innerWidth * 0.9;
+            const maxH = window.innerHeight * 0.85;
+            let targetW = maxW;
+            let targetH = targetW / aspect;
+            if (targetH > maxH) {
+                targetH = maxH;
+                targetW = targetH * aspect;
+            }
+            const targetLeft = (window.innerWidth - targetW) / 2;
+            const targetTop = (window.innerHeight - targetH) / 2;
+
+            activeImg = document.createElement('img');
+            activeImg.src = img.src;
+            activeImg.style.top = startRect.top + 'px';
+            activeImg.style.left = startRect.left + 'px';
+            activeImg.style.width = startRect.width + 'px';
+            activeImg.style.height = startRect.height + 'px';
+            activeImg.style.borderRadius = '4px';
+            overlay.appendChild(activeImg);
+
+            void activeImg.offsetHeight;
+
+            overlay.classList.add('active');
+            activeImg.style.top = targetTop + 'px';
+            activeImg.style.left = targetLeft + 'px';
+            activeImg.style.width = targetW + 'px';
+            activeImg.style.height = targetH + 'px';
+            activeImg.style.borderRadius = '8px';
+            activeImg.style.boxShadow = '0 40px 100px rgba(0, 0, 0, 0.95)';
+        }
+
+        function closeLightbox() {
+            if (!activeImg || !startRect || isClosing) return;
+            isClosing = true;
+            overlay.classList.remove('active');
+
+            activeImg.style.top = startRect.top + 'px';
+            activeImg.style.left = startRect.left + 'px';
+            activeImg.style.width = startRect.width + 'px';
+            activeImg.style.height = startRect.height + 'px';
+            activeImg.style.borderRadius = '4px';
+            activeImg.style.boxShadow = '0 30px 80px rgba(0, 0, 0, 0.85)';
+
+            setTimeout(() => {
+                if (activeImg) activeImg.remove();
+                activeImg = null;
+                startRect = null;
+                isClosing = false;
+            }, 460);
+        }
+
+        document.querySelectorAll('.scattered-photos .photo').forEach(photo => {
+            photo.addEventListener('click', (e) => {
+                e.stopPropagation();
+                openLightbox(photo);
+            });
+        });
+
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) closeLightbox();
+        });
+        closeBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            closeLightbox();
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && activeImg) closeLightbox();
+        });
+        window.addEventListener('resize', () => {
+            if (activeImg) closeLightbox();
+        });
+    })();
+    </script>
+
+</body>
+</html>

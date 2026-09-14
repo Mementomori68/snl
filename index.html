@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>I want to be forever young</title>
+
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta http-equiv="X-Frame-Options" content="DENY" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; script-src 'self' 'unsafe-inline';" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,600;14..32,800&display=swap" rel="stylesheet" />
+    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+<script>
+  window.OneSignalDeferred = window.OneSignalDeferred || [];
+  OneSignalDeferred.push(async function(OneSignal) {
+    await OneSignal.init({
+      appId: "YOUR_ONESIGNAL_APP_ID",
+      // Указываем путь к service worker в подпапке вашего сайта
+      serviceWorkerParam: { scope: "/snl.com/" },
+      serviceWorkerPath: "/snl.com/OneSignalSDKWorker.js",
+    });
+  });
+</script>
+    <style>
+    /* ===== ЗВЁЗДНОЕ НЕБО ===== */
+    body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        z-index: -3;
+        background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+    }
+
+    /* Мерцающие звёзды */
+    body::after {
+        content: '';
+        position: fixed;
+        inset: 0;
+        z-index: -2;
+        background-image:
+            radial-gradient(1px 1px at 20px 30px, #fff, transparent),
+            radial-gradient(1px 1px at 40px 70px, #fff, transparent),
+            radial-gradient(1px 1px at 50px 160px, #fff, transparent),
+            radial-gradient(1px 1px at 90px 40px, #fff, transparent),
+            radial-gradient(1px 1px at 130px 80px, #fff, transparent),
+            radial-gradient(2px 2px at 160px 120px, #fff, transparent),
+            radial-gradient(1px 1px at 200px 50px, #fff, transparent),
+            radial-gradient(1px 1px at 250px 140px, #fff, transparent),
+            radial-gradient(1px 1px at 300px 90px, #fff, transparent);
+        background-size: 350px 200px;
+        background-repeat: repeat;
+        animation: twinkle 4s ease-in-out infinite alternate;
+        opacity: 0.7;
+    }
+
+    @keyframes twinkle {
+        0%   { opacity: 0.4; }
+        100% { opacity: 0.9; }
+    }
+
+    /* ===== ДРАКОН (уменьшенный) ===== */
+.dragon {
+    position: fixed;
+    top: 18%;
+    left: -220px;
+    width: 180px;
+    height: auto;
+    z-index: -1;
+    opacity: 0.5;
+    filter: drop-shadow(0 0 25px rgba(120, 180, 255, 0.5));
+    animation: flyDragon 45s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes flyDragon {
+    0% {
+        left: -220px;
+        top: 22%;
+        transform: rotate(0deg) scale(1);
+    }
+    25% {
+        top: 12%;
+        transform: rotate(-4deg) scale(0.95);
+    }
+    50% {
+        top: 26%;
+        transform: rotate(3deg) scale(1.05);
+    }
+    75% {
+        top: 10%;
+        transform: rotate(-3deg) scale(0.98);
+    }
+    100% {
+        left: 110%;
+        top: 20%;
+        transform: rotate(0deg) scale(1);
+    }
+}
+</style>
+
+<!-- Сам дракон -->
+<img src="images/dragon.svg" class="dragon" alt="" />
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #0a0a0f !important;
+            background-image: radial-gradient(circle at 20% 30%, #1a1a2e 0%, #0a0a0f 80%) !important;
+            font-family: 'Inter', sans-serif;
+            color: #eee;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+            line-height: 1.5;
+        }
+        .container { max-width: 1200px; width: 100%; animation: fadeUp 1s ease-out; }
+        @keyframes fadeUp { 0% { opacity: 0; transform: translateY(30px); } 100% { opacity: 1; transform: translateY(0); } }
+        .header { text-align: center; margin-bottom: 2.5rem; }
+        .header h1 {
+            font-size: clamp(2.8rem, 10vw, 5.2rem);
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, #fbbf24, #f472b6, #a78bfa);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 0.2rem;
+            text-shadow: 0 0 50px rgba(251, 191, 36, 0.15);
+        }
+        .header .subhead { font-size: 1.3rem; color: #c4b5d4; font-weight: 300; letter-spacing: 2px; margin-bottom: 0.5rem; }
+        .header .question { font-size: 1.2rem; color: #a78bfa; font-style: italic; margin: 0.5rem 0; opacity: 0.8; }
+        .header p { font-size: 1.1rem; color: #a0a0b8; max-width: 600px; margin: 0.5rem auto 1rem; line-height: 1.6; }
+        .header .tagline {
+            display: inline-block; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 40px; padding: 0.4rem 1.8rem; font-size: 0.9rem; color: #c4b5d4;
+            backdrop-filter: blur(4px); letter-spacing: 0.6px;
+        }
+        .cards {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 2rem;
+            margin: 2.5rem 0 3.5rem;
+        }
+        .card {
+            background: rgba(255,255,255,0.04); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.06); border-radius: 28px; padding: 1.8rem 1.8rem 2rem;
+            text-decoration: none; color: inherit; transition: all 0.35s cubic-bezier(0.2,0,0,1);
+            display: flex; flex-direction: column; align-items: center; text-align: center;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4); position: relative; overflow: hidden; cursor: pointer;
+        }
+        .card:hover { transform: translateY(-6px) scale(1.01); border-color: rgba(255,255,255,0.2); box-shadow: 0 20px 60px rgba(0,0,0,0.6); }
+        .card .image-wrapper {
+            width: 100%; aspect-ratio: 16/10; border-radius: 16px; overflow: hidden; margin-bottom: 1.2rem;
+            background: rgba(255,255,255,0.03); display: flex; align-items: center; justify-content: center; position: relative;
+        }
+        .card .image-wrapper img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
+        .card:hover .image-wrapper img { transform: scale(1.03); }
+        .card .image-wrapper .placeholder-icon { font-size: 4rem; opacity: 0.3; }
+        .card h2 { font-size: 1.8rem; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 0.3rem; }
+        .card p { color: #a8a8c0; font-size: 0.95rem; margin-bottom: 0.8rem; line-height: 1.5; }
+        .card-snl .image-wrapper { border: 2px solid rgba(251, 191, 36, 0.3); }
+        .card-snl h2 { color: #fbbf24; }
+        .card-cnp .image-wrapper { border: 2px solid rgba(52, 211, 153, 0.3); }
+        .card-cnp h2 { color: #34d399; }
+        .card-future .image-wrapper { border: 2px solid rgba(167, 139, 250, 0.3); }
+        .card-future h2 { color: #a78bfa; }
+        .footer {
+            text-align: center; color: #5a5a70; font-size: 0.85rem;
+            border-top: 1px solid rgba(255,255,255,0.04); padding-top: 2rem; margin-top: 1rem;
+        }
+        .footer a { color: #8a8aa8; text-decoration: none; border-bottom: 1px dotted #3a3a50; }
+        .footer a:hover { color: #c4b5d4; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>I want to be forever young</h1>
+            <div class="subhead">СНЛ · CNP · ?</div>
+            <div class="question">«Do you really want to live forever?»</div>
+            <p>
+                Три пути, одна цель — сохранить моменты, друзей и творчество.<br />
+                Здесь собраны наши истории. Каждая из них — попытка остановить время.
+            </p>
+            <span class="tagline">Цени моменты. Друзей. Творчество.</span>
+        </header>
+
+        <div class="cards">
+            <!-- СНЛ -->
+            <a href="snl.html" class="card card-snl">
+                <div class="image-wrapper">
+                    <img src="images/WVtwIGLjJECY74j2P0z1HPdc-JKV8v7DYlX8xDFQBWEY434_IX2Ykp5Q855pPatC16p2jfVQixRq8NEHKYUAOqCJ.jpg" alt="СНЛ" />
+                </div>
+                <h2>СНЛ</h2>
+                <p>
+                    Обычные дни, которые стали вечными. Прогулки, смех, дружба —<br />
+                    то, что не подвластно времени.
+                </p>
+            </a>
+
+            <!-- CNP -->
+            <a href="cnp.html" class="card card-cnp">
+                <div class="image-wrapper">
+                    <img src="images/photo_2024-09-22_17-18-07.jpg" alt="CNP" />
+                </div>
+                <h2>CNP</h2>
+                <p>
+                    Тут был настоящий дух улиц.
+                </p>
+            </a>
+
+            <!-- Будущий проект -->
+            <a href="future.html" class="card card-future">
+                <div class="image-wrapper">
+                    <div class="placeholder-icon">❓</div>
+                </div>
+                <h2>???</h2>
+                <p>
+                    ....
+                </p>
+            </a>
+        </div>
+
+        <footer class="footer">
+            <p>
+                <a href="https://vk.ru/snl68" target="_blank">VK</a> ·
+                <a href="https://t.me/t_cnp" target="_blank">Telegram</a>
+                <br />
+                © 2026 · I want to be forever young
+            </p>
+        </footer>
+    </div>
+
+    <!-- Плеер (закомментирован) -->
+    <!-- 
+    <audio autoplay loop controls style="position:fixed; bottom:20px; right:20px; z-index:999; opacity:0.7;">
+        <source src="assets/music/track.mp3" type="audio/mpeg">
+        Ваш браузер не поддерживает аудио.
+    </audio>
+    -->
+</body>
+</html>
