@@ -1,12 +1,13 @@
-Ы<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>I want to be forever young</title>
 
-       <meta http-equiv="X-Content-Type-Options" content="nosniff" />
-   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'unsafe-inline' https://fonts.googleapis.com https://onesignal.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://*; script-src 'self' 'unsafe-inline' https://cdn.onesignal.com https://api.onesignal.com; connect-src 'self' https://api.onesignal.com https://onesignal.com https://cdn.onesignal.com; worker-src 'self' blob:;" />
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'unsafe-inline' https://fonts.googleapis.com https://onesignal.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://*; script-src 'self' 'unsafe-inline' https://cdn.onesignal.com https://api.onesignal.com; connect-src 'self' https://api.onesignal.com https://onesignal.com https://cdn.onesignal.com; worker-src 'self' blob:;" />
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,600;14..32,800&display=swap" rel="stylesheet" />
@@ -84,18 +85,34 @@
 
         /* ===== ОСНОВНЫЕ СТИЛИ ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
             background: #0a0a0f !important;
             background-image: radial-gradient(circle at 20% 30%, #1a1a2e 0%, #0a0a0f 80%) !important;
             font-family: 'Inter', sans-serif;
             color: #eee;
             min-height: 100vh;
-            padding: 5rem 1rem 3rem;
+            padding: 4rem 1rem 3rem;
             line-height: 1.5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;   /* центрирование по горизонтали */
             position: relative;
         }
-        .container { max-width: 1200px; width: 100%; animation: fadeUp 1s ease-out; position: relative; z-index: 1; }
-        @keyframes fadeUp { 0% { opacity: 0; transform: translateY(30px); } 100% { opacity: 1; transform: translateY(0); } }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            animation: fadeUp 1s ease-out;
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes fadeUp {
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
         .header { text-align: center; margin-bottom: 2.5rem; }
         .header h1 {
             font-size: clamp(2.8rem, 10vw, 5.2rem);
@@ -149,6 +166,17 @@
         }
         .footer a { color: #8a8aa8; text-decoration: none; border-bottom: 1px dotted #3a3a50; }
         .footer a:hover { color: #c4b5d4; }
+
+        /* ===== OneSignal — не ломать вёрстку ===== */
+        #onesignal-slidedown-container,
+        #onesignal-bell-container,
+        #onesignal-popover-container,
+        #onesignal-backdrop,
+        body > div[id*="onesignal"],
+        body > iframe[title*="OneSignal"] {
+            position: fixed !important;
+            z-index: 2147483647;
+        }
     </style>
 </head>
 <body>
