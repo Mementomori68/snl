@@ -6,11 +6,13 @@
     <title>CNP — I want to be forever young</title>
     <link rel="icon" type="image/png" href="images/icon-192x192.png" />
     <link rel="apple-touch-icon" href="images/icon-512x512.png" />
-       <meta http-equiv="X-Content-Type-Options" content="nosniff" />
-   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'unsafe-inline' https://fonts.googleapis.com https://onesignal.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://*; script-src 'self' 'unsafe-inline' https://cdn.onesignal.com https://api.onesignal.com; connect-src 'self' https://api.onesignal.com https://onesignal.com https://cdn.onesignal.com; worker-src 'self' blob:;" />
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'unsafe-inline' https://fonts.googleapis.com https://onesignal.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://*; script-src 'self' 'unsafe-inline' https://cdn.onesignal.com https://api.onesignal.com; connect-src 'self' https://api.onesignal.com https://onesignal.com https://cdn.onesignal.com; worker-src 'self' blob:;" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,600;14..32,800&display=swap" rel="stylesheet" />
     <link rel="manifest" href="/snl/manifest.json" />
+
     <!-- OneSignal Push Notifications -->
     <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
     <script>
@@ -51,7 +53,6 @@
             transform: scale(1.1);
         }
 
-        /* ================= КНОПКА НАЗАД ================= */
         .back-link {
             position: fixed;
             top: 20px;
@@ -73,7 +74,6 @@
             color: #34d399;
         }
 
-        /* ================= РАЗБРОСАННЫЕ ФОТО ================= */
         .scattered-photos {
             position: absolute;
             top: 0;
@@ -112,25 +112,21 @@
             transform: scale(1.15) rotate(0deg) !important;
         }
 
-        /* ===== ВЕРХНИЙ РЯД ===== */
         .p1  { top: 14%; left: 0.5%;  transform: rotate(-14deg); }
         .p2  { top: 14%; left: 16%;   transform: rotate(22deg); }
         .p3  { top: 2%;  right: 16%;  transform: rotate(-8deg); }
         .p4  { top: 2%;  right: 0.5%; transform: rotate(28deg); }
 
-        /* ===== СРЕДНИЙ РЯД ===== */
         .p5  { top: 42%; left: 0.5%;  transform: rotate(-25deg); }
         .p6  { top: 62%; left: 1%;    transform: rotate(180deg); }
         .p7  { top: 38%; right: 0.5%; transform: rotate(160deg); }
         .p8  { top: 58%; right: 1%;   transform: rotate(20deg); }
 
-        /* ===== НИЖНИЙ РЯД ===== */
         .p9  { bottom: 4%; left: 0.5%;  transform: rotate(35deg); }
         .p10 { bottom: 4%; left: 16%;   transform: rotate(190deg); }
         .p11 { bottom: 4%; right: 16%;  transform: rotate(-30deg); }
         .p12 { bottom: 4%; right: 0.5%; transform: rotate(175deg); }
 
-        /* ================= ОСНОВНОЙ КОНТЕНТ ================= */
         .container {
             max-width: 720px;
             margin: 0 auto;
@@ -189,7 +185,6 @@
             margin-bottom: 0;
         }
 
-        /* ================= ФУТЕР ================= */
         .footer {
             text-align: center;
             color: #4a6a5a;
@@ -212,7 +207,6 @@
             letter-spacing: 1px;
         }
 
-        /* ================= АДАПТИВ ================= */
         @media (max-width: 1200px) {
             .scattered-photos .photo {
                 width: 140px;
@@ -255,7 +249,6 @@
             .main-text { padding: 1.5rem; }
         }
 
-        /* ================= LIGHTBOX ================= */
         .lightbox-overlay {
             position: fixed;
             inset: 0;
@@ -315,26 +308,23 @@
 </head>
 <body>
 
-    <!-- КНОПКА НАЗАД -->
     <a href="index.html" class="back-link">← Назад</a>
 
-    <!-- РАЗБРОСАННЫЕ ФОТО -->
     <div class="scattered-photos">
-        <div class="photo p1"><img src="images/photo_2024-08-15_22-07-53.jpg" alt="CNP 1"></div>
-        <div class="photo p2"><img src="images/photo_2024-08-21_22-33-39.jpg" alt="CNP 2"></div>
-        <div class="photo p3"><img src="images/photo_2024-08-29_23-05-55.jpg" alt="CNP 3"></div>
-        <div class="photo p4"><img src="images/photo_2024-09-16_18-04-20.jpg" alt="CNP 4"></div>
-        <div class="photo p5"><img src="images/photo_2024-09-21_21-36-24.jpg" alt="CNP 5"></div>
-        <div class="photo p6"><img src="images/photo_2024-09-22_17-18-07.jpg" alt="CNP 6"></div>
-        <div class="photo p7"><img src="images/photo_2024-10-31_22-59-05.jpg" alt="CNP 7"></div>
-        <div class="photo p8"><img src="images/photo_2024-11-29_23-14-21.jpg" alt="CNP 8"></div>
-        <div class="photo p9"><img src="images/photo_2025-02-08_22-35-48.jpg" alt="CNP 9"></div>
-        <div class="photo p10"><img src="images/photo_2025-03-14_22-24-37.jpg" alt="CNP 10"></div>
-        <div class="photo p11"><img src="images/photo_2025-04-22_15-22-41.jpg" alt="CNP 11"></div>
-        <div class="photo p12"><img src="images/ua7bqz_nEsxatofAb0oklkw9Y70oSCtd6N9wLxMdovG4h8MBNGbhbsF1-O9mJsUdWeCWIKKzAc_3jCn0xxzsKNrW.jpg" alt="CNP 12"></div>
+        <div class="photo p1"><img src="images/photo_2024-08-15_22-07-53.webp" alt="CNP 1" loading="lazy"></div>
+        <div class="photo p2"><img src="images/photo_2024-08-21_22-33-39.webp" alt="CNP 2" loading="lazy"></div>
+        <div class="photo p3"><img src="images/photo_2024-08-29_23-05-55.webp" alt="CNP 3" loading="lazy"></div>
+        <div class="photo p4"><img src="images/photo_2024-09-16_18-04-20.webp" alt="CNP 4" loading="lazy"></div>
+        <div class="photo p5"><img src="images/photo_2024-09-21_21-36-24.webp" alt="CNP 5" loading="lazy"></div>
+        <div class="photo p6"><img src="images/photo_2024-09-22_17-18-07.webp" alt="CNP 6" loading="lazy"></div>
+        <div class="photo p7"><img src="images/photo_2024-10-31_22-59-05.webp" alt="CNP 7" loading="lazy"></div>
+        <div class="photo p8"><img src="images/photo_2024-11-29_23-14-21.webp" alt="CNP 8" loading="lazy"></div>
+        <div class="photo p9"><img src="images/photo_2025-02-08_22-35-48.webp" alt="CNP 9" loading="lazy"></div>
+        <div class="photo p10"><img src="images/photo_2025-03-14_22-24-37.webp" alt="CNP 10" loading="lazy"></div>
+        <div class="photo p11"><img src="images/photo_2025-04-22_15-22-41.webp" alt="CNP 11" loading="lazy"></div>
+        <div class="photo p12"><img src="images/ua7bqz_nEsxatofAb0oklkw9Y70oSCtd6N9wLxMdovG4h8MBNGbhbsF1-O9mJsUdWeCWIKKzAc_3jCn0xxzsKNrW.webp" alt="CNP 12" loading="lazy"></div>
     </div>
 
-    <!-- ОСНОВНОЙ КОНТЕНТ -->
     <div class="container">
         <header class="header">
             <h1>CNP</h1>
@@ -358,7 +348,6 @@
         </footer>
     </div>
 
-    <!-- ================= LIGHTBOX SCRIPT ================= -->
     <script>
     (function () {
         const overlay = document.createElement('div');
