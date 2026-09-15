@@ -199,89 +199,72 @@
         /* ================= МОБИЛЬНАЯ ВЕРСИЯ ================= */
         @media (max-width: 700px) {
             body {
-                padding: 4rem 1rem 2rem;
+                padding: 55px 0 55px 0;
             }
 
             .back-link {
-                top: 10px;
-                left: 10px;
-                font-size: 0.8rem;
-                padding: 6px 12px;
+                top: 8px;
+                left: 8px;
+                font-size: 0.75rem;
+                padding: 5px 10px;
+                border-radius: 14px;
             }
 
-            /* Фото становятся сеткой сверху */
-            .scattered-photos {
-                position: relative;
-                top: auto; left: auto;
-                width: 100%;
-                min-height: auto;
-                display: grid;
-                grid-template-columns: repeat(3, 1fr);
-                gap: 6px;
-                margin-bottom: 1.5rem;
-                padding: 0;
-                overflow: visible;
-                pointer-events: auto;
+            /* Фото — маленькие полароиды в 2 колоннах по краям */
+            .scattered-photos .photo {
+                width: 62px;
+                height: 62px;
+                padding: 3px 3px 11px;
+                border-radius: 3px;
+                box-shadow: 0 6px 16px rgba(0, 0, 0, 0.6);
             }
 
-            /* Сбрасываем абсолютное позиционирование для всех фото */
-            .scattered-photos .photo,
-            .p1, .p2, .p3, .p4, .p5, .p6,
-            .p7, .p8, .p9, .p10, .p11, .p12 {
-                position: relative !important;
-                top: auto !important;
-                left: auto !important;
-                right: auto !important;
-                bottom: auto !important;
-                width: 100% !important;
-                height: auto !important;
-                aspect-ratio: 1 / 1;
-                padding: 4px 4px 14px;
-                border-radius: 6px;
-                transform: none !important;
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-                display: block !important;
-            }
+            /* Левая колонна — 6 фото на разных высотах */
+            .p1  { top: 5%;  left: 3px;  transform: rotate(-12deg); }
+            .p2  { top: 17%; left: 3px;  transform: rotate(15deg); }
+            .p3  { top: 29%; left: 3px;  transform: rotate(-18deg); }
+            .p4  { top: 41%; left: 3px;  transform: rotate(8deg); }
+            .p5  { top: 53%; left: 3px;  transform: rotate(-22deg); }
+            .p6  { top: 65%; left: 3px;  transform: rotate(160deg); }
 
-            .scattered-photos .photo:hover {
-                transform: scale(1.03) !important;
-                box-shadow: 0 6px 18px rgba(251, 191, 36, 0.4);
-            }
+            /* Правая колонна — 6 фото на других высотах (шахматный порядок) */
+            .p7  { top: 11%; right: 3px; transform: rotate(20deg); }
+            .p8  { top: 23%; right: 3px; transform: rotate(-10deg); }
+            .p9  { top: 35%; right: 3px; transform: rotate(28deg); }
+            .p10 { top: 47%; right: 3px; transform: rotate(175deg); }
+            .p11 { top: 59%; right: 3px; transform: rotate(-25deg); }
+            .p12 { top: 71%; right: 3px; transform: rotate(180deg); }
 
-            /* Контейнер текста снова кликабельный */
+            /* Контейнер с текстом — отступы по бокам, чтобы не заезжать под фото */
             .container {
-                pointer-events: auto;
+                padding: 0 70px;
+                pointer-events: none;
             }
+            .container .main-text,
+            .container .footer a { pointer-events: auto; }
 
-            .header { margin-bottom: 1.5rem; }
-
-            .header h1 {
-                font-size: clamp(2rem, 12vw, 3rem);
-            }
-
-            .header .subhead {
-                font-size: 1rem;
-                letter-spacing: 0.5px;
-            }
+            /* Меньше шрифты */
+            .header { margin-bottom: 1.2rem; }
+            .header h1 { font-size: clamp(1.8rem, 11vw, 2.6rem); }
+            .header .subhead { font-size: 0.85rem; letter-spacing: 0.5px; }
 
             .main-text {
-                padding: 1.4rem 1.2rem;
-                border-radius: 20px;
-                margin-bottom: 1.5rem;
+                padding: 1.2rem 0.9rem;
+                border-radius: 18px;
+                margin-bottom: 1.2rem;
             }
-
             .main-text p {
-                font-size: 0.9rem;
-                line-height: 1.7;
-                margin-bottom: 0.8rem;
+                font-size: 0.82rem;
+                line-height: 1.65;
+                margin-bottom: 0.7rem;
             }
-
             .main-text .lead {
-                font-size: 1.05rem;
-                margin-bottom: 1rem;
+                font-size: 1rem;
+                margin-bottom: 0.9rem;
             }
 
-            .footer { font-size: 0.8rem; }
+            .footer { font-size: 0.72rem; margin-top: 1rem; }
+            .footer .years { font-size: 0.7rem; }
         }
 
         /* ================= LIGHTBOX ================= */
