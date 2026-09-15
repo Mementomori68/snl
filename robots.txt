@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://mementomori68.github.io/snl/sitemap.xml
