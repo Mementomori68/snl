@@ -6,12 +6,13 @@
     <title>СНЛ — I want to be forever young</title>
     <link rel="icon" type="image/png" href="images/icon-192x192.png" />
     <link rel="apple-touch-icon" href="images/icon-512x512.png" />
-       <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'unsafe-inline' https://fonts.googleapis.com https://onesignal.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://*; script-src 'self' 'unsafe-inline' https://cdn.onesignal.com https://api.onesignal.com; connect-src 'self' https://api.onesignal.com https://onesignal.com https://cdn.onesignal.com; worker-src 'self' blob:;" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,600;14..32,800&display=swap" rel="stylesheet" />
     <link rel="manifest" href="/snl/manifest.json" />
+
     <!-- OneSignal Push Notifications -->
     <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
     <script>
@@ -40,7 +41,6 @@
             position: relative;
         }
 
-        /* ================= КНОПКА НАЗАД ================= */
         .back-link {
             position: fixed;
             top: 20px;
@@ -62,7 +62,6 @@
             color: #fbbf24;
         }
 
-        /* ================= РАЗБРОСАННЫЕ ФОТО ================= */
         .scattered-photos {
             position: absolute;
             top: 0;
@@ -101,25 +100,21 @@
             transform: scale(1.15) rotate(0deg) !important;
         }
 
-        /* ===== ВЕРХНИЙ РЯД ===== */
         .p1  { top: 14%; left: 0.5%;  transform: rotate(-14deg); }
         .p2  { top: 14%; left: 16%;   transform: rotate(22deg); }
         .p3  { top: 2%;  right: 16%;  transform: rotate(-8deg); }
         .p4  { top: 2%;  right: 0.5%; transform: rotate(28deg); }
 
-        /* ===== СРЕДНИЙ РЯД ===== */
         .p5  { top: 42%; left: 0.5%;  transform: rotate(-25deg); }
         .p6  { top: 62%; left: 1%;    transform: rotate(180deg); }
         .p7  { top: 38%; right: 0.5%; transform: rotate(160deg); }
         .p8  { top: 58%; right: 1%;   transform: rotate(20deg); }
 
-        /* ===== НИЖНИЙ РЯД ===== */
         .p9  { bottom: 4%; left: 0.5%;  transform: rotate(35deg); }
         .p10 { bottom: 4%; left: 16%;   transform: rotate(190deg); }
         .p11 { bottom: 4%; right: 16%;  transform: rotate(-30deg); }
         .p12 { bottom: 4%; right: 0.5%; transform: rotate(175deg); }
 
-        /* ================= ОСНОВНОЙ КОНТЕНТ ================= */
         .container {
             max-width: 720px;
             margin: 0 auto;
@@ -179,7 +174,6 @@
             margin-bottom: 1.2rem;
         }
 
-        /* ================= ФУТЕР ================= */
         .footer {
             text-align: center;
             color: #6a5a4a;
@@ -200,50 +194,24 @@
             letter-spacing: 1px;
         }
 
-        /* ================= АДАПТИВ ================= */
         @media (max-width: 1200px) {
-            .scattered-photos .photo {
-                width: 140px;
-                height: 140px;
-                padding: 6px 6px 22px;
-            }
+            .scattered-photos .photo { width: 140px; height: 140px; padding: 6px 6px 22px; }
         }
-
         @media (max-width: 1000px) {
-            .scattered-photos .photo {
-                width: 115px;
-                height: 115px;
-                padding: 5px 5px 19px;
-            }
+            .scattered-photos .photo { width: 115px; height: 115px; padding: 5px 5px 19px; }
         }
-
         @media (max-width: 800px) {
-            .scattered-photos .photo {
-                width: 95px;
-                height: 95px;
-                padding: 4px 4px 16px;
-            }
+            .scattered-photos .photo { width: 95px; height: 95px; padding: 4px 4px 16px; }
             .p5, .p6 { left: 0%; }
             .p7, .p8 { right: 0%; }
         }
-
         @media (max-width: 640px) {
-            .scattered-photos .photo {
-                width: 78px;
-                height: 78px;
-                padding: 3px 3px 13px;
-            }
+            .scattered-photos .photo { width: 78px; height: 78px; padding: 3px 3px 13px; }
             .p5, .p6, .p7, .p8 { display: none; }
-            .back-link {
-                top: 10px;
-                left: 10px;
-                font-size: 0.8rem;
-                padding: 6px 10px;
-            }
+            .back-link { top: 10px; left: 10px; font-size: 0.8rem; padding: 6px 10px; }
             .main-text { padding: 1.5rem; }
         }
 
-        /* ================= LIGHTBOX ================= */
         .lightbox-overlay {
             position: fixed;
             inset: 0;
@@ -303,26 +271,23 @@
 </head>
 <body>
 
-    <!-- КНОПКА НАЗАД -->
     <a href="index.html" class="back-link">← Назад</a>
 
-    <!-- РАЗБРОСАННЫЕ ФОТО -->
     <div class="scattered-photos">
-        <div class="photo p1"><img src="images/W954mhgR8-Tukv7b3l9u6Gie_bi1Kd-A810fVNZqlTszing4e_cLbBEYFFjXcVBiwqLPA-WIOiHiO-pnomP_2btU.jpg" alt="СНЛ 1"></div>
-        <div class="photo p2"><img src="images/30_pQE3YVF0RuFFFhbSmpkQ9DP6rZO6WIFzasU52Klp83WiGfb_W7zaqkX2bh7jaSb4W4hlfntdGcPHwiGloEZ2p.jpg" alt="СНЛ 2"></div>
-        <div class="photo p3"><img src="images/wNbvyIG0A7SWbPjngaG8r8Eu1xlExdNiXGq1r5ILYElk_4rp0pUT4e-uEzcQc9gY81v3XSFfg9_SfGSsUpfzMtx8.jpg" alt="СНЛ 3"></div>
-        <div class="photo p4"><img src="images/FOK7rVPL15SpId763WCHNw8ssYTHcfUtlyOIl8v9mVvigu8SA1EKoXHXD-rz471uVb39zUPKuzFTgewWMWUYQsku.jpg" alt="СНЛ 4"></div>
-        <div class="photo p5"><img src="images/GKJ0vKpO9aVm5U-t5WzZlmXwnCmHhrYzT2OhK7DuoYou8AVAOm3lyBBIMv7eGUvB-fjddpXp2eIFZyMX9gpqwPAR.jpg" alt="СНЛ 5"></div>
-        <div class="photo p6"><img src="images/gZEqGK7hiQIPKggbgFbjfV8Zuxmqf0xfUqZLmunqldKaBJWLmKBRMPSjPLYBhaYVPSvCyroeU4o0AYgwb-1200hw.jpg" alt="СНЛ 6"></div>
-        <div class="photo p7"><img src="images/oG2Kap3jAp2FDBKrWkM9QvZM30WhzA9rsF8ep91mrJD3WtoUK_2F1d8KDiVCbxs1OPkcT6VtSOsSqgMvSoeF2XH0.jpg" alt="СНЛ 7"></div>
-        <div class="photo p8"><img src="images/okrryJ_0OovBm7x0MqT8KZAV__xHXthj2oUM3kVYWQidWyDrXo9F79U7e9LuHXyPs50QwvGYZ93Li9In16AJYgdT.jpg" alt="СНЛ 8"></div>
-        <div class="photo p9"><img src="images/Rm_kAbLR1l4-NlArg-2kyWIgDTxkF14tqmxhjEar0N79zjORwkNS3GmwuHWi52PgttWadZ_2BPsaJ2IvFxtr0jl6.jpg" alt="СНЛ 9"></div>
-        <div class="photo p10"><img src="images/XQTGOpdgNP_BnXi0IAaChGeVkedNQcjX0Fe6ruhmjUHoCZveBafcD86JJvBcCh1h8Bb99rWH3Ahe1giLPseQYhMO.jpg" alt="СНЛ 10"></div>
-        <div class="photo p11"><img src="images/yDGoJAZoslE2dhwQx1bjhItRwqvc6eL1LJ2ICXfrEU9BP0S6mzyGytxKV6u611nQMvQn-2hAvcAVzue7WntTVYlV.jpg" alt="СНЛ 11"></div>
-        <div class="photo p12"><img src="images/YmrDjZy189_0-rYQMEyZjpJPO40FQ705JIuBHd0EMtKzg_8R5_kZhkD2x3yZ0P8S8uGd1hk8jJBj4KsCAeBCcxWp.jpg" alt="СНЛ 12"></div>
+        <div class="photo p1"><img src="images/W954mhgR8-Tukv7b3l9u6Gie_bi1Kd-A810fVNZqlTszing4e_cLbBEYFFjXcVBiwqLPA-WIOiHiO-pnomP_2btU.webp" alt="СНЛ 1" loading="lazy"></div>
+        <div class="photo p2"><img src="images/30_pQE3YVF0RuFFFhbSmpkQ9DP6rZO6WIFzasU52Klp83WiGfb_W7zaqkX2bh7jaSb4W4hlfntdGcPHwiGloEZ2p.webp" alt="СНЛ 2" loading="lazy"></div>
+        <div class="photo p3"><img src="images/pljHSccvabfMTg-rVoH8CrCik8hWN9NiNHiLPwMLnuAGT6lKNETd0BWap_vc8YSkBdlUct6Md-jGKpMb9ov5uMKu.webp" alt="СНЛ 3" loading="lazy"></div>
+        <div class="photo p4"><img src="images/FOK7rVPL15SpId763WCHNw8ssYTHcfUtlyOIl8v9mVvigu8SA1EKoXHXD-rz471uVb39zUPKuzFTgewWMWUYQsku.webp" alt="СНЛ 4" loading="lazy"></div>
+        <div class="photo p5"><img src="images/GKJ0vKpO9aVm5U-t5WzZlmXwnCmHhrYzT2OhK7DuoYou8AVAOm3lyBBIMv7eGUvB-fjddpXp2eIFZyMX9gpqwPAR.webp" alt="СНЛ 5" loading="lazy"></div>
+        <div class="photo p6"><img src="images/gZEqGK7hiQIPKggbgFbjfV8Zuxmqf0xfUqZLmunqldKaBJWLmKBRMPSjPLYBhaYVPSvCyroeU4o0AYgwb-1200hw.webp" alt="СНЛ 6" loading="lazy"></div>
+        <div class="photo p7"><img src="images/oG2Kap3jAp2FDBKrWkM9QvZM30WhzA9rsF8ep91mrJD3WtoUK_2F1d8KDiVCbxs1OPkcT6VtSOsSqgMvSoeF2XH0.webp" alt="СНЛ 7" loading="lazy"></div>
+        <div class="photo p8"><img src="images/okrryJ_0OovBm7x0MqT8KZAV__xHXthj2oUM3kVYWQidWyDrXo9F79U7e9LuHXyPs50QwvGYZ93Li9In16AJYgdT.webp" alt="СНЛ 8" loading="lazy"></div>
+        <div class="photo p9"><img src="images/Rm_kAbLR1l4-NlArg-2kyWIgDTxkF14tqmxhjEar0N79zjORwkNS3GmwuHWi52PgttWadZ_2BPsaJ2IvFxtr0jl6.webp" alt="СНЛ 9" loading="lazy"></div>
+        <div class="photo p10"><img src="images/XQTGOpdgNP_BnXi0IAaChGeVkedNQcjX0Fe6ruhmjUHoCZveBafcD86JJvBcCh1h8Bb99rWH3Ahe1giLPseQYhMO.webp" alt="СНЛ 10" loading="lazy"></div>
+        <div class="photo p11"><img src="images/yDGoJAZoslE2dhwQx1bjhItRwqvc6eL1LJ2ICXfrEU9BP0S6mzyGytxKV6u611nQMvQn-2hAvcAVzue7WntTVYlV.webp" alt="СНЛ 11" loading="lazy"></div>
+        <div class="photo p12"><img src="images/YmrDjZy189_0-rYQMEyZjpJPO40FQ705JIuBHd0EMtKzg_8R5_kZhkD2x3yZ0P8S8uGd1hk8jJBj4KsCAeBCcxWp.webp" alt="СНЛ 12" loading="lazy"></div>
     </div>
 
-    <!-- ОСНОВНОЙ КОНТЕНТ -->
     <div class="container">
         <header class="header">
             <h1>СНЛ</h1>
@@ -357,10 +322,8 @@
         </footer>
     </div>
 
-    <!-- Маскот -->
     <script src="mascot.js"></script>
 
-    <!-- ================= LIGHTBOX SCRIPT ================= -->
     <script>
     (function () {
         const overlay = document.createElement('div');
