@@ -13,6 +13,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,600;14..32,800&display=swap" rel="stylesheet" />
     <link rel="manifest" href="/snl/manifest.json" />
 
+    <!-- OneSignal Push Notifications -->
     <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
     <script>
       window.OneSignalDeferred = window.OneSignalDeferred || [];
@@ -52,6 +53,7 @@
             transform: scale(1.1);
         }
 
+        /* ================= КНОПКА НАЗАД ================= */
         .back-link {
             position: fixed;
             top: 20px;
@@ -68,11 +70,16 @@
             transition: border-color 0.3s, color 0.3s;
             backdrop-filter: blur(6px);
         }
-        .back-link:hover { border-color: #34d399; color: #34d399; }
+        .back-link:hover {
+            border-color: #34d399;
+            color: #34d399;
+        }
 
+        /* ================= РАЗБРОСАННЫЕ ФОТО ================= */
         .scattered-photos {
             position: absolute;
-            top: 0; left: 0;
+            top: 0;
+            left: 0;
             width: 100%;
             min-height: 100%;
             pointer-events: none;
@@ -94,7 +101,8 @@
         }
 
         .scattered-photos .photo img {
-            width: 100%; height: 100%;
+            width: 100%;
+            height: 100%;
             object-fit: cover;
             display: block;
             border-radius: 2px;
@@ -106,19 +114,25 @@
             transform: scale(1.15) rotate(0deg) !important;
         }
 
+        /* ===== ВЕРХНИЙ РЯД ===== */
         .p1  { top: 14%; left: 0.5%;  transform: rotate(-14deg); }
         .p2  { top: 14%; left: 16%;   transform: rotate(22deg); }
         .p3  { top: 2%;  right: 16%;  transform: rotate(-8deg); }
         .p4  { top: 2%;  right: 0.5%; transform: rotate(28deg); }
+
+        /* ===== СРЕДНИЙ РЯД ===== */
         .p5  { top: 42%; left: 0.5%;  transform: rotate(-25deg); }
         .p6  { top: 62%; left: 1%;    transform: rotate(180deg); }
         .p7  { top: 38%; right: 0.5%; transform: rotate(160deg); }
         .p8  { top: 58%; right: 1%;   transform: rotate(20deg); }
+
+        /* ===== НИЖНИЙ РЯД ===== */
         .p9  { bottom: 4%; left: 0.5%;  transform: rotate(35deg); }
         .p10 { bottom: 4%; left: 16%;   transform: rotate(190deg); }
         .p11 { bottom: 4%; right: 16%;  transform: rotate(-30deg); }
         .p12 { bottom: 4%; right: 0.5%; transform: rotate(175deg); }
 
+        /* ================= ОСНОВНОЙ КОНТЕНТ ================= */
         .container {
             max-width: 720px;
             margin: 0 auto;
@@ -128,14 +142,19 @@
             pointer-events: none;
         }
         .container .main-text,
-        .container .footer a { pointer-events: auto; }
+        .container .footer a {
+            pointer-events: auto;
+        }
 
         @keyframes fadeUp {
             0% { opacity: 0; transform: translateY(30px); }
             100% { opacity: 1; transform: translateY(0); }
         }
 
-        .header { text-align: center; margin-bottom: 2.5rem; }
+        .header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
         .header h1 {
             font-size: clamp(2.8rem, 8vw, 4.5rem);
             font-weight: 800;
@@ -168,8 +187,11 @@
             font-weight: 300;
             margin-bottom: 0.8rem;
         }
-        .main-text p:last-child { margin-bottom: 0; }
+        .main-text p:last-child {
+            margin-bottom: 0;
+        }
 
+        /* ================= ФУТЕР ================= */
         .footer {
             text-align: center;
             color: #4a6a5a;
@@ -182,7 +204,9 @@
             text-decoration: none;
             border-bottom: 1px dotted #2a4a3a;
         }
-        .footer a:hover { color: #34d399; }
+        .footer a:hover {
+            color: #34d399;
+        }
         .footer .years {
             margin-top: 0.5rem;
             color: #6a8a7a;
@@ -190,85 +214,97 @@
             letter-spacing: 1px;
         }
 
+        /* ================= АДАПТИВ ДЕСКТОП/ПЛАНШЕТ ================= */
         @media (max-width: 1200px) {
-            .scattered-photos .photo { width: 140px; height: 140px; padding: 6px 6px 22px; }
+            .scattered-photos .photo {
+                width: 140px;
+                height: 140px;
+                padding: 6px 6px 22px;
+            }
         }
+
         @media (max-width: 1000px) {
-            .scattered-photos .photo { width: 115px; height: 115px; padding: 5px 5px 19px; }
+            .scattered-photos .photo {
+                width: 115px;
+                height: 115px;
+                padding: 5px 5px 19px;
+            }
         }
+
         @media (max-width: 800px) {
-            .scattered-photos .photo { width: 95px; height: 95px; padding: 4px 4px 16px; }
+            .scattered-photos .photo {
+                width: 95px;
+                height: 95px;
+                padding: 4px 4px 16px;
+            }
             .p5, .p6 { left: 0%; }
             .p7, .p8 { right: 0%; }
         }
 
         /* ================= МОБИЛЬНАЯ ВЕРСИЯ ================= */
         @media (max-width: 700px) {
-            body { padding: 4rem 1rem 2rem; }
+            body {
+                padding: 55px 0 55px 0;
+            }
 
             .back-link {
-                top: 10px;
-                left: 10px;
-                font-size: 0.8rem;
-                padding: 6px 12px;
+                top: 8px;
+                left: 8px;
+                font-size: 0.75rem;
+                padding: 5px 10px;
+                border-radius: 14px;
             }
 
-            /* Фото — сетка сверху, все видимы */
-            .scattered-photos {
-                position: relative;
-                top: auto; left: auto;
-                width: 100%;
-                min-height: auto;
-                display: grid;
-                grid-template-columns: repeat(3, 1fr);
-                gap: 6px;
-                margin-bottom: 1.5rem;
-                padding: 0;
-                overflow: visible;
-                pointer-events: auto;
+            /* Фото — маленькие полароиды в 2 колоннах по краям */
+            .scattered-photos .photo {
+                width: 62px;
+                height: 62px;
+                padding: 3px 3px 11px;
+                border-radius: 3px;
+                box-shadow: 0 6px 16px rgba(0, 0, 0, 0.6);
             }
 
-            .scattered-photos .photo,
-            .p1, .p2, .p3, .p4, .p5, .p6,
-            .p7, .p8, .p9, .p10, .p11, .p12 {
-                position: relative !important;
-                top: auto !important;
-                left: auto !important;
-                right: auto !important;
-                bottom: auto !important;
-                width: 100% !important;
-                height: auto !important;
-                aspect-ratio: 1 / 1;
-                padding: 4px 4px 14px;
-                border-radius: 6px;
-                transform: none !important;
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-                display: block !important;
+            /* Левая колонна — 6 фото на разных высотах */
+            .p1  { top: 5%;  left: 3px;  transform: rotate(-12deg); }
+            .p2  { top: 17%; left: 3px;  transform: rotate(15deg); }
+            .p3  { top: 29%; left: 3px;  transform: rotate(-18deg); }
+            .p4  { top: 41%; left: 3px;  transform: rotate(8deg); }
+            .p5  { top: 53%; left: 3px;  transform: rotate(-22deg); }
+            .p6  { top: 65%; left: 3px;  transform: rotate(160deg); }
+
+            /* Правая колонна — 6 фото на других высотах (шахматный порядок) */
+            .p7  { top: 11%; right: 3px; transform: rotate(20deg); }
+            .p8  { top: 23%; right: 3px; transform: rotate(-10deg); }
+            .p9  { top: 35%; right: 3px; transform: rotate(28deg); }
+            .p10 { top: 47%; right: 3px; transform: rotate(175deg); }
+            .p11 { top: 59%; right: 3px; transform: rotate(-25deg); }
+            .p12 { top: 71%; right: 3px; transform: rotate(180deg); }
+
+            /* Контейнер с текстом — отступы по бокам, чтобы не заезжать под фото */
+            .container {
+                padding: 0 70px;
+                pointer-events: none;
             }
+            .container .main-text,
+            .container .footer a { pointer-events: auto; }
 
-            .scattered-photos .photo:hover {
-                transform: scale(1.03) !important;
-                box-shadow: 0 6px 18px rgba(52, 211, 153, 0.4);
-            }
-
-            .container { pointer-events: auto; }
-
-            .header { margin-bottom: 1.5rem; }
-            .header h1 { font-size: clamp(2rem, 12vw, 3rem); }
-            .header .subhead { font-size: 1rem; letter-spacing: 0.5px; }
+            .header { margin-bottom: 1.2rem; }
+            .header h1 { font-size: clamp(1.8rem, 11vw, 2.6rem); }
+            .header .subhead { font-size: 0.85rem; letter-spacing: 0.5px; }
 
             .main-text {
-                padding: 1.4rem 1.2rem;
-                border-radius: 20px;
-                margin-bottom: 1.5rem;
+                padding: 1.2rem 0.9rem;
+                border-radius: 18px;
+                margin-bottom: 1.2rem;
             }
             .main-text p {
-                font-size: 0.9rem;
-                line-height: 1.7;
-                margin-bottom: 0.8rem;
+                font-size: 0.82rem;
+                line-height: 1.65;
+                margin-bottom: 0.7rem;
             }
 
-            .footer { font-size: 0.8rem; }
+            .footer { font-size: 0.72rem; margin-top: 1rem; }
+            .footer .years { font-size: 0.7rem; }
         }
 
         /* ================= LIGHTBOX ================= */
@@ -324,13 +360,17 @@
             opacity: 1;
             transform: translateY(0);
         }
-        .lightbox-close:hover { background: rgba(255, 255, 255, 0.2); }
+        .lightbox-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
     </style>
 </head>
 <body>
 
+    <!-- КНОПКА НАЗАД -->
     <a href="index.html" class="back-link">← Назад</a>
 
+    <!-- РАЗБРОСАННЫЕ ФОТО -->
     <div class="scattered-photos">
         <div class="photo p1"><img src="images/photo_2024-08-15_22-07-53.webp" alt="CNP 1" loading="lazy"></div>
         <div class="photo p2"><img src="images/photo_2024-08-21_22-33-39.webp" alt="CNP 2" loading="lazy"></div>
@@ -346,6 +386,7 @@
         <div class="photo p12"><img src="images/ua7bqz_nEsxatofAb0oklkw9Y70oSCtd6N9wLxMdovG4h8MBNGbhbsF1-O9mJsUdWeCWIKKzAc_3jCn0xxzsKNrW.webp" alt="CNP 12" loading="lazy"></div>
     </div>
 
+    <!-- ОСНОВНОЙ КОНТЕНТ -->
     <div class="container">
         <header class="header">
             <h1>CNP</h1>
@@ -369,6 +410,7 @@
         </footer>
     </div>
 
+    <!-- ================= LIGHTBOX SCRIPT ================= -->
     <script>
     (function () {
         const overlay = document.createElement('div');
@@ -385,16 +427,21 @@
 
         function openLightbox(photoEl) {
             if (activeImg) return;
+
             const img = photoEl.querySelector('img');
             if (!img || !img.complete || img.naturalWidth === 0) return;
 
             startRect = photoEl.getBoundingClientRect();
+
             const aspect = img.naturalWidth / img.naturalHeight;
             const maxW = window.innerWidth * 0.9;
             const maxH = window.innerHeight * 0.85;
             let targetW = maxW;
             let targetH = targetW / aspect;
-            if (targetH > maxH) { targetH = maxH; targetW = targetH * aspect; }
+            if (targetH > maxH) {
+                targetH = maxH;
+                targetW = targetH * aspect;
+            }
             const targetLeft = (window.innerWidth - targetW) / 2;
             const targetTop = (window.innerHeight - targetH) / 2;
 
@@ -406,6 +453,7 @@
             activeImg.style.height = startRect.height + 'px';
             activeImg.style.borderRadius = '4px';
             overlay.appendChild(activeImg);
+
             void activeImg.offsetHeight;
 
             overlay.classList.add('active');
@@ -421,12 +469,14 @@
             if (!activeImg || !startRect || isClosing) return;
             isClosing = true;
             overlay.classList.remove('active');
+
             activeImg.style.top = startRect.top + 'px';
             activeImg.style.left = startRect.left + 'px';
             activeImg.style.width = startRect.width + 'px';
             activeImg.style.height = startRect.height + 'px';
             activeImg.style.borderRadius = '4px';
             activeImg.style.boxShadow = '0 30px 80px rgba(0, 0, 0, 0.85)';
+
             setTimeout(() => {
                 if (activeImg) activeImg.remove();
                 activeImg = null;
