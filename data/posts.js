@@ -7,6 +7,13 @@ const POSTS = [
         image: "images/post-2026-09-21-01.png"
     },
     {
+        id: "2026-09-21-ha48",
+        title: "test + post",
+        text: "kek",
+        date: "2026-09-21",
+        image: "images/post-2026-09-21-01.jpg"
+    },
+    {
         id: "первый-пост",
         title: "Первый пост",
         text: "Текст поста",
