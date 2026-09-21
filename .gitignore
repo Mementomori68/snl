@@ -1,0 +1,16 @@
+# Пароль и хеш — не выкладывать
+.auth
+
+# Python-файлы приложения
+post_manager.py
+post_gui.py
+
+# Служебные файлы Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Системные
+.DS_Store
+Thumbs.db
+desktop.ini
