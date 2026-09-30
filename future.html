@@ -3,20 +3,17 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
     <title>??? — I want to be forever young</title>
     <link rel="icon" type="image/png" href="images/icon-192x192.png" />
     <link rel="apple-touch-icon" href="images/icon-512x512.png" />
     <meta http-equiv="X-Content-Type-Options" content="nosniff" />
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'unsafe-inline' https://fonts.googleapis.com https://onesignal.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://*; script-src 'self' 'unsafe-inline' https://cdn.onesignal.com https://api.onesignal.com https://cdn.jsdelivr.net; connect-src 'self' https://api.onesignal.com https://onesignal.com https://cdn.onesignal.com https://mwnanyuukoidlabekeft.supabase.co; worker-src 'self' blob:;" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'unsafe-inline' https://fonts.googleapis.com https://onesignal.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://*; script-src 'self' 'unsafe-inline' https://cdn.onesignal.com https://api.onesignal.com https://cdn.jsdelivr.net; connect-src 'self' https://api.onesignal.com https://onesignal.com https://cdn.onesignal.com https://mwnanyuukoidlabekeft.supabase.co wss://mwnanyuukoidlabekeft.supabase.co; worker-src 'self' blob:;" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,600;14..32,800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
     <link rel="manifest" href="/snl/manifest.json" />
 
-    <!-- OneSignal Push Notifications -->
+    <!-- OneSignal -->
     <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
     <script>
       window.OneSignalDeferred = window.OneSignalDeferred || [];
@@ -30,105 +27,590 @@
     </script>
 
     <style>
+        /* ================= ТЕМЫ ================= */
+        :root {
+            /* Светлая тема (по умолчанию) */
+            --bg: #ffffff;
+            --bg-sidebar: #f5f6f8;
+            --bg-content: #ffffff;
+            --bg-hover: #f0f1f4;
+            --bg-active: #e8eaf0;
+            --bg-input: #f0f1f4;
+            --bg-bubble: #f0f1f4;
+            --border: #e5e7eb;
+            --text: #0f0f14;
+            --text-muted: #8b8d98;
+            --text-secondary: #5c5e6a;
+            --accent: #7c5cf0;
+            --accent-hover: #6b4ee0;
+            --accent-text: #ffffff;
+            --shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+        }
+
+        html.dark {
+            --bg: #0f1014;
+            --bg-sidebar: #16181f;
+            --bg-content: #0f1014;
+            --bg-hover: #1e2029;
+            --bg-active: #262833;
+            --bg-input: #1e2029;
+            --bg-bubble: #1e2029;
+            --border: #262833;
+            --text: #f0f0f5;
+            --text-muted: #6b6e7d;
+            --text-secondary: #a0a3b1;
+            --accent: #a78bfa;
+            --accent-hover: #c4b5fd;
+            --accent-text: #0f1014;
+            --shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+        }
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            background: #0a0a0f;
-            background-image: radial-gradient(circle at 20% 30%, #1a102a 0%, #0a0a0f 80%);
-            font-family: 'Inter', sans-serif;
-            color: #eee;
-            min-height: 100vh;
-            padding: 2rem 1rem;
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        /* ================= САЙДБАР ================= */
+        .sidebar {
+            width: 280px;
+            background: var(--bg-sidebar);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            transition: background 0.3s, border-color 0.3s;
+        }
+
+        .sidebar-header {
+            padding: 1.2rem 1.2rem 1rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-weight: 800;
+            font-size: 1.1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 9px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-text);
+            font-size: 1rem;
+            font-weight: 800;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 6px;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+        .theme-toggle:hover { background: var(--bg-hover); }
+
+        .sidebar-nav {
+            padding: 0.6rem;
+            flex: 1;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.7rem 0.9rem;
+            border-radius: 10px;
+            cursor: pointer;
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+            font-family: inherit;
+        }
+
+        .nav-item:hover { background: var(--bg-hover); color: var(--text); }
+
+        .nav-item.active {
+            background: var(--accent);
+            color: var(--accent-text);
+        }
+
+        .nav-item .nav-icon {
+            font-size: 1.1rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        .nav-badge {
+            margin-left: auto;
+            background: var(--accent);
+            color: var(--accent-text);
+            font-size: 0.7rem;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-weight: 700;
+        }
+
+        .nav-item.active .nav-badge {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .sidebar-footer {
+            padding: 0.8rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .user-card {
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            padding: 0.6rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .user-card:hover { background: var(--bg-hover); }
+
+        .user-avatar {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), #f472b6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        .user-info { flex: 1; min-width: 0; }
+        .user-name {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .user-sub {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* ================= КОНТЕНТ ================= */
+        .content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: var(--bg-content);
+            transition: background 0.3s;
+            overflow: hidden;
+        }
+
+        .content-header {
+            padding: 1.2rem 1.8rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .content-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+        }
+
+        .content-sub {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .content-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.5rem 1.8rem;
+            scroll-behavior: smooth;
+        }
+
+        .content-body::-webkit-scrollbar { width: 6px; }
+        .content-body::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 3px;
+        }
+
+        /* ================= ПОСТЫ (КАНАЛ) ================= */
+        .post {
+            background: var(--bg-sidebar);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.2rem 1.4rem;
+            margin-bottom: 1rem;
+            transition: border-color 0.2s;
+        }
+        .post:hover { border-color: var(--accent); }
+
+        .post h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+            letter-spacing: -0.01em;
+        }
+
+        .post .date {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            display: block;
+            margin-bottom: 0.7rem;
+        }
+
+        .post img {
+            max-width: 100%;
+            border-radius: 12px;
+            margin: 0.6rem 0;
+            display: block;
+        }
+
+        .post .text {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .state-msg {
+            text-align: center;
+            color: var(--text-muted);
+            padding: 3rem 1rem;
+            font-size: 0.95rem;
+        }
+
+        /* ================= КОММЕНТАРИИ ================= */
+        .comments-section {
+            margin-top: 1.2rem;
+            padding-top: 1.2rem;
+            border-top: 1px solid var(--border);
+        }
+        .comments-title {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.8rem;
+            font-weight: 600;
+        }
+        .comments-list { display: flex; flex-direction: column; gap: 0.7rem; margin-bottom: 0.8rem; }
+        .comment {
+            background: var(--bg-bubble);
+            padding: 0.7rem 0.9rem;
+            border-radius: 12px;
+        }
+        .comment-header {
+            display: flex; justify-content: space-between;
+            margin-bottom: 0.3rem; font-size: 0.8rem;
+        }
+        .comment-author { color: var(--accent); font-weight: 600; }
+        .comment-date { color: var(--text-muted); font-size: 0.7rem; }
+        .comment-text { color: var(--text-secondary); font-size: 0.9rem; }
+        .comment-delete {
+            background: none; border: none; color: var(--text-muted);
+            cursor: pointer; font-size: 0.75rem; margin-left: 8px;
+        }
+        .comment-delete:hover { color: #f87171; }
+
+        .comment-form { display: flex; flex-direction: column; gap: 0.5rem; }
+        .comment-form textarea {
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 10px 14px;
+            color: var(--text);
+            font-family: inherit;
+            font-size: 0.9rem;
+            resize: vertical;
+            min-height: 50px;
+        }
+        .comment-form textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+        .comment-form button {
+            align-self: flex-end;
+            background: var(--accent);
+            color: var(--accent-text);
+            border: none;
+            padding: 8px 18px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: background 0.2s;
+        }
+        .comment-form button:hover { background: var(--accent-hover); }
+        .comment-form button:disabled { opacity: 0.5; cursor: not-allowed; }
+        .comment-login-msg {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-style: italic;
+            padding: 0.7rem;
+            text-align: center;
+            border: 1px dashed var(--border);
+            border-radius: 12px;
+        }
+        .comment-login-msg a { color: var(--accent); text-decoration: none; }
+        .comment-login-msg a:hover { text-decoration: underline; }
+
+        /* ================= СООБЩЕНИЯ ================= */
+        .messages-empty {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            text-align: center;
+            color: var(--text-muted);
+            padding: 2rem;
+        }
+        .messages-empty .big-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.4;
+        }
+        .messages-empty h3 {
+            color: var(--text);
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+        .messages-empty p {
+            font-size: 0.9rem;
+            max-width: 320px;
             line-height: 1.6;
         }
 
-        .container { max-width: 900px; margin: 0 auto; animation: fadeUp 0.8s ease-out; }
-        @keyframes fadeUp {
-            0% { opacity: 0; transform: translateY(30px); }
-            100% { opacity: 1; transform: translateY(0); }
+        /* ================= МОДАЛЬНОЕ ОКНО АВТОРИЗАЦИИ ================= */
+        #auth-modal {
+            display: none;
+            position: fixed; inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(6px);
+        }
+        .auth-modal-content {
+            background: var(--bg-sidebar);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 1.8rem;
+            width: 100%;
+            max-width: 380px;
+            position: relative;
+            box-shadow: var(--shadow);
+        }
+        .auth-modal-content h2 {
+            color: var(--text);
+            margin-bottom: 1.2rem;
+            font-size: 1.3rem;
+            text-align: center;
+            font-weight: 700;
+        }
+        .auth-modal-close {
+            position: absolute; top: 10px; right: 14px;
+            background: none; border: none; color: var(--text-muted);
+            font-size: 1.4rem; cursor: pointer;
+        }
+        .auth-modal-close:hover { color: var(--text); }
+        .auth-form input {
+            width: 100%;
+            padding: 11px 14px;
+            margin-bottom: 0.7rem;
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text);
+            font-family: inherit;
+            font-size: 0.9rem;
+        }
+        .auth-form input:focus { outline: none; border-color: var(--accent); }
+        .auth-form button {
+            width: 100%;
+            padding: 11px;
+            background: var(--accent);
+            color: var(--accent-text);
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: background 0.2s;
+        }
+        .auth-form button:hover { background: var(--accent-hover); }
+        .auth-form button:disabled { opacity: 0.5; }
+        .auth-switch {
+            text-align: center;
+            margin-top: 0.9rem;
+            color: var(--accent);
+            cursor: pointer;
+            font-size: 0.85rem;
+            background: none;
+            border: none;
+            font-family: inherit;
+            width: 100%;
+        }
+        .auth-switch:hover { text-decoration: underline; }
+        .auth-error {
+            color: #f87171;
+            font-size: 0.8rem;
+            margin-bottom: 0.7rem;
+            text-align: center;
+            min-height: 1.1em;
         }
 
-        .back-link {
-            display: inline-block; margin-bottom: 2rem; color: #8a7aaa; text-decoration: none;
-            font-size: 0.9rem; border-bottom: 1px solid rgba(167, 139, 250, 0.2); transition: border-color 0.3s;
+        /* ================= АДАПТИВ ================= */
+        @media (max-width: 720px) {
+            body { flex-direction: column; height: 100vh; }
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+                flex-direction: row;
+                align-items: center;
+                padding: 0;
+            }
+            .sidebar-header {
+                border-bottom: none;
+                padding: 0.8rem 1rem;
+                flex-shrink: 0;
+            }
+            .logo span { display: none; }
+            .sidebar-nav {
+                display: flex;
+                padding: 0.5rem;
+                gap: 0.3rem;
+                flex: 1;
+                overflow-x: auto;
+            }
+            .nav-item {
+                padding: 0.5rem 0.8rem;
+                font-size: 0.85rem;
+                white-space: nowrap;
+            }
+            .nav-item .nav-label { display: inline; }
+            .sidebar-footer { display: none; }
+            .content-header { padding: 1rem 1.2rem; }
+            .content-body { padding: 1rem 1.2rem; }
+            .post { padding: 1rem; border-radius: 14px; }
         }
-        .back-link:hover { border-color: #a78bfa; color: #a78bfa; }
-
-        .header { text-align: center; margin-bottom: 3rem; }
-        .header h1 {
-            font-size: clamp(3rem, 10vw, 6rem); font-weight: 800; letter-spacing: 0.05em;
-            color: #a78bfa; text-shadow: 0 0 60px rgba(167, 139, 250, 0.3); margin-bottom: 0.5rem;
-        }
-        .header .subhead { font-size: 1.2rem; color: #9a8aaa; font-weight: 300; letter-spacing: 2px; }
-
-        .main-text {
-            background: rgba(255, 255, 255, 0.04); backdrop-filter: blur(12px);
-            border: 1px solid rgba(167, 139, 250, 0.15); border-radius: 28px;
-            padding: 2.5rem; margin-bottom: 2rem; text-align: center;
-        }
-        .main-text .big-question { font-size: 5rem; margin-bottom: 1rem; opacity: 0.6; }
-        .main-text p { font-size: 1.15rem; color: #c8b8d8; line-height: 1.8; }
-
-        .posts { display: flex; flex-direction: column; gap: 1.5rem; margin-bottom: 2rem; }
-        .post {
-            background: rgba(255, 255, 255, 0.04); backdrop-filter: blur(12px);
-            border: 1px solid rgba(167, 139, 250, 0.15); border-radius: 20px;
-            padding: 1.5rem; transition: border-color 0.3s, transform 0.3s;
-        }
-        .post:hover { border-color: rgba(167, 139, 250, 0.4); transform: translateY(-2px); }
-        .post h3 { color: #a78bfa; font-size: 1.3rem; margin-bottom: 0.4rem; }
-        .post .date { color: #6a5a7a; font-size: 0.8rem; display: block; margin-bottom: 0.8rem; }
-        .post img { max-width: 100%; border-radius: 12px; margin: 0.8rem 0; display: block; }
-        .post .text { color: #c8b8d8; white-space: pre-wrap; word-wrap: break-word; }
-
-        .state-msg { text-align: center; color: #6a5a7a; padding: 2rem 0; font-size: 0.95rem; }
-        .state-msg.error { color: #f87171; }
-
-        .footer {
-            text-align: center; color: #5a4a6a; font-size: 0.85rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.04); padding-top: 2rem; margin-top: 1rem;
-        }
-        .footer a { color: #7a6a8a; text-decoration: none; border-bottom: 1px dotted #3a2a4a; }
-        .footer a:hover { color: #a78bfa; }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <a href="index.html" class="back-link">← Назад к «I want to be forever young»</a>
-
-        <header class="header">
-            <h1>???</h1>
-            <div class="subhead">Третий проект — ???</div>
-        </header>
-
-        <div class="main-text">
-            <div class="big-question">❓</div>
-            <p></p>
+    <!-- ================= САЙДБАР ================= -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <div class="logo-icon">?</div>
+                <span>Forever Young</span>
+            </div>
+            <button class="theme-toggle" onclick="toggleTheme()" id="theme-btn" title="Сменить тему">🌙</button>
         </div>
 
-        <div class="posts" id="posts-container">
-            <p class="state-msg">Загрузка...</p>
+        <nav class="sidebar-nav">
+            <button class="nav-item active" data-tab="channel" onclick="switchTab('channel')">
+                <span class="nav-icon">📢</span>
+                <span class="nav-label">Канал</span>
+            </button>
+            <button class="nav-item" data-tab="messages" onclick="switchTab('messages')">
+                <span class="nav-icon">💬</span>
+                <span class="nav-label">Сообщения</span>
+            </button>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="user-card" id="user-card" onclick="handleUserClick()">
+                <div class="user-avatar" id="user-avatar">?</div>
+                <div class="user-info">
+                    <div class="user-name" id="user-name">Гость</div>
+                    <div class="user-sub" id="user-sub">нажмите, чтобы войти</div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- ================= КОНТЕНТ ================= -->
+    <main class="content">
+        <div class="content-header">
+            <div>
+                <div class="content-title" id="content-title">Канал</div>
+                <div class="content-sub" id="content-sub">Посты из третьего проекта</div>
+            </div>
         </div>
 
-        <footer class="footer">
-            <p>
-                <a href="https://vk.ru/snl68" target="_blank">VK</a> ·
-                <a href="https://t.me/t_cnp" target="_blank">Telegram</a>
-                <br />© 2026
-            </p>
-        </footer>
+        <div class="content-body" id="content-body">
+            <div class="posts" id="posts-container">
+                <p class="state-msg">Загрузка...</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- ================= МОДАЛЬНОЕ ОКНО АВТОРИЗАЦИИ ================= -->
+    <div id="auth-modal">
+        <div class="auth-modal-content">
+            <button class="auth-modal-close" onclick="closeAuthModal()">×</button>
+            <h2 id="auth-title">Вход</h2>
+            <form class="auth-form" onsubmit="handleAuthSubmit(event)">
+                <input type="hidden" id="auth-mode" value="login" />
+                <div id="auth-username-row" style="display:none;">
+                    <input type="text" id="auth-username" placeholder="Ваше имя" maxlength="30" />
+                </div>
+                <input type="email" id="auth-email" placeholder="Email" required />
+                <input type="password" id="auth-password" placeholder="Пароль" required minlength="6" />
+                <div class="auth-error" id="auth-error"></div>
+                <button type="submit" id="auth-submit">Войти</button>
+            </form>
+            <button class="auth-switch" id="auth-switch" onclick="switchAuthMode()">
+                Нет аккаунта? Зарегистрироваться
+            </button>
+        </div>
     </div>
 
     <!-- Supabase SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <!-- Клиент Supabase -->
     <script src="supabase-client.js"></script>
+    <script src="auth.js"></script>
 
     <script>
-        const container = document.getElementById('posts-container');
-
-        // Экранирование HTML (защита от XSS)
+        // ============ УТИЛИТЫ ============
         function escapeHtml(str) {
             if (str === null || str === undefined) return '';
             const div = document.createElement('div');
@@ -136,8 +618,68 @@
             return div.innerHTML;
         }
 
-        // Загрузка постов из Supabase
+        // ============ ТЕМА ============
+        function applyTheme(theme) {
+            if (theme === 'dark') {
+                document.documentElement.classList.add('dark');
+                document.getElementById('theme-btn').textContent = '☀️';
+            } else {
+                document.documentElement.classList.remove('dark');
+                document.getElementById('theme-btn').textContent = '🌙';
+            }
+        }
+
+        function toggleTheme() {
+            const isDark = document.documentElement.classList.contains('dark');
+            const newTheme = isDark ? 'light' : 'dark';
+            localStorage.setItem('theme', newTheme);
+            applyTheme(newTheme);
+        }
+
+        // Стартовая тема: из localStorage или системная
+        (function initTheme() {
+            const saved = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            applyTheme(saved || (prefersDark ? 'dark' : 'light'));
+        })();
+
+        // ============ ВКЛАДКИ ============
+        let currentTab = 'channel';
+
+        function switchTab(tab) {
+            currentTab = tab;
+
+            document.querySelectorAll('.nav-item').forEach(el => {
+                el.classList.toggle('active', el.dataset.tab === tab);
+            });
+
+            const body = document.getElementById('content-body');
+            const titleEl = document.getElementById('content-title');
+            const subEl = document.getElementById('content-sub');
+
+            if (tab === 'channel') {
+                titleEl.textContent = 'Канал';
+                subEl.textContent = 'Посты из третьего проекта';
+                body.innerHTML = '<div class="posts" id="posts-container"><p class="state-msg">Загрузка...</p></div>';
+                loadPosts();
+            } else if (tab === 'messages') {
+                titleEl.textContent = 'Сообщения';
+                subEl.textContent = 'Личные переписки';
+                body.innerHTML = `
+                    <div class="messages-empty">
+                        <div class="big-icon">💬</div>
+                        <h3>Сообщения скоро появятся</h3>
+                        <p>Сейчас мы работаем над системой личных сообщений. Заходи позже!</p>
+                    </div>
+                `;
+            }
+        }
+
+        // ============ ЗАГРУЗКА ПОСТОВ ============
         async function loadPosts() {
+            const container = document.getElementById('posts-container');
+            if (!container) return;
+
             container.innerHTML = '<p class="state-msg">Загрузка...</p>';
 
             try {
@@ -151,7 +693,7 @@
                 container.innerHTML = '';
 
                 if (!data || data.length === 0) {
-                    container.innerHTML = '<p class="state-msg">Пока нет постов. Скоро появятся.</p>';
+                    container.innerHTML = '<p class="state-msg">Пока нет постов.</p>';
                     return;
                 }
 
@@ -163,16 +705,164 @@
                         <span class="date">${escapeHtml(post.date || '')}</span>
                         ${post.image_url ? `<img src="${escapeHtml(post.image_url)}" alt="${escapeHtml(post.title)}" loading="lazy" />` : ''}
                         <div class="text">${escapeHtml(post.text)}</div>
+                        <div class="comments-section">
+                            <div class="comments-title">Комментарии</div>
+                            <div class="comments-list" id="comments-${post.id}">
+                                <p class="state-msg">Загрузка...</p>
+                            </div>
+                            <div id="comment-form-${post.id}"></div>
+                        </div>
                     `;
                     container.appendChild(div);
                 });
+
+                data.forEach(post => loadCommentsForPost(post.id));
+
             } catch (err) {
                 console.error('Ошибка загрузки постов:', err);
-                container.innerHTML = '<p class="state-msg error">Не удалось загрузить посты.</p>';
+                container.innerHTML = '<p class="state-msg">Не удалось загрузить посты.</p>';
             }
         }
 
+        // ============ КОММЕНТАРИИ ============
+        async function loadCommentsForPost(postId) {
+            const list = document.getElementById(`comments-${postId}`);
+            if (!list) return;
+
+            const { data, error } = await db
+                .from('comments')
+                .select('*')
+                .eq('post_id', postId)
+                .order('created_at', { ascending: true });
+
+            if (error) {
+                list.innerHTML = '<p class="state-msg">Ошибка загрузки</p>';
+                return;
+            }
+
+            if (!data || data.length === 0) {
+                list.innerHTML = '<p style="color:var(--text-muted); font-size:0.8rem; text-align:center;">Пока нет комментариев</p>';
+            } else {
+                list.innerHTML = data.map(c => renderComment(c)).join('');
+            }
+
+            renderCommentForm(postId);
+        }
+
+        function renderComment(c) {
+            const isMine = currentUser && currentUser.id === c.user_id;
+            const deleteBtn = isMine
+                ? `<button class="comment-delete" onclick="deleteComment(${c.id}, ${c.post_id})">удалить</button>`
+                : '';
+            return `
+                <div class="comment">
+                    <div class="comment-header">
+                        <span class="comment-author">${escapeHtml(c.author_name)}</span>
+                        <span>
+                            <span class="comment-date">${new Date(c.created_at).toLocaleString('ru-RU')}</span>
+                            ${deleteBtn}
+                        </span>
+                    </div>
+                    <div class="comment-text">${escapeHtml(c.text)}</div>
+                </div>
+            `;
+        }
+
+        function renderCommentForm(postId) {
+            const formBox = document.getElementById(`comment-form-${postId}`);
+            if (!formBox) return;
+
+            if (!currentUser) {
+                formBox.innerHTML = `
+                    <p class="comment-login-msg">
+                        <a href="#" onclick="openAuthModal(); return false;">Войдите</a>, чтобы оставить комментарий
+                    </p>
+                `;
+                return;
+            }
+
+            formBox.innerHTML = `
+                <form class="comment-form" onsubmit="submitComment(event, ${postId})">
+                    <textarea id="comment-text-${postId}" placeholder="Ваш комментарий..." maxlength="500" required></textarea>
+                    <button type="submit" id="comment-btn-${postId}">Отправить</button>
+                </form>
+            `;
+        }
+
+        async function submitComment(event, postId) {
+            event.preventDefault();
+            const textarea = document.getElementById(`comment-text-${postId}`);
+            const btn = document.getElementById(`comment-btn-${postId}`);
+            const text = textarea.value.trim();
+            if (!text) return;
+
+            btn.disabled = true;
+            btn.textContent = 'Отправка...';
+
+            try {
+                const { error } = await db.from('comments').insert({
+                    post_id: postId,
+                    user_id: currentUser.id,
+                    author_name: currentProfile?.username || currentUser.email.split('@')[0],
+                    text: text
+                });
+                if (error) throw error;
+                textarea.value = '';
+                await loadCommentsForPost(postId);
+            } catch (err) {
+                alert('Ошибка: ' + err.message);
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Отправить';
+            }
+        }
+
+        async function deleteComment(commentId, postId) {
+            if (!confirm('Удалить комментарий?')) return;
+            const { error } = await db.from('comments').delete().eq('id', commentId);
+            if (error) { alert('Ошибка: ' + error.message); return; }
+            await loadCommentsForPost(postId);
+        }
+
+        function loadAllComments() {
+            document.querySelectorAll('.comments-list').forEach(el => {
+                const postId = el.id.replace('comments-', '');
+                loadCommentsForPost(parseInt(postId));
+            });
+        }
+
+        // ============ КЛИК ПО ПРОФИЛЮ ============
+        function handleUserClick() {
+            if (currentUser) {
+                if (confirm('Выйти из аккаунта?')) logout();
+            } else {
+                openAuthModal();
+            }
+        }
+
+        // ============ ЗАПУСК ============
         loadPosts();
+
+        // Обновление UI профиля при смене авторизации
+        const originalUpdateAuthUI = window.updateAuthUI;
+        window.updateAuthUI = function() {
+            if (originalUpdateAuthUI) originalUpdateAuthUI();
+
+            const nameEl = document.getElementById('user-name');
+            const subEl = document.getElementById('user-sub');
+            const avatarEl = document.getElementById('user-avatar');
+
+            if (currentUser) {
+                const name = currentProfile?.username || currentUser.email.split('@')[0];
+                nameEl.textContent = name;
+                subEl.textContent = 'нажмите, чтобы выйти';
+                avatarEl.textContent = name.charAt(0).toUpperCase();
+            } else {
+                nameEl.textContent = 'Гость';
+                subEl.textContent = 'нажмите, чтобы войти';
+                avatarEl.textContent = '?';
+            }
+        };
     </script>
 
 </body>
