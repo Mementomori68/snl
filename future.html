@@ -9,12 +9,13 @@
     <title>??? — I want to be forever young</title>
     <link rel="icon" type="image/png" href="images/icon-192x192.png" />
     <link rel="apple-touch-icon" href="images/icon-512x512.png" />
-        <meta http-equiv="X-Content-Type-Options" content="nosniff" />
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'unsafe-inline' https://fonts.googleapis.com https://onesignal.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://*; script-src 'self' 'unsafe-inline' https://cdn.onesignal.com https://api.onesignal.com; connect-src 'self' https://api.onesignal.com https://onesignal.com https://cdn.onesignal.com; worker-src 'self' blob:;" />
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'unsafe-inline' https://fonts.googleapis.com https://onesignal.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://*; script-src 'self' 'unsafe-inline' https://cdn.onesignal.com https://api.onesignal.com https://cdn.jsdelivr.net; connect-src 'self' https://api.onesignal.com https://onesignal.com https://cdn.onesignal.com https://mwnanyuukoidlabekeft.supabase.co; worker-src 'self' blob:;" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,600;14..32,800&display=swap" rel="stylesheet" />
     <link rel="manifest" href="/snl/manifest.json" />
+
     <!-- OneSignal Push Notifications -->
     <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
     <script>
@@ -81,6 +82,7 @@
         .post .text { color: #c8b8d8; white-space: pre-wrap; word-wrap: break-word; }
 
         .state-msg { text-align: center; color: #6a5a7a; padding: 2rem 0; font-size: 0.95rem; }
+        .state-msg.error { color: #f87171; }
 
         .footer {
             text-align: center; color: #5a4a6a; font-size: 0.85rem;
@@ -118,8 +120,10 @@
         </footer>
     </div>
 
-    <!-- Подключаем файл с постами -->
-    <script src="data/posts.js"></script>
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Клиент Supabase -->
+    <script src="supabase-client.js"></script>
 
     <script>
         const container = document.getElementById('posts-container');
@@ -132,31 +136,43 @@
             return div.innerHTML;
         }
 
-        function renderPosts() {
-            container.innerHTML = '';
+        // Загрузка постов из Supabase
+        async function loadPosts() {
+            container.innerHTML = '<p class="state-msg">Загрузка...</p>';
 
-            if (typeof POSTS === 'undefined' || !Array.isArray(POSTS) || POSTS.length === 0) {
-                container.innerHTML = '<p class="state-msg">Пока нет постов. Скоро появятся.</p>';
-                return;
+            try {
+                const { data, error } = await db
+                    .from('posts')
+                    .select('*')
+                    .order('date', { ascending: false });
+
+                if (error) throw error;
+
+                container.innerHTML = '';
+
+                if (!data || data.length === 0) {
+                    container.innerHTML = '<p class="state-msg">Пока нет постов. Скоро появятся.</p>';
+                    return;
+                }
+
+                data.forEach(post => {
+                    const div = document.createElement('div');
+                    div.className = 'post';
+                    div.innerHTML = `
+                        <h3>${escapeHtml(post.title)}</h3>
+                        <span class="date">${escapeHtml(post.date || '')}</span>
+                        ${post.image_url ? `<img src="${escapeHtml(post.image_url)}" alt="${escapeHtml(post.title)}" loading="lazy" />` : ''}
+                        <div class="text">${escapeHtml(post.text)}</div>
+                    `;
+                    container.appendChild(div);
+                });
+            } catch (err) {
+                console.error('Ошибка загрузки постов:', err);
+                container.innerHTML = '<p class="state-msg error">Не удалось загрузить посты.</p>';
             }
-
-            // Сортируем по дате: новые сверху
-            const sorted = [...POSTS].sort((a, b) => new Date(b.date) - new Date(a.date));
-
-            sorted.forEach(post => {
-                const div = document.createElement('div');
-                div.className = 'post';
-                div.innerHTML = `
-                    <h3>${escapeHtml(post.title)}</h3>
-                    <span class="date">${escapeHtml(post.date || '')}</span>
-                    ${post.image ? `<img src="${escapeHtml(post.image)}" alt="${escapeHtml(post.title)}" loading="lazy" />` : ''}
-                    <div class="text">${escapeHtml(post.text)}</div>
-                `;
-                container.appendChild(div);
-            });
         }
 
-        renderPosts();
+        loadPosts();
     </script>
 
 </body>
