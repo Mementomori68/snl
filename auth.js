@@ -1,11 +1,16 @@
 // ============================================================
-// Работа с авторизацией Supabase + привязка к OneSignal
+// auth.js — Supabase auth + OneSignal + Realtime messages
 // ============================================================
 
 let currentUser = null;
 let currentProfile = null;
 
-// ---------- Связка пользователя с OneSignal ----------
+// id пользователя, с которым сейчас открыт диалог (ставится из UI чата)
+window.currentChatUserId = window.currentChatUserId || null;
+
+// ------------------------------------------------------------
+// OneSignal: привязка пользователя к external_id = auth.uid
+// ------------------------------------------------------------
 async function linkOneSignalUser(userId) {
     try {
         if (window.OneSignalDeferred) {
@@ -23,11 +28,91 @@ async function linkOneSignalUser(userId) {
     }
 }
 
-// ---------- Загрузка сессии при старте ----------
+// ------------------------------------------------------------
+// Realtime: подписка на новые сообщения пользователя
+// ------------------------------------------------------------
+let messagesChannel = null;
+
+function subscribeToMessages(userId, onNewMessage) {
+    if (!userId || typeof db === 'undefined') return;
+
+    // снимаем старый канал, чтобы не плодить дубли
+    if (messagesChannel) {
+        db.removeChannel(messagesChannel);
+        messagesChannel = null;
+    }
+
+    messagesChannel = db
+        .channel('messages:' + userId + ':' + Date.now())
+        // входящие
+        .on(
+            'postgres_changes',
+            {
+                event: 'INSERT',
+                schema: 'public',
+                table: 'messages',
+                filter: `receiver_id=eq.${userId}`
+            },
+            (payload) => onNewMessage(payload.new)
+        )
+        // исходящие (для мультидевайса)
+        .on(
+            'postgres_changes',
+            {
+                event: 'INSERT',
+                schema: 'public',
+                table: 'messages',
+                filter: `sender_id=eq.${userId}`
+            },
+            (payload) => onNewMessage(payload.new)
+        )
+        .subscribe((status) => {
+            console.log('[realtime] messages status:', status);
+        });
+
+    return messagesChannel;
+}
+
+function unsubscribeFromMessages() {
+    if (messagesChannel) {
+        try { db.removeChannel(messagesChannel); } catch (e) {}
+        messagesChannel = null;
+    }
+}
+
+// ------------------------------------------------------------
+// Обработчик входящего сообщения из realtime
+// ------------------------------------------------------------
+function handleIncomingMessage(row) {
+    if (!row || !currentUser) return;
+
+    // защита от дублей (два .on() могут дать один и тот же ивент)
+    if (document.querySelector(`[data-msg-id="${row.id}"]`)) return;
+
+    const peerId = row.sender_id === currentUser.id ? row.receiver_id : row.sender_id;
+
+    if (window.currentChatUserId && window.currentChatUserId === peerId) {
+        if (typeof window.appendMessageToDOM === 'function') {
+            window.appendMessageToDOM(row);
+        }
+    } else {
+        if (typeof window.bumpUnread === 'function') {
+            window.bumpUnread(peerId);
+        } else {
+            console.log('[realtime] новое сообщение от', peerId, ':', row.text);
+        }
+    }
+}
+
+// ------------------------------------------------------------
+// Загрузка сессии при старте
+// ------------------------------------------------------------
 async function initAuth() {
     const { data: { session } } = await db.auth.getSession();
+
     if (session) {
         currentUser = session.user;
+
         try {
             const { data: profile } = await db
                 .from('profiles')
@@ -39,13 +124,18 @@ async function initAuth() {
             currentProfile = { username: currentUser.email.split('@')[0] };
         }
 
-        // Привязываем к OneSignal
         await linkOneSignalUser(currentUser.id);
+
+        // === realtime ===
+        subscribeToMessages(currentUser.id, handleIncomingMessage);
     }
+
     updateAuthUI();
 }
 
-// ---------- Регистрация ----------
+// ------------------------------------------------------------
+// Регистрация
+// ------------------------------------------------------------
 async function register(email, password, username) {
     const { data, error } = await db.auth.signUp({
         email,
@@ -63,38 +153,45 @@ async function register(email, password, username) {
     return data;
 }
 
-// ---------- Вход ----------
+// ------------------------------------------------------------
+// Вход
+// ------------------------------------------------------------
 async function login(email, password) {
     const { data, error } = await db.auth.signInWithPassword({ email, password });
     if (error) throw error;
     return data;
 }
 
-// ---------- Выход ----------
+// ------------------------------------------------------------
+// Выход
+// ------------------------------------------------------------
 async function logout() {
+    // отписываемся от realtime до signOut
+    unsubscribeFromMessages();
+
     try {
         if (window.OneSignalDeferred) {
             window.OneSignalDeferred.push(async function(OneSignal) {
-                try {
-                    await OneSignal.logout();
-                } catch (e) {
-                    console.warn('OneSignal logout error:', e);
-                }
+                try { await OneSignal.logout(); } catch (e) {}
             });
         }
     } catch (e) {}
 
     await db.auth.signOut();
+
     currentUser = null;
     currentProfile = null;
+    window.currentChatUserId = null;
+
     updateAuthUI();
 
     if (typeof loadAllComments === 'function') loadAllComments();
 }
 
-// ---------- Обновление интерфейса ----------
+// ------------------------------------------------------------
+// UI авторизации
+// ------------------------------------------------------------
 function updateAuthUI() {
-    // Старый auth-box (если есть где-то)
     const authBox = document.getElementById('auth-box');
     if (authBox) {
         if (currentUser) {
@@ -110,7 +207,6 @@ function updateAuthUI() {
         }
     }
 
-    // Бейдж пользователя в правом верхнем углу (future.html)
     const badge = document.getElementById('user-badge');
     const nameEl = document.getElementById('user-name');
     const avatarEl = document.getElementById('user-avatar');
@@ -126,14 +222,15 @@ function updateAuthUI() {
         }
     }
 
-    // Перезагружаем посты, чтобы показать/скрыть админ-панель
     if (typeof loadPosts === 'function') {
         const postsContainer = document.getElementById('posts-container');
         if (postsContainer) loadPosts();
     }
 }
 
-// ---------- Модальное окно ----------
+// ------------------------------------------------------------
+// Модальное окно
+// ------------------------------------------------------------
 function openAuthModal() {
     const modal = document.getElementById('auth-modal');
     if (modal) modal.classList.add('open');
@@ -144,7 +241,9 @@ function closeAuthModal() {
     if (modal) modal.classList.remove('open');
 }
 
-// ---------- Отправка формы входа/регистрации ----------
+// ------------------------------------------------------------
+// Форма входа/регистрации
+// ------------------------------------------------------------
 async function handleAuthSubmit(event) {
     event.preventDefault();
 
@@ -180,7 +279,6 @@ async function handleAuthSubmit(event) {
     }
 }
 
-// ---------- Переключение режима ----------
 function switchAuthMode() {
     const modeInput = document.getElementById('auth-mode');
     const usernameRow = document.getElementById('auth-username-row');
@@ -203,17 +301,23 @@ function switchAuthMode() {
     }
 }
 
-// ---------- Подписка на изменения авторизации ----------
+// ------------------------------------------------------------
+// Реакция на смену авторизации
+// ------------------------------------------------------------
 db.auth.onAuthStateChange((event, session) => {
     if (session) {
         currentUser = session.user;
         linkOneSignalUser(session.user.id);
+        subscribeToMessages(session.user.id, handleIncomingMessage);
     } else {
         currentUser = null;
         currentProfile = null;
+        unsubscribeFromMessages();
     }
     updateAuthUI();
 });
 
-// ---------- Старт ----------
+// ------------------------------------------------------------
+// Старт
+// ------------------------------------------------------------
 document.addEventListener('DOMContentLoaded', initAuth);
