@@ -11,7 +11,7 @@
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'unsafe-inline' https://fonts.googleapis.com https://onesignal.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://*; script-src 'self' 'unsafe-inline' https://cdn.onesignal.com https://api.onesignal.com; connect-src 'self' https://api.onesignal.com https://onesignal.com https://cdn.onesignal.com; worker-src 'self' blob:;" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400&family=Inter:wght@200;300;400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="manifest" href="/snl/manifest.json" />
 
     <style>
@@ -150,8 +150,8 @@
         .nav-link.snl:hover { color: var(--terracotta); }
         .nav-link.cnp:hover .dot { background: var(--sage); }
         .nav-link.cnp:hover { color: var(--sage); }
-        .nav-link.future:hover .dot { background: var(--plum); }
-        .nav-link.future:hover { color: var(--plum); }
+        .nav-link.future:hover .dot { background: var(--ink); }
+        .nav-link.future:hover { color: var(--ink); }
 
         .brand {
             text-align: center; text-decoration: none;
@@ -235,7 +235,7 @@
         }
         .section-head .title .dot {
             width: 8px; height: 8px; border-radius: 50%;
-            background: var(--plum); box-shadow: 0 0 16px var(--plum);
+            background: var(--ink); box-shadow: 0 0 16px var(--ink);
         }
         .section-head .title.archive .dot {
             background: var(--terracotta);
@@ -247,7 +247,7 @@
             font-weight: 400;
         }
 
-        /* ================= БОЛЬШАЯ КАРТОЧКА ================= */
+        /* ================= БОЛЬШАЯ КАРТОЧКА (IFY) ================= */
         .featured {
             display: grid; grid-template-columns: 1.15fr 1fr;
             gap: 5rem; align-items: center;
@@ -257,59 +257,79 @@
         }
 
         .featured .visual {
-            aspect-ratio: 4 / 3; border-radius: 3px;
+            aspect-ratio: 4 / 3; border-radius: 4px;
             display: flex; align-items: center; justify-content: center;
             overflow: hidden; position: relative;
-            background: var(--plum-bg);
-            border: 1px solid rgba(176, 136, 176, 0.15);
-            transition: transform 0.5s cubic-bezier(0.2, 0, 0, 1);
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--line);
+            transition: transform 0.5s cubic-bezier(0.2, 0, 0, 1), border-color 0.3s ease;
         }
-        .featured:hover .visual { transform: scale(1.015); }
+        .featured:hover .visual {
+            transform: scale(1.015);
+            border-color: var(--line-strong, rgba(244, 237, 226, 0.2));
+        }
 
-        .featured .visual::before {
-            content: ''; position: absolute; inset: 0;
-            background:
-                radial-gradient(circle at 30% 30%, rgba(201, 168, 200, 0.15), transparent 55%),
-                radial-gradient(circle at 75% 80%, rgba(176, 136, 176, 0.2), transparent 60%);
-            pointer-events: none;
-        }
         .featured .visual .mark-big {
-            font-family: 'Fraunces', serif;
-            font-size: 13rem; font-weight: 300; font-style: italic;
-            color: var(--plum-soft); line-height: 1; opacity: 0.75;
-            position: relative; z-index: 1;
-            font-variation-settings: 'opsz' 144;
-            text-shadow: 0 0 80px rgba(176, 136, 176, 0.5);
+            font-family: 'Inter', sans-serif;
+            font-size: 12rem;
+            font-weight: 200;
+            line-height: 1;
+            letter-spacing: -0.06em;
+            color: var(--ink);
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 0 80px rgba(244, 237, 226, 0.25);
+        }
+
+        .featured .visual .mark-big em {
+            font-style: normal;
+            font-weight: 700;
+            letter-spacing: -0.08em;
         }
 
         .featured .info .num {
+            font-family: 'Inter', sans-serif;
             font-size: 0.68rem; letter-spacing: 0.35em;
-            text-transform: uppercase; color: var(--plum-soft);
+            text-transform: uppercase; color: var(--dim);
             margin-bottom: 1.8rem;
             display: inline-flex; align-items: center; gap: 0.7rem;
             font-weight: 500;
         }
         .featured .info .num::before {
             content: ''; width: 28px; height: 1px;
-            background: var(--plum-soft);
+            background: var(--dim);
         }
+
         .featured .info h2 {
-            font-family: 'Fraunces', serif;
-            font-size: clamp(2.5rem, 5vw, 4.8rem);
-            font-weight: 300; line-height: 0.98;
-            letter-spacing: -0.025em; margin-bottom: 1.8rem;
+            font-family: 'Inter', sans-serif;
+            font-size: clamp(2rem, 4.5vw, 3.6rem);
+            font-weight: 300;
+            line-height: 1.05;
+            letter-spacing: -0.03em;
+            margin-bottom: 1.6rem;
             color: var(--ink);
-            font-variation-settings: 'opsz' 144, 'SOFT' 30;
         }
-        .featured .info h2 em { font-style: italic; font-weight: 300; }
+
+        .featured .info h2 strong {
+            font-weight: 700;
+            letter-spacing: -0.05em;
+        }
+
         .featured .info p {
-            color: var(--dim); font-size: 1rem;
-            line-height: 1.75; max-width: 420px;
+            font-family: 'Inter', sans-serif;
+            color: var(--dim);
+            font-size: 0.98rem;
+            line-height: 1.75;
+            max-width: 420px;
             margin-bottom: 2.2rem;
+            font-weight: 300;
         }
+
         .featured .info .arrow {
-            font-size: 0.75rem; letter-spacing: 0.3em;
-            text-transform: uppercase; color: var(--plum-soft);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.72rem; letter-spacing: 0.3em;
+            text-transform: uppercase; color: var(--ink);
             display: inline-flex; align-items: center; gap: 0.8rem;
             transition: gap 0.35s ease; font-weight: 500;
         }
@@ -337,7 +357,6 @@
             isolation: isolate;
         }
 
-        /* Фон-изображение */
         .tile .tile-bg {
             position: absolute;
             inset: 0;
@@ -358,7 +377,6 @@
             filter: brightness(0.65) saturate(1);
         }
 
-        /* Затемняющий градиент — для читаемости текста */
         .tile .tile-overlay {
             position: absolute;
             inset: 0;
@@ -370,7 +388,6 @@
                     rgba(10, 16, 36, 0.9) 100%);
         }
 
-        /* Цветной акцент поверх — очень лёгкий */
         .tile-snl .tile-overlay::after,
         .tile-cnp .tile-overlay::after {
             content: '';
@@ -395,7 +412,6 @@
             transform: translateY(-6px);
         }
 
-        /* Верхняя граница при ховере */
         .tile::before {
             content: '';
             position: absolute;
@@ -410,7 +426,6 @@
         .tile-cnp::before { background: var(--sage); }
         .tile:hover::before { transform: scaleX(1); }
 
-        /* Контент карточки */
         .tile-content {
             padding: 2.5rem;
             position: relative;
@@ -506,7 +521,7 @@
                 padding: 0.5rem 0 3.5rem;
             }
             .featured .visual { aspect-ratio: 16 / 10; }
-            .featured .visual .mark-big { font-size: 8rem; }
+            .featured .visual .mark-big { font-size: 7rem; }
 
             .grid { grid-template-columns: 1fr; gap: 1.5rem; }
             .tile { min-height: 340px; }
@@ -568,11 +583,11 @@
 
             <a href="future.html" class="featured">
                 <div class="visual">
-                    <div class="mark-big">I<em style="font-style: italic;">FY</em></div>
+                    <div class="mark-big">I<em>FY</em></div>
                 </div>
                 <div class="info">
                     <span class="num">Новая глава</span>
-                    <h2>Пространство <em>IFY</em></h2>
+                    <h2>Пространство <strong>IFY</strong></h2>
                     <p>
                         I Forever Young. Канал с постами, личные сообщения, 
                         всё в одном месте. Тёплое место, куда хочется возвращаться.
