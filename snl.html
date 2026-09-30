@@ -10,68 +10,306 @@
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'unsafe-inline' https://fonts.googleapis.com https://onesignal.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://*; script-src 'self' 'unsafe-inline' https://cdn.onesignal.com https://api.onesignal.com; connect-src 'self' https://api.onesignal.com https://onesignal.com https://cdn.onesignal.com; worker-src 'self' blob:;" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
     <link rel="manifest" href="/snl/manifest.json" />
-    <link rel="stylesheet" href="style.css" />
 
     <style>
-        .photo-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-            gap: 1rem;
-            margin: 2rem 0;
+        :root {
+            --sky: #0a1024;
+            --sky-2: #0e1630;
+            --sky-3: #131a3a;
+            --ink: #f4ede2;
+            --ink-soft: #dcd0bd;
+            --dim: #8b93a8;
+            --dim-soft: #5a6480;
+            --line: rgba(244, 237, 226, 0.1);
+            --line-strong: rgba(244, 237, 226, 0.2);
+
+            --gold: #fbbf24;
+            --gold-soft: #fcd34d;
+            --gold-warm: #fde68a;
+            --gold-glow: rgba(251, 191, 36, 0.5);
         }
 
-        .photo-item {
-            aspect-ratio: 1;
-            border-radius: 18px;
-            overflow: hidden;
-            border: 1px solid var(--border);
-            cursor: pointer;
-            transition: all 0.35s;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html, body { min-height: 100%; }
+
+        body {
+            background: var(--sky);
+            background-image:
+                radial-gradient(ellipse at 20% 0%, rgba(60, 50, 20, 0.4) 0%, transparent 55%),
+                radial-gradient(ellipse at 80% 30%, rgba(60, 40, 90, 0.3) 0%, transparent 55%),
+                radial-gradient(ellipse at 50% 100%, rgba(40, 40, 90, 0.4) 0%, transparent 60%),
+                linear-gradient(180deg, var(--sky) 0%, var(--sky-2) 60%, var(--sky-3) 100%);
+            background-attachment: fixed;
+            color: var(--ink);
+            font-family: 'Inter', sans-serif;
+            font-weight: 300;
+            line-height: 1.55;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
             position: relative;
-            background: var(--bg-card);
         }
 
-        .photo-item:hover {
-            border-color: var(--gold);
-            transform: translateY(-4px);
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4), 0 0 25px rgba(251, 191, 36, 0.15);
+        /* ================= ЗВЁЗДЫ ================= */
+        .starfield { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+        .star { position: absolute; border-radius: 50%; will-change: opacity, transform; }
+        .star.c-white { background: #ffffff; }
+        .star.c-blue  { background: #b8d4ff; }
+        .star.c-gold  { background: #ffe6b0; }
+        .star.c-warm  { background: #ffd0a0; }
+        .star.c-pink  { background: #ffd4e0; }
+        .star.s-1 { box-shadow: 0 0 1px rgba(255,255,255,0.6); }
+        .star.s-2 { box-shadow: 0 0 3px rgba(255,255,255,0.9), 0 0 6px rgba(180,210,255,0.4); }
+        .star.s-3 { box-shadow: 0 0 4px rgba(255,255,255,1), 0 0 10px rgba(180,210,255,0.7), 0 0 20px rgba(120,180,255,0.3); }
+        .star.s-4 { box-shadow: 0 0 6px rgba(255,255,255,1), 0 0 14px rgba(200,220,255,0.8), 0 0 28px rgba(120,180,255,0.5), 0 0 48px rgba(120,180,255,0.2); }
+        @keyframes tw-slow { 0%,100% { opacity: 0.35; transform: scale(0.9); } 50% { opacity: 1; transform: scale(1); } }
+        @keyframes tw-mid  { 0%,100% { opacity: 0.5; transform: scale(0.95); } 50% { opacity: 1; transform: scale(1); } }
+        @keyframes tw-fast { 0%,100% { opacity: 0.7; } 50% { opacity: 1; } }
+        .star.t-1 { animation: tw-slow 6s ease-in-out infinite; }
+        .star.t-2 { animation: tw-mid 3.5s ease-in-out infinite; }
+        .star.t-3 { animation: tw-fast 2s ease-in-out infinite; }
+        @keyframes drift { 0% { transform: translate(0, 0); } 100% { transform: translate(-30px, -50px); } }
+        .starfield { animation: drift 180s linear infinite alternate; }
+
+        /* ================= КОНТЕНТ ================= */
+        .page {
+            position: relative;
+            z-index: 2;
+            min-height: 100vh;
+            padding-bottom: 4rem;
         }
 
-        .photo-item img {
+        .top-bar {
+            background: rgba(10, 16, 36, 0.75);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            color: var(--ink-soft);
+            text-align: center;
+            padding: 0.75rem 1rem;
+            font-size: 0.65rem;
+            letter-spacing: 0.35em;
+            text-transform: uppercase;
+            font-weight: 400;
+            border-bottom: 1px solid var(--line);
+            position: relative;
+            z-index: 3;
+        }
+
+        .top-bar a {
+            color: var(--ink-soft);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .top-bar a:hover { color: var(--gold-soft); }
+
+        .top-bar .sep {
+            display: inline-block;
+            margin: 0 1rem;
+            opacity: 0.4;
+        }
+
+        /* ================= HERO ================= */
+        .hero {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 7rem 2rem 3rem;
+            text-align: center;
+            position: relative;
+            z-index: 5;
+            pointer-events: none;
+        }
+        .hero > * { pointer-events: auto; }
+
+        .hero .eyebrow {
+            font-size: 0.68rem; letter-spacing: 0.4em;
+            text-transform: uppercase; color: var(--gold-soft);
+            margin-bottom: 2rem; font-weight: 500;
+            display: inline-flex; align-items: center; gap: 0.8rem;
+        }
+        .hero .eyebrow::before,
+        .hero .eyebrow::after {
+            content: ''; width: 32px; height: 1px;
+            background: var(--gold-soft); display: inline-block;
+        }
+
+        .hero h1 {
+            font-family: 'Fraunces', serif;
+            font-size: clamp(4rem, 14vw, 11rem);
+            font-weight: 300; line-height: 0.9;
+            letter-spacing: -0.04em;
+            color: var(--gold-warm);
+            margin-bottom: 1.5rem;
+            font-variation-settings: 'opsz' 144, 'SOFT' 100;
+            text-shadow: 0 0 100px var(--gold-glow);
+        }
+
+        .hero .sub {
+            font-size: 1.05rem;
+            color: var(--ink-soft);
+            line-height: 1.7;
+            font-weight: 300;
+            max-width: 520px;
+            margin: 0 auto;
+        }
+
+        /* ================= ТЕКСТ ================= */
+        .text-section {
+            max-width: 700px;
+            margin: 2rem auto 4rem;
+            padding: 2.5rem;
+            background: rgba(10, 16, 36, 0.75);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border: 1px solid rgba(251, 191, 36, 0.2);
+            border-radius: 4px;
+            position: relative;
+            z-index: 4;
+        }
+
+        .text-section p {
+            color: var(--ink-soft);
+            font-size: 1rem;
+            line-height: 1.85;
+            margin-bottom: 1.2rem;
+            font-weight: 300;
+        }
+
+        .text-section p:first-child {
+            font-family: 'Fraunces', serif;
+            font-size: 1.35rem;
+            font-weight: 400;
+            font-style: italic;
+            color: var(--gold-warm);
+            line-height: 1.5;
+            margin-bottom: 1.6rem;
+        }
+
+        .text-section p:last-child { margin-bottom: 0; }
+
+        /* ================= РАЗБРОСАННЫЕ ФОТО ================= */
+        .scattered-photos {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .scattered-photos .photo {
+            position: absolute;
+            width: 170px;
+            height: 170px;
+            background: #fff;
+            padding: 8px 8px 28px;
+            border-radius: 2px;
+            box-shadow:
+                0 10px 40px rgba(0, 0, 0, 0.6),
+                0 0 60px rgba(251, 191, 36, 0.15);
+            pointer-events: auto;
+            cursor: pointer;
+            transition: transform 0.4s cubic-bezier(0.2, 0, 0, 1), box-shadow 0.4s ease, z-index 0s;
+        }
+
+        .scattered-photos .photo img {
             width: 100%; height: 100%;
             object-fit: cover;
-            transition: transform 0.5s;
+            display: block;
+            border-radius: 1px;
         }
 
-        .photo-item:hover img { transform: scale(1.08); }
-
-        .text-block {
-            padding: 2rem;
-            line-height: 1.8;
+        .scattered-photos .photo:hover {
+            z-index: 999;
+            transform: scale(1.15) rotate(0deg) !important;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7), 0 0 80px var(--gold-glow);
         }
 
-        .text-block p {
-            color: var(--cream-soft);
-            margin-bottom: 1rem;
-            font-size: 1.02rem;
+        .p1  { top: 8%;  left: 1%;   transform: rotate(-14deg); }
+        .p2  { top: 12%; left: 17%;  transform: rotate(22deg); }
+        .p3  { top: 4%;  right: 17%; transform: rotate(-8deg); }
+        .p4  { top: 9%;  right: 1%;  transform: rotate(28deg); }
+        .p5  { top: 38%; left: 0.5%;  transform: rotate(-25deg); }
+        .p6  { top: 58%; left: 2%;    transform: rotate(180deg); }
+        .p7  { top: 34%; right: 0.5%; transform: rotate(160deg); }
+        .p8  { top: 54%; right: 2%;   transform: rotate(20deg); }
+        .p9  { bottom: 6%; left: 1%;   transform: rotate(35deg); }
+        .p10 { bottom: 2%; left: 17%;  transform: rotate(190deg); }
+        .p11 { bottom: 3%; right: 17%; transform: rotate(-30deg); }
+        .p12 { bottom: 7%; right: 1%;  transform: rotate(175deg); }
+
+        @media (max-width: 1200px) {
+            .scattered-photos .photo { width: 140px; height: 140px; padding: 6px 6px 22px; }
+        }
+        @media (max-width: 1000px) {
+            .scattered-photos .photo { width: 115px; height: 115px; padding: 5px 5px 18px; }
+        }
+        @media (max-width: 800px) {
+            .scattered-photos .photo { width: 95px; height: 95px; padding: 4px 4px 15px; }
+            .p5, .p6 { left: 0; }
+            .p7, .p8 { right: 0; }
         }
 
-        .text-block .lead {
-            font-family: var(--font-display);
-            font-size: 1.4rem;
-            font-weight: 600;
-            color: var(--gold);
-            margin-bottom: 1.5rem;
-            line-height: 1.4;
+        @media (max-width: 640px) {
+            .page { padding-bottom: 2rem; }
+
+            .top-bar { padding: 0.6rem 0.8rem; font-size: 0.58rem; letter-spacing: 0.25em; }
+            .top-bar .sep { margin: 0 0.5rem; }
+
+            .hero { padding: 3.5rem 1.5rem 2rem; }
+            .hero .eyebrow { margin-bottom: 1.2rem; font-size: 0.6rem; }
+            .hero .eyebrow::before, .hero .eyebrow::after { width: 20px; }
+            .hero h1 { font-size: 4rem; margin-bottom: 1rem; }
+            .hero .sub { font-size: 0.95rem; }
+
+            .text-section { margin: 1rem 1.25rem 3rem; padding: 1.5rem 1.25rem; }
+            .text-section p { font-size: 0.92rem; line-height: 1.75; }
+            .text-section p:first-child { font-size: 1.1rem; }
+
+            .scattered-photos .photo {
+                width: 65px; height: 65px;
+                padding: 3px 3px 11px;
+                border-radius: 2px;
+            }
+            .p1  { top: 4%;  left: 3px;  transform: rotate(-12deg); }
+            .p2  { top: 14%; left: 3px;  transform: rotate(15deg); }
+            .p3  { top: 24%; left: 3px;  transform: rotate(-18deg); }
+            .p4  { top: 34%; left: 3px;  transform: rotate(8deg); }
+            .p5  { top: 44%; left: 3px;  transform: rotate(-22deg); }
+            .p6  { top: 54%; left: 3px;  transform: rotate(160deg); }
+            .p7  { top: 9%;  right: 3px; transform: rotate(20deg); }
+            .p8  { top: 19%; right: 3px; transform: rotate(-10deg); }
+            .p9  { top: 29%; right: 3px; transform: rotate(28deg); }
+            .p10 { top: 39%; right: 3px; transform: rotate(175deg); }
+            .p11 { top: 49%; right: 3px; transform: rotate(-25deg); }
+            .p12 { top: 59%; right: 3px; transform: rotate(180deg); }
         }
 
+        /* ================= FOOTER ================= */
+        .footer {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 5rem 2.5rem 3rem;
+            display: flex; justify-content: space-between;
+            align-items: center; flex-wrap: wrap; gap: 1.5rem;
+            font-size: 0.7rem; letter-spacing: 0.3em;
+            text-transform: uppercase; color: var(--dim);
+            border-top: 1px solid var(--line);
+            position: relative; z-index: 5;
+        }
+        .footer a { color: var(--dim); text-decoration: none; transition: color 0.3s ease; }
+        .footer a:hover { color: var(--gold-soft); }
+        .footer .links { display: flex; gap: 2.5rem; }
+
+        /* ================= LIGHTBOX ================= */
         .lightbox {
             position: fixed;
             inset: 0;
-            background: rgba(5, 10, 21, 0.95);
+            background: rgba(5, 8, 20, 0.96);
             backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             z-index: 9000;
             display: none;
             align-items: center;
@@ -80,65 +318,101 @@
             cursor: zoom-out;
         }
         .lightbox.open { display: flex; }
+
         .lightbox img {
             max-width: 90%;
             max-height: 90vh;
-            border-radius: 16px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7), 0 0 80px rgba(251, 191, 36, 0.15);
+            border-radius: 4px;
+            box-shadow: 0 20px 80px rgba(0, 0, 0, 0.7), 0 0 120px var(--gold-glow);
+            animation: zoomIn 0.4s cubic-bezier(0.2, 0, 0, 1);
+        }
+        @keyframes zoomIn {
+            0% { transform: scale(0.9); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
         }
         .lightbox-close {
             position: absolute;
             top: 24px; right: 28px;
             background: none; border: none;
-            color: var(--cream); font-size: 2rem;
-            cursor: pointer;
+            color: var(--ink-soft); font-size: 2rem;
+            cursor: pointer; transition: color 0.2s;
+            line-height: 1;
         }
+        .lightbox-close:hover { color: var(--gold-soft); }
     </style>
 </head>
 <body>
 
     <div class="page">
-        <div class="container">
 
-            <a href="index.html" class="back-link">← Назад</a>
-
-            <h1 class="site-title fade-up">СНЛ</h1>
-            <p class="site-subtitle fade-up fade-up-1">Сообщество нормальных людей</p>
-
-            <div class="card text-block fade-up fade-up-2">
-                <p class="lead">Мы — одно из самых первых сообществ в городе Тамбове с идеей вести блог о нескольких людях сразу.</p>
-                <p>За время своего существования СНЛ постоянно расширялся, потом распадался, а затем снова расширялся. Амбассадоры освещали собственную жизнь, крупные политические события — как в их маленьком городе, так и в мире в целом, показывали свои путешествия и приключения. Благодаря одному из постов даже был построен мост для жителей маленького СНТ.</p>
-                <p>В конечном итоге костяк людей, которые были в начале, остался и продолжает общаться друг с другом. СНЛ стал точкой объединения людей. Здесь многие нашли своих друзей и просто хороших знакомых.</p>
-                <p>Причиной прекращения активной деятельности стала деградация платформы ВКонтакте — молодому поколению просто стало неинтересно сидеть в этой социальной сети.</p>
-            </div>
-
-            <h2 class="fade-up fade-up-3" style="margin-top: 2rem; font-size: 1.5rem;">📸 Памятные моменты</h2>
-            <p style="color: var(--text-dim); margin-bottom: 1rem; font-size: 0.9rem;">Нажми на фото — откроется на весь экран</p>
-
-            <div class="photo-grid">
-                <div class="photo-item"><img src="images/W954mhgR8-Tukv7b3l9u6Gie_bi1Kd-A810fVNZqlTszing4e_cLbBEYFFjXcVBiwqLPA-WIOiHiO-pnomP_2btU.webp" alt="СНЛ 1" loading="lazy"></div>
-                <div class="photo-item"><img src="images/30_pQE3YVF0RuFFFhbSmpkQ9DP6rZO6WIFzasU52Klp83WiGfb_W7zaqkX2bh7jaSb4W4hlfntdGcPHwiGloEZ2p.webp" alt="СНЛ 2" loading="lazy"></div>
-                <div class="photo-item"><img src="images/pljHSccvabfMTg-rVoH8CrCik8hWN9NiNHiLPwMLnuAGT6lKNETd0BWap_vc8YSkBdlUct6Md-jGKpMb9ov5uMKu.webp" alt="СНЛ 3" loading="lazy"></div>
-                <div class="photo-item"><img src="images/FOK7rVPL15SpId763WCHNw8ssYTHcfUtlyOIl8v9mVvigu8SA1EKoXHXD-rz471uVb39zUPKuzFTgewWMWUYQsku.webp" alt="СНЛ 4" loading="lazy"></div>
-                <div class="photo-item"><img src="images/GKJ0vKpO9aVm5U-t5WzZlmXwnCmHhrYzT2OhK7DuoYou8AVAOm3lyBBIMv7eGUvB-fjddpXp2eIFZyMX9gpqwPAR.webp" alt="СНЛ 5" loading="lazy"></div>
-                <div class="photo-item"><img src="images/gZEqGK7hiQIPKggbgFbjfV8Zuxmqf0xfUqZLmunqldKaBJWLmKBRMPSjPLYBhaYVPSvCyroeU4o0AYgwb-1200hw.webp" alt="СНЛ 6" loading="lazy"></div>
-                <div class="photo-item"><img src="images/oG2Kap3jAp2FDBKrWkM9QvZM30WhzA9rsF8ep91mrJD3WtoUK_2F1d8KDiVCbxs1OPkcT6VtSOsSqgMvSoeF2XH0.webp" alt="СНЛ 7" loading="lazy"></div>
-                <div class="photo-item"><img src="images/okrryJ_0OovBm7x0MqT8KZAV__xHXthj2oUM3kVYWQidWyDrXo9F79U7e9LuHXyPs50QwvGYZ93Li9In16AJYgdT.webp" alt="СНЛ 8" loading="lazy"></div>
-                <div class="photo-item"><img src="images/Rm_kAbLR1l4-NlArg-2kyWIgDTxkF14tqmxhjEar0N79zjORwkNS3GmwuHWi52PgttWadZ_2BPsaJ2IvFxtr0jl6.webp" alt="СНЛ 9" loading="lazy"></div>
-                <div class="photo-item"><img src="images/XQTGOpdgNP_BnXi0IAaChGeVkedNQcjX0Fe6ruhmjUHoCZveBafcD86JJvBcCh1h8Bb99rWH3Ahe1giLPseQYhMO.webp" alt="СНЛ 10" loading="lazy"></div>
-                <div class="photo-item"><img src="images/yDGoJAZoslE2dhwQx1bjhItRwqvc6eL1LJ2ICXfrEU9BP0S6mzyGytxKV6u611nQMvQn-2hAvcAVzue7WntTVYlV.webp" alt="СНЛ 11" loading="lazy"></div>
-                <div class="photo-item"><img src="images/YmrDjZy189_0-rYQMEyZjpJPO40FQ705JIuBHd0EMtKzg_8R5_kZhkD2x3yZ0P8S8uGd1hk8jJBj4KsCAeBCcxWp.webp" alt="СНЛ 12" loading="lazy"></div>
-            </div>
-
-            <footer class="footer">
-                <p>
-                    <a href="https://vk.ru/snl68" target="_blank">VK</a> ·
-                    <a href="https://t.me/t_cnp" target="_blank">Telegram</a>
-                    <br />© 2026 · I want to be forever young
-                </p>
-            </footer>
-
+        <div class="top-bar">
+            <a href="index.html">← На главную</a>
+            <span class="sep">·</span>
+            СНЛ
+            <span class="sep">·</span>
+            Archive
         </div>
+
+        <!-- Разбросанные фото -->
+        <div class="scattered-photos">
+            <div class="photo p1"><img src="images/W954mhgR8-Tukv7b3l9u6Gie_bi1Kd-A810fVNZqlTszing4e_cLbBEYFFjXcVBiwqLPA-WIOiHiO-pnomP_2btU.webp" alt="СНЛ 1" loading="lazy"></div>
+            <div class="photo p2"><img src="images/30_pQE3YVF0RuFFFhbSmpkQ9DP6rZO6WIFzasU52Klp83WiGfb_W7zaqkX2bh7jaSb4W4hlfntdGcPHwiGloEZ2p.webp" alt="СНЛ 2" loading="lazy"></div>
+            <div class="photo p3"><img src="images/pljHSccvabfMTg-rVoH8CrCik8hWN9NiNHiLPwMLnuAGT6lKNETd0BWap_vc8YSkBdlUct6Md-jGKpMb9ov5uMKu.webp" alt="СНЛ 3" loading="lazy"></div>
+            <div class="photo p4"><img src="images/FOK7rVPL15SpId763WCHNw8ssYTHcfUtlyOIl8v9mVvigu8SA1EKoXHXD-rz471uVb39zUPKuzFTgewWMWUYQsku.webp" alt="СНЛ 4" loading="lazy"></div>
+            <div class="photo p5"><img src="images/GKJ0vKpO9aVm5U-t5WzZlmXwnCmHhrYzT2OhK7DuoYou8AVAOm3lyBBIMv7eGUvB-fjddpXp2eIFZyMX9gpqwPAR.webp" alt="СНЛ 5" loading="lazy"></div>
+            <div class="photo p6"><img src="images/gZEqGK7hiQIPKggbgFbjfV8Zuxmqf0xfUqZLmunqldKaBJWLmKBRMPSjPLYBhaYVPSvCyroeU4o0AYgwb-1200hw.webp" alt="СНЛ 6" loading="lazy"></div>
+            <div class="photo p7"><img src="images/oG2Kap3jAp2FDBKrWkM9QvZM30WhzA9rsF8ep91mrJD3WtoUK_2F1d8KDiVCbxs1OPkcT6VtSOsSqgMvSoeF2XH0.webp" alt="СНЛ 7" loading="lazy"></div>
+            <div class="photo p8"><img src="images/okrryJ_0OovBm7x0MqT8KZAV__xHXthj2oUM3kVYWQidWyDrXo9F79U7e9LuHXyPs50QwvGYZ93Li9In16AJYgdT.webp" alt="СНЛ 8" loading="lazy"></div>
+            <div class="photo p9"><img src="images/Rm_kAbLR1l4-NlArg-2kyWIgDTxkF14tqmxhjEar0N79zjORwkNS3GmwuHWi52PgttWadZ_2BPsaJ2IvFxtr0jl6.webp" alt="СНЛ 9" loading="lazy"></div>
+            <div class="photo p10"><img src="images/XQTGOpdgNP_BnXi0IAaChGeVkedNQcjX0Fe6ruhmjUHoCZveBafcD86JJvBcCh1h8Bb99rWH3Ahe1giLPseQYhMO.webp" alt="СНЛ 10" loading="lazy"></div>
+            <div class="photo p11"><img src="images/yDGoJAZoslE2dhwQx1bjhItRwqvc6eL1LJ2ICXfrEU9BP0S6mzyGytxKV6u611nQMvQn-2hAvcAVzue7WntTVYlV.webp" alt="СНЛ 11" loading="lazy"></div>
+            <div class="photo p12"><img src="images/YmrDjZy189_0-rYQMEyZjpJPO40FQ705JIuBHd0EMtKzg_8R5_kZhkD2x3yZ0P8S8uGd1hk8jJBj4KsCAeBCcxWp.webp" alt="СНЛ 12" loading="lazy"></div>
+        </div>
+
+        <!-- Центральный контент -->
+        <section class="hero">
+            <div class="eyebrow">Проект 02 · Archive</div>
+            <h1>СНЛ</h1>
+            <p class="sub">
+                Сообщество нормальных людей. Одно из самых первых сообществ 
+                в Тамбове с идеей вести блог о нескольких людях сразу.
+            </p>
+        </section>
+
+        <section class="text-section">
+            <p>
+                Мы — одно из самых первых сообществ в городе Тамбове с идеей 
+                вести блог о нескольких людях сразу.
+            </p>
+            <p>
+                За время своего существования СНЛ постоянно расширялся, 
+                потом распадался, а затем снова расширялся. Амбассадоры 
+                освещали собственную жизнь, крупные политические события — 
+                как в их маленьком городе, так и в мире в целом, показывали 
+                свои путешествия и приключения. Благодаря одному из постов 
+                даже был построен мост для жителей маленького СНТ.
+            </p>
+            <p>
+                В конечном итоге костяк людей, которые были в начале, 
+                остался и продолжает общаться друг с другом. СНЛ стал 
+                точкой объединения людей. Здесь многие нашли своих друзей 
+                и просто хороших знакомых.
+            </p>
+            <p>
+                Причиной прекращения активной деятельности стала деградация 
+                платформы ВКонтакте — молодому поколению просто стало 
+                неинтересно сидеть в этой социальной сети.
+            </p>
+        </section>
+
+        <footer class="footer">
+            <div>© 2026 · СНЛ · 2022–2026</div>
+            <div class="links">
+                <a href="https://vk.ru/snl68" target="_blank">VK</a>
+                <a href="https://t.me/t_cnp" target="_blank">Telegram</a>
+            </div>
+        </footer>
+
     </div>
 
     <div class="lightbox" id="lightbox" onclick="this.classList.remove('open')">
@@ -146,19 +420,52 @@
         <img src="" alt="" id="lightbox-img" />
     </div>
 
-    <script src="game.js"></script>
     <script>
-        window.addEventListener('load', () => {
-            if (window.Game) window.Game.markPage('snl');
-        });
+    (function() {
+        'use strict';
+        function createStarfield() {
+            const field = document.createElement('div');
+            field.className = 'starfield';
+            const count = window.innerWidth < 640 ? 140 : 260;
+            const configs = [
+                { prob: 0.55, min: 0.5, max: 1.0, colors: ['c-white'], size: 's-1', speed: 't-1' },
+                { prob: 0.20, min: 0.9, max: 1.4, colors: ['c-white','c-blue'], size: 's-2', speed: 't-2' },
+                { prob: 0.15, min: 1.1, max: 1.8, colors: ['c-gold','c-warm','c-white'], size: 's-2', speed: 't-2' },
+                { prob: 0.07, min: 1.8, max: 2.4, colors: ['c-white','c-blue'], size: 's-3', speed: 't-3' },
+                { prob: 0.03, min: 2.4, max: 3.2, colors: ['c-warm','c-gold','c-pink'], size: 's-4', speed: 't-1' }
+            ];
+            function pickConfig() {
+                const r = Math.random(); let acc = 0;
+                for (const c of configs) { acc += c.prob; if (r < acc) return c; }
+                return configs[0];
+            }
+            for (let i = 0; i < count; i++) {
+                const cfg = pickConfig();
+                const star = document.createElement('div');
+                star.className = 'star ' + cfg.size + ' ' + cfg.speed;
+                star.classList.add(cfg.colors[Math.floor(Math.random() * cfg.colors.length)]);
+                const size = cfg.min + Math.random() * (cfg.max - cfg.min);
+                star.style.width = size + 'px';
+                star.style.height = size + 'px';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = (Math.random() * 6) + 's';
+                field.appendChild(star);
+            }
+            document.body.insertBefore(field, document.body.firstChild);
+        }
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', createStarfield);
+        } else { createStarfield(); }
 
-        document.querySelectorAll('.photo-item').forEach(item => {
+        document.querySelectorAll('.photo').forEach(item => {
             item.addEventListener('click', () => {
                 const img = item.querySelector('img');
                 document.getElementById('lightbox-img').src = img.src;
                 document.getElementById('lightbox').classList.add('open');
             });
         });
+    })();
     </script>
 
 </body>
