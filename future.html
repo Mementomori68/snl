@@ -53,6 +53,9 @@
             --post-input-bg: rgba(255, 255, 255, 0.02);
             --post-input-bg-focus: rgba(255, 255, 255, 0.04);
 
+            /* цвет текста на «кремовых» кнопках — всегда тёмный */
+            --btn-ink: #0a0a0f;
+
             --topbar-bg: rgba(10, 10, 15, 0.8);
             --badge-bg: rgba(10, 10, 15, 0.85);
             --avatar-bg: linear-gradient(135deg, rgba(245, 240, 230, 0.18), rgba(245, 240, 230, 0.05));
@@ -61,7 +64,7 @@
         }
 
         /* ============================================================
-           СВЕТЛАЯ ТЕМА — минимализм, посты тёмно-синие
+           СВЕТЛАЯ ТЕМА
            ============================================================ */
         html.light {
             --sky: #fafaf7;
@@ -84,6 +87,8 @@
             --post-dim: #6b7a94;
             --post-input-bg: rgba(255, 255, 255, 0.04);
             --post-input-bg-focus: rgba(255, 255, 255, 0.07);
+
+            --btn-ink: #0a0a0f;
 
             --topbar-bg: rgba(250, 250, 247, 0.9);
             --badge-bg: rgba(250, 250, 247, 0.95);
@@ -162,12 +167,12 @@
         .top-bar a:hover { color: var(--ink); }
         .top-bar .sep { display: inline-block; margin: 0 1rem; opacity: 0.4; }
 
-        /* ================= КНОПКИ В УГЛУ ================= */
+        /* ================= КНОПКИ В УГЛУ — теперь absolute, не парят ================= */
         .corner-controls {
-            position: fixed;
+            position: absolute;
             top: 60px;
             right: 24px;
-            z-index: 50;
+            z-index: 5;
             display: flex;
             gap: 0.5rem;
             align-items: center;
@@ -393,7 +398,7 @@
         .admin-form button {
             align-self: flex-start;
             background: var(--post-text);
-            color: var(--post-bg);
+            color: var(--btn-ink);
             border: none;
             padding: 10px 24px;
             border-radius: 100px;
@@ -610,7 +615,7 @@
         }
         .comment-form button:hover {
             background: var(--post-text);
-            color: var(--post-bg);
+            color: var(--btn-ink);
             border-color: var(--post-text);
         }
         .comment-form button:disabled { opacity: 0.4; cursor: not-allowed; }
@@ -752,7 +757,7 @@
             margin-top: 2px;
         }
 
-                .chat {
+        .chat {
             display: flex;
             flex-direction: column;
             background: transparent;
@@ -815,13 +820,6 @@
         }
         .msg.theirs .msg-time { color: var(--post-dim); }
 
-        .chat-input {
-            padding: 1rem 1.4rem;
-            border-top: 1px solid var(--post-border);
-            display: flex;
-            gap: 0.7rem;
-            align-items: flex-end;
-        }
         .chat-input textarea {
             flex: 1;
             background: var(--post-input-bg);
@@ -844,7 +842,7 @@
         .chat-input textarea::placeholder { color: var(--post-dim); }
         .chat-input button {
             background: var(--post-text);
-            color: var(--post-bg);
+            color: var(--btn-ink);
             border: none;
             width: 40px; height: 40px;
             border-radius: 50%;
@@ -1084,7 +1082,7 @@
             width: 100%;
             padding: 13px;
             background: var(--post-text);
-            color: var(--post-bg);
+            color: var(--btn-ink);
             border: none;
             border-radius: 12px;
             cursor: pointer;
@@ -1119,6 +1117,22 @@
             text-align: center;
             min-height: 1.1em;
         }
+
+        /* ================= КНОПКА "ВОЙТИ" В МЕССЕНДЖЕРЕ ================= */
+        .messenger-login-btn {
+            padding: 10px 24px;
+            background: var(--post-text);
+            color: var(--btn-ink);
+            border: none;
+            border-radius: 100px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: 600;
+            font-size: 0.78rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+        }
+        .messenger-login-btn:hover { opacity: 0.9; }
 
         /* ================= АДАПТИВ ================= */
         @media (max-width: 800px) {
@@ -1373,7 +1387,6 @@
 
                 container.innerHTML = '';
 
-                // Админ-панель
                 if (currentIsAdmin) {
                     const adminPanel = document.createElement('div');
                     adminPanel.className = 'admin-panel';
@@ -1595,7 +1608,7 @@
                         <div class="chat-empty">
                             <div class="big">✦</div>
                             <p style="margin-bottom:1rem;">Чтобы пользоваться сообщениями, войдите в аккаунт.</p>
-                            <button onclick="openAuthModal()" style="padding:10px 24px;background:var(--post-text);color:var(--post-bg);border:none;border-radius:100px;cursor:pointer;font-family:inherit;font-weight:600;font-size:0.78rem;letter-spacing:0.15em;text-transform:uppercase;">Войти</button>
+                            <button class="messenger-login-btn" onclick="openAuthModal()">Войти</button>
                         </div>
                     </div>
                 `;
@@ -1726,8 +1739,8 @@
             }
         }
 
-        let currentChatUserId = null;
-        let messageChannel = null;
+        // Глобальная переменная — используется handleIncomingMessage из auth.js
+        window.currentChatUserId = window.currentChatUserId || null;
 
         async function loadConversations() {
             const list = document.getElementById('conversations-list');
@@ -1805,7 +1818,7 @@
         }
 
         async function openChat(userId, userName) {
-            currentChatUserId = userId;
+            window.currentChatUserId = userId;
 
             document.querySelectorAll('.conv-item').forEach(el => {
                 el.classList.toggle('active', el.dataset.userId === userId);
@@ -1842,7 +1855,6 @@
             });
 
             await loadChatMessages(userId);
-            subscribeToMessages(userId);
         }
 
         async function loadChatMessages(userId) {
@@ -1870,6 +1882,7 @@
             data.forEach(m => {
                 const div = document.createElement('div');
                 div.className = 'msg ' + (m.sender_id === currentUser.id ? 'mine' : 'theirs');
+                div.dataset.msgId = m.id;
                 div.innerHTML = `
                     ${escapeHtml(m.text)}
                     <span class="msg-time">${new Date(m.created_at).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' })}</span>
@@ -1880,11 +1893,48 @@
             box.scrollTop = box.scrollHeight;
         }
 
+        // ================= REALTIME UI =================
+        window.appendMessageToDOM = function(m) {
+            const box = document.getElementById('chat-messages');
+            if (!box) return;
+            if (box.querySelector(`[data-msg-id="${m.id}"]`)) return;
+
+            const placeholder = box.querySelector('p[style*="text-align:center"]');
+            if (placeholder && box.children.length === 1) {
+                box.innerHTML = '';
+            }
+
+            const div = document.createElement('div');
+            div.className = 'msg ' + (m.sender_id === currentUser.id ? 'mine' : 'theirs');
+            div.dataset.msgId = m.id;
+            div.innerHTML = `
+                ${escapeHtml(m.text)}
+                <span class="msg-time">${new Date(m.created_at).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' })}</span>
+            `;
+            box.appendChild(div);
+            box.scrollTop = box.scrollHeight;
+        };
+
+        window.bumpUnread = function(peerId) {
+            let item = document.querySelector(`.conv-item[data-user-id="${peerId}"]`);
+            if (!item) {
+                if (typeof loadConversations === 'function') loadConversations();
+                return;
+            }
+            if (!item.querySelector('.unread-dot')) {
+                const dot = document.createElement('span');
+                dot.className = 'unread-dot';
+                dot.style.cssText = 'width:8px;height:8px;border-radius:50%;background:#c96f4a;display:inline-block;margin-left:6px;';
+                item.querySelector('.conv-name')?.appendChild(dot);
+            }
+            if (typeof loadConversations === 'function') loadConversations();
+        };
+
         async function sendMessage() {
             const input = document.getElementById('chat-input');
             const btn = document.getElementById('chat-send');
             const text = input.value.trim();
-            if (!text || !currentChatUserId) return;
+            if (!text || !window.currentChatUserId) return;
 
             btn.disabled = true;
             input.value = '';
@@ -1893,11 +1943,11 @@
             try {
                 const { error } = await db.from('messages').insert({
                     sender_id: currentUser.id,
-                    receiver_id: currentChatUserId,
+                    receiver_id: window.currentChatUserId,
                     text: text
                 });
                 if (error) throw error;
-                await loadChatMessages(currentChatUserId);
+                await loadChatMessages(window.currentChatUserId);
                 loadConversations();
             } catch (err) {
                 alert('Ошибка: ' + err.message);
@@ -1905,26 +1955,6 @@
             } finally {
                 btn.disabled = false;
             }
-        }
-
-        function subscribeToMessages(userId) {
-            if (messageChannel) {
-                db.removeChannel(messageChannel);
-            }
-            messageChannel = db
-                .channel('messages-' + userId)
-                .on('postgres_changes', {
-                    event: 'INSERT',
-                    schema: 'public',
-                    table: 'messages'
-                }, payload => {
-                    const m = payload.new;
-                    if ((m.sender_id === currentUser.id && m.receiver_id === userId) ||
-                        (m.sender_id === userId && m.receiver_id === currentUser.id)) {
-                        loadChatMessages(userId);
-                    }
-                })
-                .subscribe();
         }
 
         // ================= USER =================
