@@ -11,279 +11,179 @@
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'unsafe-inline' https://fonts.googleapis.com https://onesignal.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://*; script-src 'self' 'unsafe-inline' https://cdn.onesignal.com https://api.onesignal.com; connect-src 'self' https://api.onesignal.com https://onesignal.com https://cdn.onesignal.com; worker-src 'self' blob:;" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="manifest" href="/snl/manifest.json" />
+    <link rel="stylesheet" href="style.css" />
 
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        :root {
-            --bg: #0a0a0f;
-            --bg-soft: #131320;
-            --card: rgba(255, 255, 255, 0.04);
-            --card-hover: rgba(255, 255, 255, 0.07);
-            --border: rgba(255, 255, 255, 0.08);
-            --text: #eee;
-            --text-muted: #8a8aa8;
-            --accent: #a78bfa;
-            --accent-2: #f472b6;
-            --accent-3: #fbbf24;
-        }
-
-        body {
-            background: var(--bg);
-            background-image: radial-gradient(circle at 20% 30%, #1a1a2e 0%, #0a0a0f 80%);
-            font-family: 'Inter', sans-serif;
-            color: var(--text);
-            min-height: 100vh;
-            padding: 4rem 1.5rem 3rem;
-            line-height: 1.5;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .container {
-            max-width: 900px;
-            width: 100%;
-        }
-
-        /* -------- HEADER -------- */
-        .site-header {
-            text-align: center;
-            margin-bottom: 3.5rem;
-            animation: fadeUp 0.8s ease-out;
-        }
-
-        .site-header h1 {
-            font-size: clamp(2rem, 6vw, 3.4rem);
-            font-weight: 800;
-            letter-spacing: -0.02em;
-            background: linear-gradient(135deg, #fbbf24, #f472b6, #a78bfa);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            margin-bottom: 0.6rem;
-        }
-
-        .site-header .tagline {
-            color: var(--text-muted);
-            font-size: 1rem;
-            letter-spacing: 1px;
-        }
-
-        /* -------- ГЛАВНАЯ КАРТОЧКА FUTURE -------- */
-        .hero-card {
-            display: block;
-            background: linear-gradient(145deg, rgba(167, 139, 250, 0.12), rgba(244, 114, 182, 0.06));
-            border: 1px solid rgba(167, 139, 250, 0.3);
-            border-radius: 28px;
-            padding: 2.5rem;
-            text-decoration: none;
-            color: inherit;
-            margin-bottom: 2rem;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.4s cubic-bezier(0.2, 0, 0, 1);
-            animation: fadeUp 0.9s ease-out;
-        }
-
-        .hero-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -20%;
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(circle, rgba(167, 139, 250, 0.25), transparent 70%);
-            pointer-events: none;
-        }
-
-        .hero-card:hover {
-            transform: translateY(-4px);
-            border-color: rgba(167, 139, 250, 0.6);
-            box-shadow: 0 25px 80px rgba(167, 139, 250, 0.2);
-        }
-
-        .hero-card .badge {
-            display: inline-block;
-            background: rgba(167, 139, 250, 0.15);
-            border: 1px solid rgba(167, 139, 250, 0.4);
-            color: var(--accent);
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            padding: 0.35rem 1rem;
-            border-radius: 20px;
-            margin-bottom: 1.2rem;
-        }
-
-        .hero-card h2 {
-            font-size: clamp(2.2rem, 6vw, 3.5rem);
-            font-weight: 800;
-            letter-spacing: -0.02em;
-            color: var(--accent);
-            margin-bottom: 0.8rem;
-        }
-
-        .hero-card p {
-            font-size: 1.05rem;
-            color: #c8b8d8;
-            max-width: 500px;
-            line-height: 1.6;
-            margin-bottom: 1.5rem;
-        }
-
-        .hero-card .hero-cta {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.6rem;
-            color: var(--accent);
-            font-weight: 600;
-            font-size: 0.95rem;
-            transition: gap 0.3s;
-        }
-
-        .hero-card:hover .hero-cta { gap: 1rem; }
-
-        /* -------- СЕТКА МАЛЕНЬКИХ КАРТОЧЕК -------- */
-        .small-cards {
+        .hero-cards {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-            animation: fadeUp 1s ease-out;
+            grid-template-columns: 1fr;
+            gap: 1.2rem;
+            margin-bottom: 2rem;
         }
 
-        .small-card {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 22px;
-            padding: 1.6rem;
+        .project-card {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 1.5rem;
             text-decoration: none;
             color: inherit;
-            transition: all 0.35s cubic-bezier(0.2, 0, 0, 1);
-            display: flex;
-            flex-direction: column;
         }
 
-        .small-card:hover {
-            background: var(--card-hover);
-            transform: translateY(-3px);
-        }
-
-        .small-card .image-wrapper {
-            width: 100%;
-            aspect-ratio: 16 / 10;
-            border-radius: 14px;
+        .project-card .project-img {
+            width: 140px;
+            height: 100px;
+            border-radius: 16px;
             overflow: hidden;
-            margin-bottom: 1rem;
-            background: rgba(255, 255, 255, 0.03);
+            flex-shrink: 0;
+            background: rgba(96, 165, 250, 0.1);
         }
 
-        .small-card .image-wrapper img {
+        .project-card .project-img img {
             width: 100%; height: 100%;
             object-fit: cover;
-            transition: transform 0.4s;
+            transition: transform 0.5s;
         }
 
-        .small-card:hover .image-wrapper img { transform: scale(1.05); }
+        .project-card:hover .project-img img {
+            transform: scale(1.08);
+        }
 
-        .small-card h3 {
-            font-size: 1.4rem;
-            font-weight: 700;
+        .project-card .project-body { flex: 1; }
+
+        .project-card h3 {
+            font-size: 1.6rem;
             margin-bottom: 0.4rem;
         }
 
-        .small-card p {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            line-height: 1.5;
+        .project-card p {
+            color: var(--text-dim);
+            font-size: 0.92rem;
+            margin-bottom: 0.6rem;
         }
 
-        .small-card.card-snl { border-color: rgba(251, 191, 36, 0.2); }
-        .small-card.card-snl h3 { color: var(--accent-3); }
-        .small-card.card-snl:hover { border-color: rgba(251, 191, 36, 0.5); }
-
-        .small-card.card-cnp { border-color: rgba(52, 211, 153, 0.2); }
-        .small-card.card-cnp h3 { color: #34d399; }
-        .small-card.card-cnp:hover { border-color: rgba(52, 211, 153, 0.5); }
-
-        /* -------- FOOTER -------- */
-        .footer {
-            text-align: center;
-            color: #5a5a70;
-            font-size: 0.85rem;
-            margin-top: 4rem;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        .footer a {
-            color: #8a8aa8;
-            text-decoration: none;
-            border-bottom: 1px dotted #3a3a50;
-        }
-        .footer a:hover { color: var(--accent); }
-
-        @keyframes fadeUp {
-            0% { opacity: 0; transform: translateY(30px); }
-            100% { opacity: 1; transform: translateY(0); }
+        .project-card .project-tag {
+            display: inline-block;
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            padding: 3px 10px;
+            border-radius: 20px;
+            background: rgba(96, 165, 250, 0.1);
+            color: var(--blue);
+            font-weight: 600;
+            margin-bottom: 0.6rem;
         }
 
-        /* -------- АДАПТИВ -------- */
+        .project-card.card-snl h3 { color: var(--gold); }
+        .project-card.card-snl .project-tag { background: rgba(251, 191, 36, 0.12); color: var(--gold); }
+        .project-card.card-snl .project-img { border: 1px solid rgba(251, 191, 36, 0.2); }
+
+        .project-card.card-cnp h3 { color: var(--green); }
+        .project-card.card-cnp .project-tag { background: rgba(52, 211, 153, 0.12); color: var(--green); }
+        .project-card.card-cnp .project-img { border: 1px solid rgba(52, 211, 153, 0.2); }
+
+        .project-card.card-future {
+            background: linear-gradient(135deg, rgba(167, 139, 250, 0.12), rgba(244, 114, 182, 0.06));
+            border-color: rgba(167, 139, 250, 0.35);
+            padding: 2rem 1.5rem;
+        }
+        .project-card.card-future h3 { color: var(--purple); font-size: 2rem; }
+        .project-card.card-future .project-tag {
+            background: rgba(167, 139, 250, 0.15);
+            color: var(--purple);
+            border: 1px solid rgba(167, 139, 250, 0.3);
+        }
+        .project-card.card-future:hover {
+            border-color: var(--purple);
+            box-shadow: 0 8px 40px rgba(167, 139, 250, 0.2);
+        }
+
+        .project-card.card-future .project-placeholder {
+            width: 140px;
+            height: 100px;
+            border-radius: 16px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            background: rgba(167, 139, 250, 0.1);
+            border: 1px dashed rgba(167, 139, 250, 0.3);
+        }
+
         @media (max-width: 640px) {
-            body { padding: 2.5rem 1rem 2rem; }
-            .hero-card { padding: 1.8rem; border-radius: 22px; }
-            .small-cards { grid-template-columns: 1fr; gap: 1rem; }
-            .small-card { padding: 1.2rem; }
+            .project-card { flex-direction: column; text-align: center; }
+            .project-card .project-img,
+            .project-card.card-future .project-placeholder {
+                width: 100%; height: 140px;
+            }
+            .project-card.card-future h3 { font-size: 1.6rem; }
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <header class="site-header">
-            <h1>I want to be forever young</h1>
-            <div class="tagline">Цени моменты · Друзей · Творчество</div>
-        </header>
+    <div class="page">
+        <div class="container">
 
-        <!-- ГЛАВНЫЙ ПРОЕКТ -->
-        <a href="future.html" class="hero-card">
-            <span class="badge">Главный проект</span>
-            <h2>???</h2>
-            <p>
-                Пространство для своих. Канал с постами, личные сообщения, 
-                всё в одном месте. Скоро здесь появится много всего важного.
-            </p>
-            <span class="hero-cta">Открыть →</span>
-        </a>
+            <h1 class="site-title fade-up">I want to be forever young</h1>
+            <p class="site-subtitle fade-up fade-up-1">Цени моменты · Друзей · Творчество</p>
 
-        <!-- СТАРЫЕ ПРОЕКТЫ -->
-        <div class="small-cards">
-            <a href="snl.html" class="small-card card-snl">
-                <div class="image-wrapper">
-                    <img src="images/WVtwIGLjJECY74j2P0z1HPdc-JKV8v7DYlX8xDFQBWEY434_IX2Ykp5Q855pPatC16p2jfVQixRq8NEHKYUAOqCJ.webp" alt="СНЛ" loading="lazy" />
-                </div>
-                <h3>СНЛ</h3>
-                <p>Обычные дни, которые стали вечными. Прогулки, смех, дружба.</p>
-            </a>
+            <div class="hero-cards">
 
-            <a href="cnp.html" class="small-card card-cnp">
-                <div class="image-wrapper">
-                    <img src="images/photo_2024-09-22_17-18-07.webp" alt="CNP" loading="lazy" />
-                </div>
-                <h3>CNP</h3>
-                <p>Тут был настоящий дух улиц.</p>
-            </a>
+                <a href="future.html" class="card card-link project-card card-future fade-up fade-up-2">
+                    <div class="project-placeholder">❓</div>
+                    <div class="project-body">
+                        <span class="project-tag">Главный проект</span>
+                        <h3>???</h3>
+                        <p>Пространство для своих. Канал с постами, личные сообщения, всё в одном месте.</p>
+                    </div>
+                </a>
+
+                <a href="snl.html" class="card card-link project-card card-snl fade-up fade-up-3">
+                    <div class="project-img">
+                        <img src="images/WVtwIGLjJECY74j2P0z1HPdc-JKV8v7DYlX8xDFQBWEY434_IX2Ykp5Q855pPatC16p2jfVQixRq8NEHKYUAOqCJ.webp" alt="СНЛ" loading="lazy" />
+                    </div>
+                    <div class="project-body">
+                        <span class="project-tag">Воспоминания</span>
+                        <h3>СНЛ</h3>
+                        <p>Обычные дни, которые стали вечными. Прогулки, смех, дружба.</p>
+                    </div>
+                </a>
+
+                <a href="cnp.html" class="card card-link project-card card-cnp fade-up fade-up-3">
+                    <div class="project-img">
+                        <img src="images/photo_2024-09-22_17-18-07.webp" alt="CNP" loading="lazy" />
+                    </div>
+                    <div class="project-body">
+                        <span class="project-tag">Воспоминания</span>
+                        <h3>CNP</h3>
+                        <p>Тут был настоящий дух улиц.</p>
+                    </div>
+                </a>
+
+            </div>
+
+            <footer class="footer">
+                <p>
+                    <a href="https://vk.ru/snl68" target="_blank">VK</a> ·
+                    <a href="https://t.me/t_cnp" target="_blank">Telegram</a>
+                    <br />© 2026 · I want to be forever young
+                </p>
+            </footer>
+
         </div>
-
-        <footer class="footer">
-            <p>
-                <a href="https://vk.ru/snl68" target="_blank">VK</a> ·
-                <a href="https://t.me/t_cnp" target="_blank">Telegram</a>
-                <br />© 2026 · I want to be forever young
-            </p>
-        </footer>
     </div>
+
+    <script src="game.js"></script>
+    <script>
+        window.addEventListener('load', () => {
+            if (window.Game) window.Game.markPage('index');
+        });
+    </script>
 
 </body>
 </html>

@@ -3,471 +3,162 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
     <title>СНЛ — I want to be forever young</title>
     <link rel="icon" type="image/png" href="images/icon-192x192.png" />
     <link rel="apple-touch-icon" href="images/icon-512x512.png" />
     <meta http-equiv="X-Content-Type-Options" content="nosniff" />
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'unsafe-inline' https://fonts.googleapis.com https://onesignal.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://*; script-src 'self' 'unsafe-inline' https://cdn.onesignal.com https://api.onesignal.com https://cdn.jsdelivr.net; connect-src 'self' https://api.onesignal.com https://onesignal.com https://cdn.onesignal.com https://mwnanyuukoidlabekeft.supabase.co; worker-src 'self' blob:;" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'unsafe-inline' https://fonts.googleapis.com https://onesignal.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://*; script-src 'self' 'unsafe-inline' https://cdn.onesignal.com https://api.onesignal.com; connect-src 'self' https://api.onesignal.com https://onesignal.com https://cdn.onesignal.com; worker-src 'self' blob:;" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,600;14..32,800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="manifest" href="/snl/manifest.json" />
-
-    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-    <script>
-      window.OneSignalDeferred = window.OneSignalDeferred || [];
-      OneSignalDeferred.push(async function(OneSignal) {
-        await OneSignal.init({
-          appId: "32bc1c1a-e834-48e6-ad0b-e46fcfa2a2c6",
-          serviceWorkerParam: { scope: "/snl/" },
-          serviceWorkerPath: "/snl/OneSignalSDKWorker.js",
-        });
-      });
-    </script>
+    <link rel="stylesheet" href="style.css" />
 
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            background: #0a0a0f;
-            background-image: radial-gradient(circle at 20% 30%, #1f1a0f 0%, #0a0a0f 80%);
-            font-family: 'Inter', sans-serif;
-            color: #eee;
-            min-height: 100vh;
-            padding: 2rem 1rem;
-            line-height: 1.6;
-            overflow-x: hidden;
-            position: relative;
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
         }
 
-        .back-link {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            z-index: 100;
-            display: inline-block;
-            color: #b8956a;
-            text-decoration: none;
-            font-size: 0.9rem;
-            padding: 8px 14px;
-            background: rgba(0, 0, 0, 0.5);
-            border-radius: 20px;
-            border-bottom: 1px solid rgba(251, 191, 36, 0.2);
-            transition: border-color 0.3s, color 0.3s;
-            backdrop-filter: blur(6px);
-        }
-        .back-link:hover { border-color: #fbbf24; color: #fbbf24; }
-
-        .scattered-photos {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%;
-            min-height: 100%;
-            pointer-events: none;
-            z-index: 0;
+        .photo-item {
+            aspect-ratio: 1;
+            border-radius: 18px;
             overflow: hidden;
-        }
-
-        .scattered-photos .photo {
-            position: absolute;
-            width: 170px;
-            height: 170px;
-            background: #fff;
-            padding: 7px 7px 26px;
-            border-radius: 4px;
-            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.7);
-            pointer-events: auto;
-            transition: transform 0.35s ease, box-shadow 0.35s ease, z-index 0s;
+            border: 1px solid var(--border);
             cursor: pointer;
+            transition: all 0.35s;
+            position: relative;
+            background: var(--bg-card);
         }
 
-        .scattered-photos .photo img {
+        .photo-item:hover {
+            border-color: var(--gold);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4), 0 0 25px rgba(251, 191, 36, 0.15);
+        }
+
+        .photo-item img {
             width: 100%; height: 100%;
             object-fit: cover;
-            display: block;
-            border-radius: 2px;
+            transition: transform 0.5s;
         }
 
-        .scattered-photos .photo:hover {
-            box-shadow: 0 20px 60px rgba(251, 191, 36, 0.55);
-            z-index: 999;
-            transform: scale(1.15) rotate(0deg) !important;
-        }
+        .photo-item:hover img { transform: scale(1.08); }
 
-        .p1  { top: 14%; left: 0.5%;  transform: rotate(-14deg); }
-        .p2  { top: 14%; left: 16%;   transform: rotate(22deg); }
-        .p3  { top: 2%;  right: 16%;  transform: rotate(-8deg); }
-        .p4  { top: 2%;  right: 0.5%; transform: rotate(28deg); }
-        .p5  { top: 42%; left: 0.5%;  transform: rotate(-25deg); }
-        .p6  { top: 62%; left: 1%;    transform: rotate(180deg); }
-        .p7  { top: 38%; right: 0.5%; transform: rotate(160deg); }
-        .p8  { top: 58%; right: 1%;   transform: rotate(20deg); }
-        .p9  { bottom: 4%; left: 0.5%;  transform: rotate(35deg); }
-        .p10 { bottom: 4%; left: 16%;   transform: rotate(190deg); }
-        .p11 { bottom: 4%; right: 16%;  transform: rotate(-30deg); }
-        .p12 { bottom: 4%; right: 0.5%; transform: rotate(175deg); }
-
-        .container {
-            max-width: 720px;
-            margin: 0 auto;
-            animation: fadeUp 0.8s ease-out;
-            position: relative;
-            z-index: 2;
-            pointer-events: none;
-        }
-        .container .main-text,
-        .container .footer a { pointer-events: auto; }
-
-        @keyframes fadeUp {
-            0% { opacity: 0; transform: translateY(30px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-
-        .header { text-align: center; margin-bottom: 2.5rem; }
-        .header h1 {
-            font-size: clamp(2.8rem, 8vw, 4.5rem);
-            font-weight: 800;
-            letter-spacing: -0.02em;
-            color: #fbbf24;
-            text-shadow: 0 0 40px rgba(251, 191, 36, 0.5), 0 0 10px rgba(0,0,0,0.8);
-            margin-bottom: 0.5rem;
-        }
-        .header .subhead {
-            font-size: 1.2rem;
-            color: #b8a088;
-            font-weight: 300;
-            letter-spacing: 1px;
-        }
-
-        .main-text {
-            background: rgba(0, 0, 0, 0.75);
-            backdrop-filter: blur(6px);
-            -webkit-backdrop-filter: blur(6px);
-            border: 1px solid rgba(251, 191, 36, 0.25);
-            border-radius: 28px;
-            padding: 2.5rem;
-            margin-bottom: 2.5rem;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.7);
-        }
-        .main-text p {
-            font-size: 1rem;
-            color: #ddd0c0;
+        .text-block {
+            padding: 2rem;
             line-height: 1.8;
-            font-weight: 300;
+        }
+
+        .text-block p {
+            color: var(--cream-soft);
             margin-bottom: 1rem;
+            font-size: 1.02rem;
         }
-        .main-text p:last-child { margin-bottom: 0; }
-        .main-text .lead {
-            font-size: 1.25rem;
+
+        .text-block .lead {
+            font-family: var(--font-display);
+            font-size: 1.4rem;
             font-weight: 600;
-            color: #fbbf24;
-            margin-bottom: 1.2rem;
+            color: var(--gold);
+            margin-bottom: 1.5rem;
+            line-height: 1.4;
         }
 
-        .footer {
-            text-align: center;
-            color: #6a5a4a;
-            font-size: 0.85rem;
-            margin-top: 2rem;
-            padding-bottom: 1rem;
-        }
-        .footer a {
-            color: #8a7a6a;
-            text-decoration: none;
-            border-bottom: 1px dotted #3a3a2a;
-        }
-        .footer a:hover { color: #fbbf24; }
-        .footer .years {
-            margin-top: 0.5rem;
-            color: #8a7a6a;
-            font-weight: 300;
-            letter-spacing: 1px;
-        }
-
-        @media (max-width: 1200px) {
-            .scattered-photos .photo { width: 140px; height: 140px; padding: 6px 6px 22px; }
-        }
-        @media (max-width: 1000px) {
-            .scattered-photos .photo { width: 115px; height: 115px; padding: 5px 5px 19px; }
-        }
-        @media (max-width: 800px) {
-            .scattered-photos .photo { width: 95px; height: 95px; padding: 4px 4px 16px; }
-            .p5, .p6 { left: 0%; }
-            .p7, .p8 { right: 0%; }
-        }
-
-        /* ================= МОБИЛЬНАЯ ВЕРСИЯ ================= */
-        @media (max-width: 700px) {
-            body {
-                padding: 55px 0 55px 0;
-            }
-
-            .back-link {
-                top: 8px;
-                left: 8px;
-                font-size: 0.75rem;
-                padding: 5px 10px;
-                border-radius: 14px;
-            }
-
-            /* Фото — маленькие полароиды в 2 колоннах по краям */
-            .scattered-photos .photo {
-                width: 62px;
-                height: 62px;
-                padding: 3px 3px 11px;
-                border-radius: 3px;
-                box-shadow: 0 6px 16px rgba(0, 0, 0, 0.6);
-            }
-
-            /* Левая колонна — 6 фото на разных высотах */
-            .p1  { top: 5%;  left: 3px;  transform: rotate(-12deg); }
-            .p2  { top: 17%; left: 3px;  transform: rotate(15deg); }
-            .p3  { top: 29%; left: 3px;  transform: rotate(-18deg); }
-            .p4  { top: 41%; left: 3px;  transform: rotate(8deg); }
-            .p5  { top: 53%; left: 3px;  transform: rotate(-22deg); }
-            .p6  { top: 65%; left: 3px;  transform: rotate(160deg); }
-
-            /* Правая колонна — 6 фото на других высотах (шахматный порядок) */
-            .p7  { top: 11%; right: 3px; transform: rotate(20deg); }
-            .p8  { top: 23%; right: 3px; transform: rotate(-10deg); }
-            .p9  { top: 35%; right: 3px; transform: rotate(28deg); }
-            .p10 { top: 47%; right: 3px; transform: rotate(175deg); }
-            .p11 { top: 59%; right: 3px; transform: rotate(-25deg); }
-            .p12 { top: 71%; right: 3px; transform: rotate(180deg); }
-
-            /* Контейнер с текстом — отступы по бокам, чтобы не заезжать под фото */
-            .container {
-                padding: 0 70px;
-                pointer-events: none;
-            }
-            .container .main-text,
-            .container .footer a { pointer-events: auto; }
-
-            /* Меньше шрифты */
-            .header { margin-bottom: 1.2rem; }
-            .header h1 { font-size: clamp(1.8rem, 11vw, 2.6rem); }
-            .header .subhead { font-size: 0.85rem; letter-spacing: 0.5px; }
-
-            .main-text {
-                padding: 1.2rem 0.9rem;
-                border-radius: 18px;
-                margin-bottom: 1.2rem;
-            }
-            .main-text p {
-                font-size: 0.82rem;
-                line-height: 1.65;
-                margin-bottom: 0.7rem;
-            }
-            .main-text .lead {
-                font-size: 1rem;
-                margin-bottom: 0.9rem;
-            }
-
-            .footer { font-size: 0.72rem; margin-top: 1rem; }
-            .footer .years { font-size: 0.7rem; }
-        }
-
-        /* ================= LIGHTBOX ================= */
-        .lightbox-overlay {
+        .lightbox {
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0);
-            z-index: 10000;
+            background: rgba(5, 10, 21, 0.95);
+            backdrop-filter: blur(12px);
+            z-index: 9000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
             cursor: zoom-out;
-            transition: background 0.4s ease;
-            pointer-events: none;
         }
-        .lightbox-overlay.active {
-            background: rgba(0, 0, 0, 0.92);
-            pointer-events: auto;
-        }
-        .lightbox-overlay img {
-            position: fixed;
-            object-fit: cover;
-            border-radius: 4px;
-            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.85);
-            transition:
-                top 0.45s cubic-bezier(0.22, 1, 0.36, 1),
-                left 0.45s cubic-bezier(0.22, 1, 0.36, 1),
-                width 0.45s cubic-bezier(0.22, 1, 0.36, 1),
-                height 0.45s cubic-bezier(0.22, 1, 0.36, 1),
-                border-radius 0.45s ease,
-                box-shadow 0.45s ease;
-            pointer-events: none;
-            will-change: top, left, width, height;
+        .lightbox.open { display: flex; }
+        .lightbox img {
+            max-width: 90%;
+            max-height: 90vh;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7), 0 0 80px rgba(251, 191, 36, 0.15);
         }
         .lightbox-close {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.08);
-            color: #fff;
-            font-size: 24px;
-            line-height: 44px;
-            text-align: center;
+            position: absolute;
+            top: 24px; right: 28px;
+            background: none; border: none;
+            color: var(--cream); font-size: 2rem;
             cursor: pointer;
-            opacity: 0;
-            transform: translateY(-10px);
-            transition: opacity 0.35s ease 0.15s, transform 0.35s ease 0.15s, background 0.25s;
-            z-index: 10001;
-            user-select: none;
-            font-family: sans-serif;
         }
-        .lightbox-overlay.active .lightbox-close {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        .lightbox-close:hover { background: rgba(255, 255, 255, 0.2); }
     </style>
 </head>
 <body>
 
-    <a href="index.html" class="back-link">← Назад</a>
+    <div class="page">
+        <div class="container">
 
-    <div class="scattered-photos">
-        <div class="photo p1"><img src="images/W954mhgR8-Tukv7b3l9u6Gie_bi1Kd-A810fVNZqlTszing4e_cLbBEYFFjXcVBiwqLPA-WIOiHiO-pnomP_2btU.webp" alt="СНЛ 1" loading="lazy"></div>
-        <div class="photo p2"><img src="images/30_pQE3YVF0RuFFFhbSmpkQ9DP6rZO6WIFzasU52Klp83WiGfb_W7zaqkX2bh7jaSb4W4hlfntdGcPHwiGloEZ2p.webp" alt="СНЛ 2" loading="lazy"></div>
-        <div class="photo p3"><img src="images/pljHSccvabfMTg-rVoH8CrCik8hWN9NiNHiLPwMLnuAGT6lKNETd0BWap_vc8YSkBdlUct6Md-jGKpMb9ov5uMKu.webp" alt="СНЛ 3" loading="lazy"></div>
-        <div class="photo p4"><img src="images/FOK7rVPL15SpId763WCHNw8ssYTHcfUtlyOIl8v9mVvigu8SA1EKoXHXD-rz471uVb39zUPKuzFTgewWMWUYQsku.webp" alt="СНЛ 4" loading="lazy"></div>
-        <div class="photo p5"><img src="images/GKJ0vKpO9aVm5U-t5WzZlmXwnCmHhrYzT2OhK7DuoYou8AVAOm3lyBBIMv7eGUvB-fjddpXp2eIFZyMX9gpqwPAR.webp" alt="СНЛ 5" loading="lazy"></div>
-        <div class="photo p6"><img src="images/gZEqGK7hiQIPKggbgFbjfV8Zuxmqf0xfUqZLmunqldKaBJWLmKBRMPSjPLYBhaYVPSvCyroeU4o0AYgwb-1200hw.webp" alt="СНЛ 6" loading="lazy"></div>
-        <div class="photo p7"><img src="images/oG2Kap3jAp2FDBKrWkM9QvZM30WhzA9rsF8ep91mrJD3WtoUK_2F1d8KDiVCbxs1OPkcT6VtSOsSqgMvSoeF2XH0.webp" alt="СНЛ 7" loading="lazy"></div>
-        <div class="photo p8"><img src="images/okrryJ_0OovBm7x0MqT8KZAV__xHXthj2oUM3kVYWQidWyDrXo9F79U7e9LuHXyPs50QwvGYZ93Li9In16AJYgdT.webp" alt="СНЛ 8" loading="lazy"></div>
-        <div class="photo p9"><img src="images/Rm_kAbLR1l4-NlArg-2kyWIgDTxkF14tqmxhjEar0N79zjORwkNS3GmwuHWi52PgttWadZ_2BPsaJ2IvFxtr0jl6.webp" alt="СНЛ 9" loading="lazy"></div>
-        <div class="photo p10"><img src="images/XQTGOpdgNP_BnXi0IAaChGeVkedNQcjX0Fe6ruhmjUHoCZveBafcD86JJvBcCh1h8Bb99rWH3Ahe1giLPseQYhMO.webp" alt="СНЛ 10" loading="lazy"></div>
-        <div class="photo p11"><img src="images/yDGoJAZoslE2dhwQx1bjhItRwqvc6eL1LJ2ICXfrEU9BP0S6mzyGytxKV6u611nQMvQn-2hAvcAVzue7WntTVYlV.webp" alt="СНЛ 11" loading="lazy"></div>
-        <div class="photo p12"><img src="images/YmrDjZy189_0-rYQMEyZjpJPO40FQ705JIuBHd0EMtKzg_8R5_kZhkD2x3yZ0P8S8uGd1hk8jJBj4KsCAeBCcxWp.webp" alt="СНЛ 12" loading="lazy"></div>
-    </div>
+            <a href="index.html" class="back-link">← Назад</a>
 
-    <div class="container">
-        <header class="header">
-            <h1>СНЛ</h1>
-            <div class="subhead">Сообщество нормальных людей</div>
-        </header>
+            <h1 class="site-title fade-up">СНЛ</h1>
+            <p class="site-subtitle fade-up fade-up-1">Сообщество нормальных людей</p>
 
-        <div class="main-text">
-            <p class="lead">
-                Мы — одно из самых первых сообществ в городе Тамбове с идеей вести блог о нескольких людях сразу.
-            </p>
-            <p>
-                За время своего существования СНЛ постоянно расширялся, потом распадался, а затем снова расширялся. 
-                Амбассадоры освещали собственную жизнь, крупные политические события — как в их маленьком городе, так и в мире в целом, 
-                показывали свои путешествия и приключения. Благодаря одному из постов даже был построен мост для жителей маленького СНТ.
-            </p>
-            <p>
-                В конечном итоге костяк людей, которые были в начале, остался и продолжает общаться друг с другом. 
-                СНЛ стал точкой объединения людей. Здесь многие нашли своих друзей и просто хороших знакомых.
-            </p>
-            <p>
-                Причиной прекращения активной деятельности стала деградация платформы ВКонтакте — молодому поколению просто стало неинтересно сидеть в этой социальной сети.
-            </p>
+            <div class="card text-block fade-up fade-up-2">
+                <p class="lead">Мы — одно из самых первых сообществ в городе Тамбове с идеей вести блог о нескольких людях сразу.</p>
+                <p>За время своего существования СНЛ постоянно расширялся, потом распадался, а затем снова расширялся. Амбассадоры освещали собственную жизнь, крупные политические события — как в их маленьком городе, так и в мире в целом, показывали свои путешествия и приключения. Благодаря одному из постов даже был построен мост для жителей маленького СНТ.</p>
+                <p>В конечном итоге костяк людей, которые были в начале, остался и продолжает общаться друг с другом. СНЛ стал точкой объединения людей. Здесь многие нашли своих друзей и просто хороших знакомых.</p>
+                <p>Причиной прекращения активной деятельности стала деградация платформы ВКонтакте — молодому поколению просто стало неинтересно сидеть в этой социальной сети.</p>
+            </div>
+
+            <h2 class="fade-up fade-up-3" style="margin-top: 2rem; font-size: 1.5rem;">📸 Памятные моменты</h2>
+            <p style="color: var(--text-dim); margin-bottom: 1rem; font-size: 0.9rem;">Нажми на фото — откроется на весь экран</p>
+
+            <div class="photo-grid">
+                <div class="photo-item"><img src="images/W954mhgR8-Tukv7b3l9u6Gie_bi1Kd-A810fVNZqlTszing4e_cLbBEYFFjXcVBiwqLPA-WIOiHiO-pnomP_2btU.webp" alt="СНЛ 1" loading="lazy"></div>
+                <div class="photo-item"><img src="images/30_pQE3YVF0RuFFFhbSmpkQ9DP6rZO6WIFzasU52Klp83WiGfb_W7zaqkX2bh7jaSb4W4hlfntdGcPHwiGloEZ2p.webp" alt="СНЛ 2" loading="lazy"></div>
+                <div class="photo-item"><img src="images/pljHSccvabfMTg-rVoH8CrCik8hWN9NiNHiLPwMLnuAGT6lKNETd0BWap_vc8YSkBdlUct6Md-jGKpMb9ov5uMKu.webp" alt="СНЛ 3" loading="lazy"></div>
+                <div class="photo-item"><img src="images/FOK7rVPL15SpId763WCHNw8ssYTHcfUtlyOIl8v9mVvigu8SA1EKoXHXD-rz471uVb39zUPKuzFTgewWMWUYQsku.webp" alt="СНЛ 4" loading="lazy"></div>
+                <div class="photo-item"><img src="images/GKJ0vKpO9aVm5U-t5WzZlmXwnCmHhrYzT2OhK7DuoYou8AVAOm3lyBBIMv7eGUvB-fjddpXp2eIFZyMX9gpqwPAR.webp" alt="СНЛ 5" loading="lazy"></div>
+                <div class="photo-item"><img src="images/gZEqGK7hiQIPKggbgFbjfV8Zuxmqf0xfUqZLmunqldKaBJWLmKBRMPSjPLYBhaYVPSvCyroeU4o0AYgwb-1200hw.webp" alt="СНЛ 6" loading="lazy"></div>
+                <div class="photo-item"><img src="images/oG2Kap3jAp2FDBKrWkM9QvZM30WhzA9rsF8ep91mrJD3WtoUK_2F1d8KDiVCbxs1OPkcT6VtSOsSqgMvSoeF2XH0.webp" alt="СНЛ 7" loading="lazy"></div>
+                <div class="photo-item"><img src="images/okrryJ_0OovBm7x0MqT8KZAV__xHXthj2oUM3kVYWQidWyDrXo9F79U7e9LuHXyPs50QwvGYZ93Li9In16AJYgdT.webp" alt="СНЛ 8" loading="lazy"></div>
+                <div class="photo-item"><img src="images/Rm_kAbLR1l4-NlArg-2kyWIgDTxkF14tqmxhjEar0N79zjORwkNS3GmwuHWi52PgttWadZ_2BPsaJ2IvFxtr0jl6.webp" alt="СНЛ 9" loading="lazy"></div>
+                <div class="photo-item"><img src="images/XQTGOpdgNP_BnXi0IAaChGeVkedNQcjX0Fe6ruhmjUHoCZveBafcD86JJvBcCh1h8Bb99rWH3Ahe1giLPseQYhMO.webp" alt="СНЛ 10" loading="lazy"></div>
+                <div class="photo-item"><img src="images/yDGoJAZoslE2dhwQx1bjhItRwqvc6eL1LJ2ICXfrEU9BP0S6mzyGytxKV6u611nQMvQn-2hAvcAVzue7WntTVYlV.webp" alt="СНЛ 11" loading="lazy"></div>
+                <div class="photo-item"><img src="images/YmrDjZy189_0-rYQMEyZjpJPO40FQ705JIuBHd0EMtKzg_8R5_kZhkD2x3yZ0P8S8uGd1hk8jJBj4KsCAeBCcxWp.webp" alt="СНЛ 12" loading="lazy"></div>
+            </div>
+
+            <footer class="footer">
+                <p>
+                    <a href="https://vk.ru/snl68" target="_blank">VK</a> ·
+                    <a href="https://t.me/t_cnp" target="_blank">Telegram</a>
+                    <br />© 2026 · I want to be forever young
+                </p>
+            </footer>
+
         </div>
-
-        <footer class="footer">
-            <p>
-                <a href="https://vk.ru/snl68" target="_blank">VK</a> ·
-                <a href="https://t.me/t_cnp" target="_blank">Telegram</a>
-                <br />© 2026 · I want to be forever young
-            </p>
-            <div class="years">СНЛ · 2022–2026</div>
-        </footer>
     </div>
 
-    <script src="mascot.js"></script>
+    <div class="lightbox" id="lightbox" onclick="this.classList.remove('open')">
+        <button class="lightbox-close">×</button>
+        <img src="" alt="" id="lightbox-img" />
+    </div>
 
+    <script src="game.js"></script>
     <script>
-    (function () {
-        const overlay = document.createElement('div');
-        overlay.className = 'lightbox-overlay';
-        const closeBtn = document.createElement('div');
-        closeBtn.className = 'lightbox-close';
-        closeBtn.innerHTML = '×';
-        overlay.appendChild(closeBtn);
-        document.body.appendChild(overlay);
+        window.addEventListener('load', () => {
+            if (window.Game) window.Game.markPage('snl');
+        });
 
-        let activeImg = null;
-        let startRect = null;
-        let isClosing = false;
-
-        function openLightbox(photoEl) {
-            if (activeImg) return;
-            const img = photoEl.querySelector('img');
-            if (!img || !img.complete || img.naturalWidth === 0) return;
-
-            startRect = photoEl.getBoundingClientRect();
-            const aspect = img.naturalWidth / img.naturalHeight;
-            const maxW = window.innerWidth * 0.9;
-            const maxH = window.innerHeight * 0.85;
-            let targetW = maxW;
-            let targetH = targetW / aspect;
-            if (targetH > maxH) { targetH = maxH; targetW = targetH * aspect; }
-            const targetLeft = (window.innerWidth - targetW) / 2;
-            const targetTop = (window.innerHeight - targetH) / 2;
-
-            activeImg = document.createElement('img');
-            activeImg.src = img.src;
-            activeImg.style.top = startRect.top + 'px';
-            activeImg.style.left = startRect.left + 'px';
-            activeImg.style.width = startRect.width + 'px';
-            activeImg.style.height = startRect.height + 'px';
-            activeImg.style.borderRadius = '4px';
-            overlay.appendChild(activeImg);
-            void activeImg.offsetHeight;
-
-            overlay.classList.add('active');
-            activeImg.style.top = targetTop + 'px';
-            activeImg.style.left = targetLeft + 'px';
-            activeImg.style.width = targetW + 'px';
-            activeImg.style.height = targetH + 'px';
-            activeImg.style.borderRadius = '8px';
-            activeImg.style.boxShadow = '0 40px 100px rgba(0, 0, 0, 0.95)';
-        }
-
-        function closeLightbox() {
-            if (!activeImg || !startRect || isClosing) return;
-            isClosing = true;
-            overlay.classList.remove('active');
-            activeImg.style.top = startRect.top + 'px';
-            activeImg.style.left = startRect.left + 'px';
-            activeImg.style.width = startRect.width + 'px';
-            activeImg.style.height = startRect.height + 'px';
-            activeImg.style.borderRadius = '4px';
-            activeImg.style.boxShadow = '0 30px 80px rgba(0, 0, 0, 0.85)';
-            setTimeout(() => {
-                if (activeImg) activeImg.remove();
-                activeImg = null;
-                startRect = null;
-                isClosing = false;
-            }, 460);
-        }
-
-        document.querySelectorAll('.scattered-photos .photo').forEach(photo => {
-            photo.addEventListener('click', (e) => {
-                e.stopPropagation();
-                openLightbox(photo);
+        document.querySelectorAll('.photo-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const img = item.querySelector('img');
+                document.getElementById('lightbox-img').src = img.src;
+                document.getElementById('lightbox').classList.add('open');
             });
         });
-
-        overlay.addEventListener('click', (e) => {
-            if (e.target === overlay) closeLightbox();
-        });
-        closeBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            closeLightbox();
-        });
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && activeImg) closeLightbox();
-        });
-        window.addEventListener('resize', () => {
-            if (activeImg) closeLightbox();
-        });
-    })();
     </script>
 
 </body>

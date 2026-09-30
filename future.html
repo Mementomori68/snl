@@ -10,7 +10,7 @@
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'unsafe-inline' https://fonts.googleapis.com https://onesignal.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://*; script-src 'self' 'unsafe-inline' https://cdn.onesignal.com https://api.onesignal.com https://cdn.jsdelivr.net; connect-src 'self' https://api.onesignal.com https://onesignal.com https://cdn.onesignal.com https://mwnanyuukoidlabekeft.supabase.co wss://mwnanyuukoidlabekeft.supabase.co; worker-src 'self' blob:;" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="manifest" href="/snl/manifest.json" />
 
     <!-- OneSignal -->
@@ -29,46 +29,57 @@
     <style>
         /* ================= ТЕМЫ ================= */
         :root {
-            /* Светлая тема (по умолчанию) */
-            --bg: #ffffff;
-            --bg-sidebar: #f5f6f8;
-            --bg-content: #ffffff;
-            --bg-hover: #f0f1f4;
-            --bg-active: #e8eaf0;
-            --bg-input: #f0f1f4;
-            --bg-bubble: #f0f1f4;
-            --border: #e5e7eb;
-            --text: #0f0f14;
-            --text-muted: #8b8d98;
-            --text-secondary: #5c5e6a;
-            --accent: #7c5cf0;
-            --accent-hover: #6b4ee0;
+            /* Светлая — пастель, кофе, лофт */
+            --bg: #f7f1e8;
+            --bg-sidebar: #fdf9f3;
+            --bg-content: #f7f1e8;
+            --bg-hover: #f0e6d8;
+            --bg-active: #ffe8d6;
+            --bg-input: #fdf9f3;
+            --bg-bubble: #fdf9f3;
+            --bg-card: #ffffff;
+            --border: rgba(107, 79, 63, 0.12);
+            --border-strong: rgba(107, 79, 63, 0.2);
+            --text: #3a2e26;
+            --text-muted: #8a7a6a;
+            --text-secondary: #6b4f3f;
+            --accent: #c97b5a;
+            --accent-hover: #b36948;
             --accent-text: #ffffff;
-            --shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+            --accent-soft: #ffe8d6;
+            --green: #6b8a5c;
+            --yellow: #b88a3a;
+            --shadow: 0 1px 2px rgba(107, 79, 63, 0.04), 0 8px 24px rgba(107, 79, 63, 0.06);
         }
 
         html.dark {
-            --bg: #0f1014;
-            --bg-sidebar: #16181f;
-            --bg-content: #0f1014;
-            --bg-hover: #1e2029;
-            --bg-active: #262833;
-            --bg-input: #1e2029;
-            --bg-bubble: #1e2029;
-            --border: #262833;
-            --text: #f0f0f5;
-            --text-muted: #6b6e7d;
-            --text-secondary: #a0a3b1;
-            --accent: #a78bfa;
-            --accent-hover: #c4b5fd;
-            --accent-text: #0f1014;
-            --shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+            /* Тёмная — вечернее кофе, тёплый полумрак */
+            --bg: #1a1613;
+            --bg-sidebar: #221d19;
+            --bg-content: #1a1613;
+            --bg-hover: #2a241f;
+            --bg-active: #3a2c22;
+            --bg-input: #2a241f;
+            --bg-bubble: #2a241f;
+            --bg-card: #221d19;
+            --border: rgba(255, 220, 190, 0.08);
+            --border-strong: rgba(255, 220, 190, 0.15);
+            --text: #f0e6d8;
+            --text-muted: #a89684;
+            --text-secondary: #c9b8a6;
+            --accent: #e8a184;
+            --accent-hover: #f0b89a;
+            --accent-text: #1a1613;
+            --accent-soft: #3a2c22;
+            --green: #a8b898;
+            --yellow: #d8b878;
+            --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.3);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'Inter', -apple-system, sans-serif;
+            font-family: 'Inter', sans-serif;
             background: var(--bg);
             color: var(--text);
             height: 100vh;
@@ -79,16 +90,17 @@
 
         /* ================= САЙДБАР ================= */
         .sidebar {
-            width: 280px;
+            width: 290px;
             background: var(--bg-sidebar);
             border-right: 1px solid var(--border);
             display: flex;
             flex-direction: column;
             transition: background 0.3s, border-color 0.3s;
+            flex-shrink: 0;
         }
 
         .sidebar-header {
-            padding: 1.2rem 1.2rem 1rem;
+            padding: 1.4rem 1.3rem 1.2rem;
             border-bottom: 1px solid var(--border);
             display: flex;
             align-items: center;
@@ -98,85 +110,89 @@
         .logo {
             display: flex;
             align-items: center;
-            gap: 0.6rem;
+            gap: 0.7rem;
+            font-family: 'Fraunces', serif;
             font-weight: 800;
-            font-size: 1.1rem;
+            font-size: 1.15rem;
             letter-spacing: -0.02em;
+            color: var(--text);
         }
 
         .logo-icon {
-            width: 32px;
-            height: 32px;
-            border-radius: 9px;
+            width: 36px;
+            height: 36px;
+            border-radius: 11px;
             background: linear-gradient(135deg, var(--accent), var(--accent-hover));
             display: flex;
             align-items: center;
             justify-content: center;
             color: var(--accent-text);
-            font-size: 1rem;
+            font-size: 1.1rem;
             font-weight: 800;
+            font-family: 'Fraunces', serif;
+            box-shadow: 0 4px 12px rgba(201, 123, 90, 0.25);
         }
 
         .theme-toggle {
-            background: none;
-            border: none;
+            background: var(--bg-hover);
+            border: 1px solid var(--border);
             color: var(--text-secondary);
-            font-size: 1.2rem;
+            font-size: 1rem;
             cursor: pointer;
-            padding: 6px;
-            border-radius: 8px;
-            transition: background 0.2s;
+            padding: 7px 11px;
+            border-radius: 12px;
+            transition: all 0.2s;
+            line-height: 1;
         }
-        .theme-toggle:hover { background: var(--bg-hover); }
+        .theme-toggle:hover {
+            background: var(--accent-soft);
+            border-color: var(--accent);
+            transform: rotate(15deg);
+        }
 
         .sidebar-nav {
-            padding: 0.6rem;
+            padding: 0.8rem;
             flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
         }
 
         .nav-item {
             display: flex;
             align-items: center;
             gap: 0.8rem;
-            padding: 0.7rem 0.9rem;
-            border-radius: 10px;
+            padding: 0.8rem 1rem;
+            border-radius: 14px;
             cursor: pointer;
             color: var(--text-secondary);
             font-weight: 500;
             font-size: 0.95rem;
             transition: all 0.2s;
-            border: none;
+            border: 1px solid transparent;
             background: none;
             width: 100%;
             text-align: left;
             font-family: inherit;
         }
 
-        .nav-item:hover { background: var(--bg-hover); color: var(--text); }
+        .nav-item:hover {
+            background: var(--bg-hover);
+            color: var(--text);
+        }
 
         .nav-item.active {
-            background: var(--accent);
-            color: var(--accent-text);
+            background: var(--accent-soft);
+            color: var(--accent);
+            border-color: rgba(201, 123, 90, 0.25);
+            font-weight: 600;
         }
 
         .nav-item .nav-icon {
-            font-size: 1.1rem;
-            width: 20px;
+            font-size: 1.15rem;
+            width: 22px;
             text-align: center;
-        }
-
-        .nav-badge {
-            margin-left: auto;
-            background: var(--accent);
-            color: var(--accent-text);
-            font-size: 0.7rem;
-            padding: 2px 8px;
-            border-radius: 10px;
-            font-weight: 700;
-        }
-
-        .nav-item.active .nav-badge {
-            background: rgba(255, 255, 255, 0.25);
+            flex-shrink: 0;
         }
 
         .sidebar-footer {
@@ -188,25 +204,31 @@
             display: flex;
             align-items: center;
             gap: 0.7rem;
-            padding: 0.6rem;
-            border-radius: 10px;
+            padding: 0.7rem;
+            border-radius: 14px;
             cursor: pointer;
             transition: background 0.2s;
+            border: 1px solid transparent;
         }
-        .user-card:hover { background: var(--bg-hover); }
+        .user-card:hover {
+            background: var(--bg-hover);
+            border-color: var(--border);
+        }
 
         .user-avatar {
-            width: 34px;
-            height: 34px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--accent), #f472b6);
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-hover));
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
+            color: var(--accent-text);
             font-weight: 700;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             flex-shrink: 0;
+            font-family: 'Fraunces', serif;
+            box-shadow: 0 3px 10px rgba(201, 123, 90, 0.2);
         }
 
         .user-info { flex: 1; min-width: 0; }
@@ -221,6 +243,7 @@
         .user-sub {
             font-size: 0.75rem;
             color: var(--text-muted);
+            margin-top: 1px;
         }
 
         /* ================= КОНТЕНТ ================= */
@@ -234,74 +257,89 @@
         }
 
         .content-header {
-            padding: 1.2rem 1.8rem;
+            padding: 1.5rem 2rem 1.2rem;
             border-bottom: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+            background: var(--bg-content);
         }
 
         .content-title {
-            font-size: 1.15rem;
+            font-family: 'Fraunces', serif;
+            font-size: 1.6rem;
             font-weight: 700;
-            letter-spacing: -0.01em;
+            letter-spacing: -0.02em;
+            color: var(--text);
         }
 
         .content-sub {
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             color: var(--text-muted);
-            margin-top: 2px;
+            margin-top: 3px;
+            letter-spacing: 0.5px;
         }
 
         .content-body {
             flex: 1;
             overflow-y: auto;
-            padding: 1.5rem 1.8rem;
+            padding: 1.8rem 2rem;
             scroll-behavior: smooth;
         }
 
-        .content-body::-webkit-scrollbar { width: 6px; }
+        .content-body::-webkit-scrollbar { width: 8px; }
+        .content-body::-webkit-scrollbar-track { background: transparent; }
         .content-body::-webkit-scrollbar-thumb {
-            background: var(--border);
-            border-radius: 3px;
+            background: var(--border-strong);
+            border-radius: 4px;
+        }
+        .content-body::-webkit-scrollbar-thumb:hover {
+            background: var(--accent);
         }
 
-        /* ================= ПОСТЫ (КАНАЛ) ================= */
+        /* ================= ПОСТЫ ================= */
         .post {
-            background: var(--bg-sidebar);
+            background: var(--bg-card);
             border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 1.2rem 1.4rem;
-            margin-bottom: 1rem;
-            transition: border-color 0.2s;
+            border-radius: 22px;
+            padding: 1.6rem 1.8rem;
+            margin-bottom: 1.2rem;
+            transition: all 0.3s;
+            box-shadow: var(--shadow);
         }
-        .post:hover { border-color: var(--accent); }
+        .post:hover {
+            border-color: rgba(201, 123, 90, 0.3);
+            transform: translateY(-2px);
+        }
 
         .post h3 {
-            font-size: 1.1rem;
+            font-family: 'Fraunces', serif;
+            font-size: 1.35rem;
             font-weight: 700;
-            margin-bottom: 0.3rem;
+            margin-bottom: 0.4rem;
             letter-spacing: -0.01em;
+            color: var(--text);
+            line-height: 1.3;
         }
 
         .post .date {
             font-size: 0.75rem;
             color: var(--text-muted);
             display: block;
-            margin-bottom: 0.7rem;
+            margin-bottom: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .post img {
             max-width: 100%;
-            border-radius: 12px;
-            margin: 0.6rem 0;
+            border-radius: 16px;
+            margin: 0.8rem 0;
             display: block;
+            filter: saturate(0.95);
         }
 
         .post .text {
             color: var(--text-secondary);
-            font-size: 0.95rem;
-            line-height: 1.6;
+            font-size: 1rem;
+            line-height: 1.7;
             white-space: pre-wrap;
             word-wrap: break-word;
         }
@@ -309,84 +347,130 @@
         .state-msg {
             text-align: center;
             color: var(--text-muted);
-            padding: 3rem 1rem;
+            padding: 4rem 1rem;
             font-size: 0.95rem;
         }
 
         /* ================= КОММЕНТАРИИ ================= */
         .comments-section {
-            margin-top: 1.2rem;
-            padding-top: 1.2rem;
-            border-top: 1px solid var(--border);
+            margin-top: 1.4rem;
+            padding-top: 1.4rem;
+            border-top: 1px dashed var(--border-strong);
         }
         .comments-title {
             color: var(--text-muted);
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 0.8rem;
+            letter-spacing: 2px;
+            margin-bottom: 1rem;
             font-weight: 600;
         }
-        .comments-list { display: flex; flex-direction: column; gap: 0.7rem; margin-bottom: 0.8rem; }
+        .comments-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.7rem;
+            margin-bottom: 1rem;
+        }
         .comment {
             background: var(--bg-bubble);
-            padding: 0.7rem 0.9rem;
-            border-radius: 12px;
+            padding: 0.85rem 1rem;
+            border-radius: 14px;
+            border-left: 3px solid var(--accent);
         }
         .comment-header {
-            display: flex; justify-content: space-between;
-            margin-bottom: 0.3rem; font-size: 0.8rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.35rem;
+            font-size: 0.82rem;
+            gap: 0.5rem;
         }
-        .comment-author { color: var(--accent); font-weight: 600; }
-        .comment-date { color: var(--text-muted); font-size: 0.7rem; }
-        .comment-text { color: var(--text-secondary); font-size: 0.9rem; }
+        .comment-author {
+            color: var(--accent);
+            font-weight: 600;
+        }
+        .comment-date {
+            color: var(--text-muted);
+            font-size: 0.72rem;
+        }
+        .comment-text {
+            color: var(--text-secondary);
+            font-size: 0.92rem;
+            line-height: 1.55;
+        }
         .comment-delete {
-            background: none; border: none; color: var(--text-muted);
-            cursor: pointer; font-size: 0.75rem; margin-left: 8px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 0.72rem;
+            margin-left: 6px;
+            font-family: inherit;
         }
-        .comment-delete:hover { color: #f87171; }
+        .comment-delete:hover { color: #d96666; }
 
-        .comment-form { display: flex; flex-direction: column; gap: 0.5rem; }
+        .comment-form {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
         .comment-form textarea {
             background: var(--bg-input);
             border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 10px 14px;
+            border-radius: 14px;
+            padding: 12px 16px;
             color: var(--text);
             font-family: inherit;
-            font-size: 0.9rem;
+            font-size: 0.92rem;
             resize: vertical;
-            min-height: 50px;
+            min-height: 60px;
+            transition: border-color 0.2s, background 0.2s;
         }
         .comment-form textarea:focus {
             outline: none;
             border-color: var(--accent);
+            background: var(--bg-card);
         }
         .comment-form button {
             align-self: flex-end;
             background: var(--accent);
             color: var(--accent-text);
             border: none;
-            padding: 8px 18px;
-            border-radius: 20px;
+            padding: 10px 22px;
+            border-radius: 22px;
             cursor: pointer;
             font-family: inherit;
             font-weight: 600;
-            font-size: 0.85rem;
-            transition: background 0.2s;
+            font-size: 0.88rem;
+            transition: all 0.2s;
+            box-shadow: 0 3px 10px rgba(201, 123, 90, 0.2);
         }
-        .comment-form button:hover { background: var(--accent-hover); }
-        .comment-form button:disabled { opacity: 0.5; cursor: not-allowed; }
+        .comment-form button:hover {
+            background: var(--accent-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 5px 14px rgba(201, 123, 90, 0.3);
+        }
+        .comment-form button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
         .comment-login-msg {
             color: var(--text-muted);
             font-size: 0.85rem;
             font-style: italic;
-            padding: 0.7rem;
+            padding: 0.9rem;
             text-align: center;
-            border: 1px dashed var(--border);
-            border-radius: 12px;
+            border: 1px dashed var(--border-strong);
+            border-radius: 14px;
+            background: var(--bg-bubble);
         }
-        .comment-login-msg a { color: var(--accent); text-decoration: none; }
+        .comment-login-msg a {
+            color: var(--accent);
+            text-decoration: none;
+            font-style: normal;
+            font-weight: 600;
+        }
         .comment-login-msg a:hover { text-decoration: underline; }
 
         /* ================= СООБЩЕНИЯ ================= */
@@ -402,95 +486,119 @@
         }
         .messages-empty .big-icon {
             font-size: 4rem;
-            margin-bottom: 1rem;
-            opacity: 0.4;
+            margin-bottom: 1.2rem;
+            opacity: 0.5;
+            filter: grayscale(0.3);
         }
         .messages-empty h3 {
+            font-family: 'Fraunces', serif;
             color: var(--text);
-            font-size: 1.1rem;
-            margin-bottom: 0.5rem;
+            font-size: 1.4rem;
+            margin-bottom: 0.6rem;
+            font-weight: 700;
         }
         .messages-empty p {
-            font-size: 0.9rem;
-            max-width: 320px;
-            line-height: 1.6;
+            font-size: 0.95rem;
+            max-width: 360px;
+            line-height: 1.65;
         }
 
-        /* ================= МОДАЛЬНОЕ ОКНО АВТОРИЗАЦИИ ================= */
+        /* ================= МОДАЛЬНОЕ ОКНО ================= */
         #auth-modal {
             display: none;
-            position: fixed; inset: 0;
-            background: rgba(0, 0, 0, 0.6);
+            position: fixed;
+            inset: 0;
+            background: rgba(58, 46, 38, 0.4);
             z-index: 9999;
             align-items: center;
             justify-content: center;
-            backdrop-filter: blur(6px);
+            backdrop-filter: blur(8px);
+            padding: 1rem;
         }
         .auth-modal-content {
-            background: var(--bg-sidebar);
+            background: var(--bg-card);
             border: 1px solid var(--border);
-            border-radius: 18px;
-            padding: 1.8rem;
+            border-radius: 22px;
+            padding: 2rem;
             width: 100%;
-            max-width: 380px;
+            max-width: 400px;
             position: relative;
-            box-shadow: var(--shadow);
+            box-shadow: 0 12px 48px rgba(107, 79, 63, 0.2);
         }
         .auth-modal-content h2 {
+            font-family: 'Fraunces', serif;
             color: var(--text);
-            margin-bottom: 1.2rem;
-            font-size: 1.3rem;
+            margin-bottom: 1.4rem;
+            font-size: 1.6rem;
             text-align: center;
             font-weight: 700;
         }
         .auth-modal-close {
-            position: absolute; top: 10px; right: 14px;
-            background: none; border: none; color: var(--text-muted);
-            font-size: 1.4rem; cursor: pointer;
+            position: absolute;
+            top: 12px;
+            right: 16px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.6rem;
+            cursor: pointer;
+            line-height: 1;
+            transition: color 0.2s;
         }
-        .auth-modal-close:hover { color: var(--text); }
+        .auth-modal-close:hover { color: var(--accent); }
         .auth-form input {
             width: 100%;
-            padding: 11px 14px;
-            margin-bottom: 0.7rem;
+            padding: 12px 16px;
+            margin-bottom: 0.8rem;
             background: var(--bg-input);
             border: 1px solid var(--border);
-            border-radius: 10px;
+            border-radius: 14px;
             color: var(--text);
             font-family: inherit;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
+            transition: border-color 0.2s, background 0.2s;
         }
-        .auth-form input:focus { outline: none; border-color: var(--accent); }
+        .auth-form input:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: var(--bg-card);
+        }
         .auth-form button {
             width: 100%;
-            padding: 11px;
+            padding: 12px;
             background: var(--accent);
             color: var(--accent-text);
             border: none;
-            border-radius: 10px;
+            border-radius: 14px;
             cursor: pointer;
             font-family: inherit;
             font-weight: 600;
-            font-size: 0.95rem;
-            transition: background 0.2s;
+            font-size: 1rem;
+            transition: all 0.2s;
+            margin-top: 0.3rem;
+            box-shadow: 0 3px 10px rgba(201, 123, 90, 0.2);
         }
-        .auth-form button:hover { background: var(--accent-hover); }
-        .auth-form button:disabled { opacity: 0.5; }
+        .auth-form button:hover {
+            background: var(--accent-hover);
+            transform: translateY(-1px);
+        }
+        .auth-form button:disabled { opacity: 0.5; transform: none; }
         .auth-switch {
             text-align: center;
-            margin-top: 0.9rem;
+            margin-top: 1rem;
             color: var(--accent);
             cursor: pointer;
-            font-size: 0.85rem;
+            font-size: 0.88rem;
             background: none;
             border: none;
             font-family: inherit;
             width: 100%;
+            font-weight: 500;
         }
         .auth-switch:hover { text-decoration: underline; }
         .auth-error {
-            color: #f87171;
-            font-size: 0.8rem;
+            color: #d96666;
+            font-size: 0.82rem;
             margin-bottom: 0.7rem;
             text-align: center;
             min-height: 1.1em;
@@ -498,14 +606,13 @@
 
         /* ================= АДАПТИВ ================= */
         @media (max-width: 720px) {
-            body { flex-direction: column; height: 100vh; }
+            body { flex-direction: column; }
             .sidebar {
                 width: 100%;
                 border-right: none;
                 border-bottom: 1px solid var(--border);
                 flex-direction: row;
                 align-items: center;
-                padding: 0;
             }
             .sidebar-header {
                 border-bottom: none;
@@ -518,18 +625,21 @@
                 padding: 0.5rem;
                 gap: 0.3rem;
                 flex: 1;
+                flex-direction: row;
                 overflow-x: auto;
             }
             .nav-item {
-                padding: 0.5rem 0.8rem;
+                padding: 0.55rem 0.9rem;
                 font-size: 0.85rem;
                 white-space: nowrap;
+                border-radius: 12px;
             }
-            .nav-item .nav-label { display: inline; }
             .sidebar-footer { display: none; }
-            .content-header { padding: 1rem 1.2rem; }
-            .content-body { padding: 1rem 1.2rem; }
-            .post { padding: 1rem; border-radius: 14px; }
+            .content-header { padding: 1.2rem 1.2rem 1rem; }
+            .content-title { font-size: 1.3rem; }
+            .content-body { padding: 1.2rem; }
+            .post { padding: 1.2rem 1.3rem; border-radius: 18px; }
+            .post h3 { font-size: 1.15rem; }
         }
     </style>
 </head>
@@ -547,11 +657,11 @@
 
         <nav class="sidebar-nav">
             <button class="nav-item active" data-tab="channel" onclick="switchTab('channel')">
-                <span class="nav-icon">📢</span>
+                <span class="nav-icon">📔</span>
                 <span class="nav-label">Канал</span>
             </button>
             <button class="nav-item" data-tab="messages" onclick="switchTab('messages')">
-                <span class="nav-icon">💬</span>
+                <span class="nav-icon">☕</span>
                 <span class="nav-label">Сообщения</span>
             </button>
         </nav>
@@ -570,10 +680,8 @@
     <!-- ================= КОНТЕНТ ================= -->
     <main class="content">
         <div class="content-header">
-            <div>
-                <div class="content-title" id="content-title">Канал</div>
-                <div class="content-sub" id="content-sub">Посты из третьего проекта</div>
-            </div>
+            <div class="content-title" id="content-title">Канал</div>
+            <div class="content-sub" id="content-sub">Посты из третьего проекта</div>
         </div>
 
         <div class="content-body" id="content-body">
@@ -583,7 +691,7 @@
         </div>
     </main>
 
-    <!-- ================= МОДАЛЬНОЕ ОКНО АВТОРИЗАЦИИ ================= -->
+    <!-- ================= МОДАЛЬНОЕ ОКНО ================= -->
     <div id="auth-modal">
         <div class="auth-modal-content">
             <button class="auth-modal-close" onclick="closeAuthModal()">×</button>
@@ -604,13 +712,11 @@
         </div>
     </div>
 
-    <!-- Supabase SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="supabase-client.js"></script>
     <script src="auth.js"></script>
 
     <script>
-        // ============ УТИЛИТЫ ============
         function escapeHtml(str) {
             if (str === null || str === undefined) return '';
             const div = document.createElement('div');
@@ -636,7 +742,6 @@
             applyTheme(newTheme);
         }
 
-        // Стартовая тема: из localStorage или системная
         (function initTheme() {
             const saved = localStorage.getItem('theme');
             const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -644,11 +749,7 @@
         })();
 
         // ============ ВКЛАДКИ ============
-        let currentTab = 'channel';
-
         function switchTab(tab) {
-            currentTab = tab;
-
             document.querySelectorAll('.nav-item').forEach(el => {
                 el.classList.toggle('active', el.dataset.tab === tab);
             });
@@ -667,15 +768,15 @@
                 subEl.textContent = 'Личные переписки';
                 body.innerHTML = `
                     <div class="messages-empty">
-                        <div class="big-icon">💬</div>
-                        <h3>Сообщения скоро появятся</h3>
-                        <p>Сейчас мы работаем над системой личных сообщений. Заходи позже!</p>
+                        <div class="big-icon">☕</div>
+                        <h3>Скоро здесь будет тепло</h3>
+                        <p>Мы варим для тебя систему личных сообщений. Пока налей себе кофе и заглядывай позже.</p>
                     </div>
                 `;
             }
         }
 
-        // ============ ЗАГРУЗКА ПОСТОВ ============
+        // ============ ПОСТЫ ============
         async function loadPosts() {
             const container = document.getElementById('posts-container');
             if (!container) return;
@@ -693,7 +794,7 @@
                 container.innerHTML = '';
 
                 if (!data || data.length === 0) {
-                    container.innerHTML = '<p class="state-msg">Пока нет постов.</p>';
+                    container.innerHTML = '<p class="state-msg">Пока нет постов. Скоро появятся.</p>';
                     return;
                 }
 
@@ -741,7 +842,7 @@
             }
 
             if (!data || data.length === 0) {
-                list.innerHTML = '<p style="color:var(--text-muted); font-size:0.8rem; text-align:center;">Пока нет комментариев</p>';
+                list.innerHTML = '<p style="color:var(--text-muted); font-size:0.82rem; text-align:center; padding:0.4rem;">Пока нет комментариев — будь первым ☕</p>';
             } else {
                 list.innerHTML = data.map(c => renderComment(c)).join('');
             }
@@ -783,7 +884,7 @@
 
             formBox.innerHTML = `
                 <form class="comment-form" onsubmit="submitComment(event, ${postId})">
-                    <textarea id="comment-text-${postId}" placeholder="Ваш комментарий..." maxlength="500" required></textarea>
+                    <textarea id="comment-text-${postId}" placeholder="Напишите что-нибудь тёплое..." maxlength="500" required></textarea>
                     <button type="submit" id="comment-btn-${postId}">Отправить</button>
                 </form>
             `;
@@ -824,14 +925,6 @@
             await loadCommentsForPost(postId);
         }
 
-        function loadAllComments() {
-            document.querySelectorAll('.comments-list').forEach(el => {
-                const postId = el.id.replace('comments-', '');
-                loadCommentsForPost(parseInt(postId));
-            });
-        }
-
-        // ============ КЛИК ПО ПРОФИЛЮ ============
         function handleUserClick() {
             if (currentUser) {
                 if (confirm('Выйти из аккаунта?')) logout();
@@ -840,10 +933,7 @@
             }
         }
 
-        // ============ ЗАПУСК ============
-        loadPosts();
-
-        // Обновление UI профиля при смене авторизации
+        // Обновление UI профиля
         const originalUpdateAuthUI = window.updateAuthUI;
         window.updateAuthUI = function() {
             if (originalUpdateAuthUI) originalUpdateAuthUI();
@@ -863,6 +953,8 @@
                 avatarEl.textContent = '?';
             }
         };
+
+        loadPosts();
     </script>
 
 </body>
