@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>IFY — I want to be forever young</title>
     <link rel="icon" type="image/png" href="images/icon-192x192.png" />
     <link rel="apple-touch-icon" href="images/icon-512x512.png" />
@@ -26,13 +26,8 @@
     </script>
 
     <style>
-        /* ============================================================
-           ТЁМНАЯ ТЕМА (по умолчанию)
-           ============================================================ */
         :root {
             --sky: #0a0a0f;
-            --sky-2: #0f0f14;
-            --sky-3: #14141a;
             --bg-gradient: radial-gradient(ellipse at 20% 0%, rgba(40, 40, 50, 0.5) 0%, transparent 55%),
                            radial-gradient(ellipse at 80% 30%, rgba(30, 30, 40, 0.4) 0%, transparent 55%),
                            linear-gradient(180deg, #0a0a0f 0%, #0f0f14 60%, #14141a 100%);
@@ -42,7 +37,6 @@
             --dim-soft: #3a3a3a;
             --line: rgba(245, 240, 230, 0.08);
             --line-strong: rgba(245, 240, 230, 0.18);
-
             --post-bg: rgba(255, 255, 255, 0.025);
             --post-bg-hover: rgba(255, 255, 255, 0.04);
             --post-border: rgba(255, 255, 255, 0.06);
@@ -52,10 +46,7 @@
             --post-dim: #6b6b6b;
             --post-input-bg: rgba(255, 255, 255, 0.02);
             --post-input-bg-focus: rgba(255, 255, 255, 0.04);
-
-            /* цвет текста на «кремовых» кнопках — всегда тёмный */
             --btn-ink: #0a0a0f;
-
             --topbar-bg: rgba(10, 10, 15, 0.8);
             --badge-bg: rgba(10, 10, 15, 0.85);
             --avatar-bg: linear-gradient(135deg, rgba(245, 240, 230, 0.18), rgba(245, 240, 230, 0.05));
@@ -63,13 +54,8 @@
             --stars-visible: block;
         }
 
-        /* ============================================================
-           СВЕТЛАЯ ТЕМА
-           ============================================================ */
         html.light {
             --sky: #fafaf7;
-            --sky-2: #f5f5f2;
-            --sky-3: #f0f0ec;
             --bg-gradient: none;
             --ink: #1a1a1a;
             --ink-soft: #3a3a3a;
@@ -77,7 +63,6 @@
             --dim-soft: #c8c8c8;
             --line: rgba(26, 26, 26, 0.08);
             --line-strong: rgba(26, 26, 26, 0.18);
-
             --post-bg: #0e1a2b;
             --post-bg-hover: #142138;
             --post-border: rgba(140, 170, 210, 0.1);
@@ -87,9 +72,7 @@
             --post-dim: #6b7a94;
             --post-input-bg: rgba(255, 255, 255, 0.04);
             --post-input-bg-focus: rgba(255, 255, 255, 0.07);
-
             --btn-ink: #0a0a0f;
-
             --topbar-bg: rgba(250, 250, 247, 0.9);
             --badge-bg: rgba(250, 250, 247, 0.95);
             --avatar-bg: linear-gradient(135deg, rgba(26, 26, 26, 0.08), rgba(26, 26, 26, 0.03));
@@ -98,13 +81,10 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
         html, body { min-height: 100%; }
 
         body {
             background: var(--sky);
-            background-image: var(--bg-gradient);
-            background-attachment: fixed;
             color: var(--ink);
             font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
             font-weight: 400;
@@ -117,13 +97,23 @@
             transition: background 0.4s ease, color 0.4s ease;
         }
 
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: var(--bg-gradient);
+            z-index: -1;
+            pointer-events: none;
+        }
+
         /* ================= ЗВЁЗДЫ ================= */
         .starfield {
             position: fixed; inset: 0; z-index: 0;
             pointer-events: none; overflow: hidden;
             display: var(--stars-visible);
+            animation: drift 180s linear infinite alternate;
         }
-        .star { position: absolute; border-radius: 50%; will-change: opacity, transform; background: #ffffff; }
+        .star { position: absolute; border-radius: 50%; background: #ffffff; }
         .star.s-1 { box-shadow: 0 0 1px rgba(255,255,255,0.6); }
         .star.s-2 { box-shadow: 0 0 3px rgba(255,255,255,0.9), 0 0 6px rgba(220,220,220,0.4); }
         .star.s-3 { box-shadow: 0 0 4px rgba(255,255,255,1), 0 0 10px rgba(220,220,220,0.7), 0 0 20px rgba(200,200,200,0.3); }
@@ -135,7 +125,14 @@
         .star.t-2 { animation: tw-mid 3.5s ease-in-out infinite; }
         .star.t-3 { animation: tw-fast 2s ease-in-out infinite; }
         @keyframes drift { 0% { transform: translate(0, 0); } 100% { transform: translate(-30px, -50px); } }
-        .starfield { animation: drift 180s linear infinite alternate; }
+
+        @media (max-width: 800px) {
+            .starfield { animation: none; }
+            .star.s-1 { box-shadow: none; }
+            .star.s-2 { box-shadow: 0 0 2px rgba(255,255,255,0.6); }
+            .star.s-3 { box-shadow: 0 0 3px rgba(255,255,255,0.7); }
+            .star.s-4 { box-shadow: 0 0 4px rgba(255,255,255,0.8); }
+        }
 
         .page {
             position: relative;
@@ -153,7 +150,7 @@
             -webkit-backdrop-filter: blur(14px);
             color: var(--ink-soft);
             text-align: center;
-            padding: 0.8rem 1rem;
+            padding: calc(0.8rem + env(safe-area-inset-top, 0)) 1rem 0.8rem;
             font-size: 0.72rem;
             letter-spacing: 0.15em;
             text-transform: uppercase;
@@ -161,16 +158,15 @@
             border-bottom: 1px solid var(--line);
             position: relative;
             z-index: 3;
-            transition: background 0.4s ease, border-color 0.4s ease;
         }
         .top-bar a { color: var(--ink-soft); text-decoration: none; transition: color 0.3s; }
         .top-bar a:hover { color: var(--ink); }
         .top-bar .sep { display: inline-block; margin: 0 1rem; opacity: 0.4; }
 
-        /* ================= КНОПКИ В УГЛУ — теперь absolute, не парят ================= */
+        /* ================= КНОПКИ В УГЛУ ================= */
         .corner-controls {
             position: absolute;
-            top: 60px;
+            top: calc(60px + env(safe-area-inset-top, 0));
             right: 24px;
             z-index: 5;
             display: flex;
@@ -197,10 +193,7 @@
             transition: all 0.3s;
             font-family: inherit;
         }
-        .theme-toggle:hover {
-            border-color: var(--line-strong);
-            color: var(--ink);
-        }
+        .theme-toggle:hover { border-color: var(--line-strong); color: var(--ink); }
 
         .user-badge {
             display: flex;
@@ -217,9 +210,7 @@
             cursor: pointer;
             transition: all 0.3s;
         }
-        .user-badge:hover {
-            border-color: var(--line-strong);
-        }
+        .user-badge:hover { border-color: var(--line-strong); }
         .user-badge .avatar {
             width: 28px; height: 28px;
             border-radius: 50%;
@@ -256,21 +247,13 @@
             letter-spacing: -0.06em;
             margin-bottom: 1.5rem;
             color: var(--ink);
-            transition: color 0.4s ease, text-shadow 0.4s ease;
         }
-        html:not(.light) .hero h1 {
-            text-shadow: 0 0 80px rgba(245, 240, 230, 0.2);
-        }
-        .hero h1 em {
-            font-style: normal;
-            font-weight: 700;
-            letter-spacing: -0.07em;
-        }
+        html:not(.light) .hero h1 { text-shadow: 0 0 80px rgba(245, 240, 230, 0.2); }
+        .hero h1 em { font-style: normal; font-weight: 700; letter-spacing: -0.07em; }
         .hero .sub {
             font-size: 1rem;
             color: var(--dim);
             line-height: 1.7;
-            font-weight: 400;
             max-width: 560px;
             margin: 0 auto;
         }
@@ -343,7 +326,6 @@
             border-radius: 16px;
             background: var(--post-bg);
         }
-
         .admin-panel h3 {
             color: var(--post-text);
             font-size: 0.85rem;
@@ -355,16 +337,9 @@
             align-items: center;
             gap: 0.5rem;
         }
-        .admin-panel h3::before {
-            content: '⚙';
-            font-size: 1rem;
-        }
+        .admin-panel h3::before { content: '⚙'; font-size: 1rem; }
 
-        .admin-form {
-            display: flex;
-            flex-direction: column;
-            gap: 0.6rem;
-        }
+        .admin-form { display: flex; flex-direction: column; gap: 0.6rem; }
         .admin-form input,
         .admin-form textarea {
             background: var(--post-input-bg);
@@ -374,27 +349,13 @@
             color: var(--post-text);
             font-family: inherit;
             font-size: 0.92rem;
-            transition: border-color 0.25s;
         }
         .admin-form input:focus,
-        .admin-form textarea:focus {
-            outline: none;
-            border-color: var(--post-border-hover);
-        }
+        .admin-form textarea:focus { outline: none; border-color: var(--post-border-hover); }
         .admin-form input::placeholder,
-        .admin-form textarea::placeholder {
-            color: var(--post-dim);
-        }
-        .admin-form textarea {
-            resize: vertical;
-            min-height: 80px;
-            line-height: 1.5;
-        }
-        .admin-form .row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 0.6rem;
-        }
+        .admin-form textarea::placeholder { color: var(--post-dim); }
+        .admin-form textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
+        .admin-form .row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; }
         .admin-form button {
             align-self: flex-start;
             background: var(--post-text);
@@ -408,17 +369,10 @@
             font-size: 0.75rem;
             letter-spacing: 0.15em;
             text-transform: uppercase;
-            transition: all 0.25s;
         }
         .admin-form button:hover { opacity: 0.9; }
         .admin-form button:disabled { opacity: 0.5; cursor: not-allowed; }
-
-        .admin-status {
-            font-size: 0.82rem;
-            color: var(--post-text-soft);
-            min-height: 1.2em;
-            margin-top: 0.3rem;
-        }
+        .admin-status { font-size: 0.82rem; color: var(--post-text-soft); min-height: 1.2em; margin-top: 0.3rem; }
 
         .post-delete-btn {
             position: absolute;
@@ -435,16 +389,12 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.25s;
             font-family: inherit;
             opacity: 0;
+            transition: all 0.25s;
         }
         .post:hover .post-delete-btn { opacity: 1; }
-        .post-delete-btn:hover {
-            background: #d94848;
-            border-color: #d94848;
-            color: #fff;
-        }
+        .post-delete-btn:hover { background: #d94848; border-color: #d94848; color: #fff; }
 
         /* ================= ПОСТЫ ================= */
         .posts {
@@ -462,20 +412,12 @@
             backdrop-filter: blur(14px);
             -webkit-backdrop-filter: blur(14px);
             border: 1px solid var(--post-border);
-            transition: border-color 0.3s ease, transform 0.3s cubic-bezier(0.2, 0, 0, 1), box-shadow 0.3s ease, background 0.4s ease;
+            transition: border-color 0.3s ease, transform 0.3s cubic-bezier(0.2, 0, 0, 1), box-shadow 0.3s ease;
             position: relative;
         }
-        .post:hover {
-            border-color: var(--post-border-hover);
-            transform: translateY(-2px);
-        }
-        html:not(.light) .post:hover {
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-        }
-        html.light .post:hover {
-            box-shadow: 0 20px 40px rgba(14, 26, 43, 0.25);
-        }
-
+        .post:hover { border-color: var(--post-border-hover); transform: translateY(-2px); }
+        html:not(.light) .post:hover { box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3); }
+        html.light .post:hover { box-shadow: 0 20px 40px rgba(14, 26, 43, 0.25); }
         .post h3 {
             font-size: 1.3rem;
             font-weight: 600;
@@ -506,7 +448,6 @@
             line-height: 1.7;
             white-space: pre-wrap;
             word-wrap: break-word;
-            font-weight: 400;
         }
 
         /* ================= КОММЕНТАРИИ ================= */
@@ -523,23 +464,14 @@
             margin-bottom: 1rem;
             font-weight: 600;
         }
-        .comments-list {
-            display: flex;
-            flex-direction: column;
-            gap: 0.6rem;
-            margin-bottom: 1rem;
-        }
+        .comments-list { display: flex; flex-direction: column; gap: 0.6rem; margin-bottom: 1rem; }
         .comment {
             padding: 0.8rem 1rem;
             border-radius: 12px;
             background: var(--post-input-bg);
             border: 1px solid var(--post-border);
-            transition: border-color 0.25s ease, background 0.25s ease;
         }
-        .comment:hover {
-            border-color: var(--post-border-hover);
-            background: var(--post-input-bg-focus);
-        }
+        .comment:hover { border-color: var(--post-border-hover); background: var(--post-input-bg-focus); }
         .comment-header {
             display: flex;
             justify-content: space-between;
@@ -548,36 +480,20 @@
             font-size: 0.82rem;
             gap: 0.5rem;
         }
-        .comment-author {
-            color: var(--post-text);
-            font-weight: 600;
-        }
-        .comment-date {
-            color: var(--post-dim);
-            font-size: 0.7rem;
-        }
-        .comment-text {
-            color: var(--post-text-soft);
-            font-size: 0.92rem;
-            line-height: 1.6;
-        }
+        .comment-author { color: var(--post-text); font-weight: 600; }
+        .comment-date { color: var(--post-dim); font-size: 0.7rem; }
+        .comment-text { color: var(--post-text-soft); font-size: 0.92rem; line-height: 1.6; }
         .comment-delete {
-            background: none;
-            border: none;
+            background: none; border: none;
             color: var(--post-dim);
             cursor: pointer;
             font-size: 0.7rem;
             margin-left: 8px;
             font-family: inherit;
-            transition: color 0.2s;
         }
         .comment-delete:hover { color: var(--post-text); }
 
-        .comment-form {
-            display: flex;
-            flex-direction: column;
-            gap: 0.6rem;
-        }
+        .comment-form { display: flex; flex-direction: column; gap: 0.6rem; }
         .comment-form textarea {
             background: var(--post-input-bg);
             border: 1px solid var(--post-border);
@@ -588,15 +504,9 @@
             font-size: 0.92rem;
             resize: vertical;
             min-height: 52px;
-            transition: border-color 0.25s ease, background 0.25s ease;
-            font-weight: 400;
             line-height: 1.5;
         }
-        .comment-form textarea:focus {
-            outline: none;
-            border-color: var(--post-border-hover);
-            background: var(--post-input-bg-focus);
-        }
+        .comment-form textarea:focus { outline: none; border-color: var(--post-border-hover); background: var(--post-input-bg-focus); }
         .comment-form textarea::placeholder { color: var(--post-dim); }
         .comment-form button {
             align-self: flex-end;
@@ -611,13 +521,8 @@
             font-size: 0.72rem;
             letter-spacing: 0.15em;
             text-transform: uppercase;
-            transition: all 0.25s cubic-bezier(0.2, 0, 0, 1);
         }
-        .comment-form button:hover {
-            background: var(--post-text);
-            color: var(--btn-ink);
-            border-color: var(--post-text);
-        }
+        .comment-form button:hover { background: var(--post-text); color: var(--btn-ink); border-color: var(--post-text); }
         .comment-form button:disabled { opacity: 0.4; cursor: not-allowed; }
 
         .comment-login-msg {
@@ -637,7 +542,6 @@
             cursor: pointer;
             border-bottom: 1px dotted var(--post-border-hover);
         }
-        .comment-login-msg a:hover { border-bottom-color: var(--post-text); }
 
         /* ================= МЕССЕНДЖЕР ================= */
         .messenger {
@@ -652,6 +556,14 @@
             height: 620px;
             max-width: 1100px;
             margin: 0 auto;
+            position: relative;
+        }
+
+        /* Состояние "не залогинен" — центрируем сообщение */
+        .messenger.noauth {
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .conversations {
@@ -659,6 +571,7 @@
             display: flex;
             flex-direction: column;
             background: var(--post-input-bg);
+            min-height: 0;
         }
         .conversations-header {
             padding: 1.4rem 1.4rem 1.2rem;
@@ -667,11 +580,9 @@
             align-items: flex-start;
             justify-content: space-between;
             gap: 0.8rem;
+            flex-shrink: 0;
         }
-        .conversations-header .header-text {
-            flex: 1;
-            min-width: 0;
-        }
+        .conversations-header .header-text { flex: 1; min-width: 0; }
         .conversations-header .title {
             font-size: 1rem;
             font-weight: 600;
@@ -696,21 +607,18 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.25s;
             font-family: inherit;
             line-height: 1;
             padding: 0;
             flex-shrink: 0;
+            transition: all 0.25s;
         }
-        .new-chat-btn:hover {
-            background: var(--post-input-bg-focus);
-            border-color: var(--post-border-hover);
-            transform: scale(1.1);
-        }
+        .new-chat-btn:hover { background: var(--post-input-bg-focus); border-color: var(--post-border-hover); }
         .conversations-list {
             flex: 1;
             overflow-y: auto;
             padding: 0.5rem;
+            -webkit-overflow-scrolling: touch;
         }
         .conversations-list::-webkit-scrollbar { width: 4px; }
         .conversations-list::-webkit-scrollbar-thumb { background: var(--line-strong); border-radius: 2px; }
@@ -722,8 +630,8 @@
             padding: 0.75rem 0.9rem;
             border-radius: 12px;
             cursor: pointer;
-            transition: background 0.2s;
             border: 1px solid transparent;
+            transition: background 0.2s;
         }
         .conv-item:hover { background: var(--post-input-bg-focus); }
         .conv-item.active {
@@ -757,42 +665,93 @@
             margin-top: 2px;
         }
 
+        /* ---- ЧАТ ---- */
         .chat {
             display: flex;
             flex-direction: column;
             background: transparent;
             min-height: 0;
             overflow: hidden;
+            height: 100%;
         }
+
+        /* Шапка чата (была без стилей!) */
+        .chat-header {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.9rem 1.4rem;
+            border-bottom: 1px solid var(--post-border);
+            background: var(--post-bg);
+            flex-shrink: 0;
+            min-height: 60px;
+        }
+        .chat-header .chat-avatar {
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            background: var(--post-input-bg-focus);
+            border: 1px solid var(--post-border-hover);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--post-text);
+            font-weight: 600;
+            font-size: 0.95rem;
+            flex-shrink: 0;
+        }
+        .chat-header > div {
+            min-width: 0;
+            flex: 1;
+        }
+        .chat-header .chat-name {
+            color: var(--post-text);
+            font-weight: 600;
+            font-size: 0.98rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .chat-header .chat-status {
+            color: var(--post-dim);
+            font-size: 0.72rem;
+            letter-spacing: 0.05em;
+            margin-top: 1px;
+        }
+        .chat-back {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--post-text);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0 0.4rem 0 0;
+            line-height: 1;
+            font-family: inherit;
+            flex-shrink: 0;
+        }
+        .chat-back:hover { opacity: 0.7; }
 
         .chat-messages {
             flex: 1 1 0;
             min-height: 0;
             overflow-y: auto;
-            padding: 1.5rem;
+            padding: 1.2rem 1.4rem;
             display: flex;
             flex-direction: column;
-            gap: 0.6rem;
+            gap: 0.5rem;
+            -webkit-overflow-scrolling: touch;
         }
         .chat-messages::-webkit-scrollbar { width: 4px; }
         .chat-messages::-webkit-scrollbar-thumb { background: var(--line-strong); border-radius: 2px; }
 
-        .chat-input {
-            padding: 1rem 1.4rem;
-            border-top: 1px solid var(--post-border);
-            display: flex;
-            gap: 0.7rem;
-            align-items: flex-end;
-            background: var(--post-bg);
-            flex-shrink: 0;
-        }
         .msg {
-            max-width: 70%;
+            max-width: 78%;
             padding: 0.65rem 1rem;
             border-radius: 18px;
             font-size: 0.92rem;
-            line-height: 1.5;
+            line-height: 1.45;
             word-wrap: break-word;
+            overflow-wrap: anywhere;
         }
         .msg.mine {
             align-self: flex-end;
@@ -810,16 +769,46 @@
         .msg .msg-time {
             display: block;
             font-size: 0.62rem;
-            margin-top: 4px;
-            opacity: 0.7;
+            margin-top: 3px;
+            opacity: 0.6;
         }
-        .msg.mine .msg-time {
-            text-align: right;
-            color: #1a1a1a;
-            opacity: 0.55;
-        }
+        .msg.mine .msg-time { text-align: right; color: #1a1a1a; }
         .msg.theirs .msg-time { color: var(--post-dim); }
 
+        /* Пустое состояние чата */
+        .chat-empty {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            text-align: center;
+            color: var(--post-dim);
+            gap: 0.6rem;
+        }
+        .chat-empty .big {
+            font-size: 2.4rem;
+            color: var(--post-text);
+            opacity: 0.35;
+            margin-bottom: 0.4rem;
+        }
+        .chat-empty p {
+            font-size: 0.9rem;
+            max-width: 280px;
+            line-height: 1.5;
+        }
+
+        .chat-input {
+            padding: 0.9rem 1.2rem;
+            padding-bottom: calc(0.9rem + env(safe-area-inset-bottom, 0));
+            border-top: 1px solid var(--post-border);
+            display: flex;
+            gap: 0.7rem;
+            align-items: flex-end;
+            background: var(--post-bg);
+            flex-shrink: 0;
+        }
         .chat-input textarea {
             flex: 1;
             background: var(--post-input-bg);
@@ -832,13 +821,11 @@
             resize: none;
             max-height: 100px;
             min-height: 40px;
-            line-height: 1.5;
-            font-weight: 400;
+            line-height: 1.4;
+            -webkit-appearance: none;
+            appearance: none;
         }
-        .chat-input textarea:focus {
-            outline: none;
-            border-color: var(--post-border-hover);
-        }
+        .chat-input textarea:focus { outline: none; border-color: var(--post-border-hover); }
         .chat-input textarea::placeholder { color: var(--post-dim); }
         .chat-input button {
             background: var(--post-text);
@@ -848,11 +835,11 @@
             border-radius: 50%;
             cursor: pointer;
             font-size: 1rem;
-            transition: all 0.3s;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
+            transition: all 0.3s;
         }
         .chat-input button:hover { opacity: 0.85; }
         .chat-input button:disabled { opacity: 0.3; cursor: not-allowed; }
@@ -871,7 +858,6 @@
             padding: 1rem;
         }
         #search-modal.open { display: flex; }
-
         .search-modal-content {
             background: var(--post-bg);
             border: 1px solid var(--post-border-hover);
@@ -885,10 +871,7 @@
             position: relative;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
         }
-        html.light .search-modal-content {
-            background: #0e1a2b;
-        }
-
+        html.light .search-modal-content { background: #0e1a2b; }
         .search-modal-content h3 {
             color: var(--post-text);
             font-size: 1rem;
@@ -905,16 +888,10 @@
             color: var(--post-text);
             font-family: inherit;
             font-size: 0.95rem;
-            transition: border-color 0.25s;
             margin-bottom: 1rem;
         }
-        .search-modal-content input:focus {
-            outline: none;
-            border-color: var(--post-border-hover);
-            background: var(--post-input-bg-focus);
-        }
+        .search-modal-content input:focus { outline: none; border-color: var(--post-border-hover); }
         .search-modal-content input::placeholder { color: var(--post-dim); }
-
         .search-results {
             flex: 1;
             overflow-y: auto;
@@ -923,12 +900,6 @@
             gap: 0.4rem;
             min-height: 100px;
         }
-        .search-results::-webkit-scrollbar { width: 4px; }
-        .search-results::-webkit-scrollbar-thumb {
-            background: var(--post-border-hover);
-            border-radius: 2px;
-        }
-
         .search-result-item {
             display: flex;
             align-items: center;
@@ -936,13 +907,9 @@
             padding: 0.7rem 0.9rem;
             border-radius: 12px;
             cursor: pointer;
-            transition: background 0.2s;
             border: 1px solid transparent;
         }
-        .search-result-item:hover {
-            background: var(--post-input-bg-focus);
-            border-color: var(--post-border-hover);
-        }
+        .search-result-item:hover { background: var(--post-input-bg-focus); border-color: var(--post-border-hover); }
         .search-result-item .avatar {
             width: 38px; height: 38px;
             border-radius: 50%;
@@ -965,29 +932,16 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
-        .search-result-item .hint {
-            color: var(--post-dim);
-            font-size: 0.75rem;
-            margin-top: 2px;
-        }
-
-        .search-empty {
-            text-align: center;
-            color: var(--post-dim);
-            padding: 2rem 1rem;
-            font-size: 0.88rem;
-        }
+        .search-result-item .hint { color: var(--post-dim); font-size: 0.75rem; margin-top: 2px; }
+        .search-empty { text-align: center; color: var(--post-dim); padding: 2rem 1rem; font-size: 0.88rem; }
         .search-close {
             position: absolute;
-            top: 14px;
-            right: 18px;
-            background: none;
-            border: none;
+            top: 14px; right: 18px;
+            background: none; border: none;
             color: var(--post-dim);
             font-size: 1.5rem;
             cursor: pointer;
             line-height: 1;
-            transition: color 0.2s;
         }
         .search-close:hover { color: var(--post-text); }
 
@@ -1008,7 +962,7 @@
             position: relative; z-index: 5;
             width: 100%;
         }
-        .footer a { color: var(--dim); text-decoration: none; transition: color 0.3s ease; }
+        .footer a { color: var(--dim); text-decoration: none; }
         .footer a:hover { color: var(--ink); }
         .footer .links { display: flex; gap: 2.5rem; }
 
@@ -1026,7 +980,6 @@
             padding: 1rem;
         }
         #auth-modal.open { display: flex; }
-
         .auth-modal-content {
             background: var(--post-bg);
             border: 1px solid var(--post-border-hover);
@@ -1037,27 +990,24 @@
             position: relative;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
         }
-        html.light .auth-modal-content {
-            background: #0e1a2b;
-        }
+        html.light .auth-modal-content { background: #0e1a2b; }
         .auth-modal-content h2 {
             color: var(--post-text);
             margin-bottom: 2rem;
             font-size: 1.4rem;
             text-align: center;
             font-weight: 600;
-            letter-spacing: -0.02em;
         }
         .auth-modal-close {
             position: absolute;
             top: 14px; right: 18px;
             background: none; border: none;
-            color: var(--post-dim); font-size: 1.5rem;
-            cursor: pointer; line-height: 1;
-            transition: color 0.2s;
+            color: var(--post-dim);
+            font-size: 1.5rem;
+            cursor: pointer;
+            line-height: 1;
         }
         .auth-modal-close:hover { color: var(--post-text); }
-
         .auth-form input {
             width: 100%;
             padding: 13px 16px;
@@ -1068,16 +1018,11 @@
             color: var(--post-text);
             font-family: inherit;
             font-size: 0.95rem;
-            transition: border-color 0.25s;
-            font-weight: 400;
+            -webkit-appearance: none;
+            appearance: none;
         }
-        .auth-form input:focus {
-            outline: none;
-            border-color: var(--post-border-hover);
-            background: var(--post-input-bg-focus);
-        }
+        .auth-form input:focus { outline: none; border-color: var(--post-border-hover); }
         .auth-form input::placeholder { color: var(--post-dim); }
-
         .auth-form button {
             width: 100%;
             padding: 13px;
@@ -1091,12 +1036,10 @@
             font-size: 0.82rem;
             letter-spacing: 0.15em;
             text-transform: uppercase;
-            transition: all 0.3s;
             margin-top: 0.5rem;
         }
         .auth-form button:hover { opacity: 0.9; }
         .auth-form button:disabled { opacity: 0.5; }
-
         .auth-switch {
             text-align: center;
             margin-top: 1.2rem;
@@ -1106,10 +1049,8 @@
             background: none; border: none;
             font-family: inherit;
             width: 100%;
-            transition: color 0.2s;
         }
         .auth-switch:hover { color: var(--post-text); }
-
         .auth-error {
             color: var(--post-text-soft);
             font-size: 0.82rem;
@@ -1117,8 +1058,6 @@
             text-align: center;
             min-height: 1.1em;
         }
-
-        /* ================= КНОПКА "ВОЙТИ" В МЕССЕНДЖЕРЕ ================= */
         .messenger-login-btn {
             padding: 10px 24px;
             background: var(--post-text);
@@ -1134,30 +1073,11 @@
         }
         .messenger-login-btn:hover { opacity: 0.9; }
 
-        /* ================= АДАПТИВ ================= */
+        /* ================= МОБИЛЬНАЯ ВЕРСИЯ ================= */
         @media (max-width: 800px) {
-            .messenger {
-                grid-template-columns: 1fr;
-                height: auto;
-                min-height: 500px;
-            }
-            .conversations {
-                border-right: none;
-                border-bottom: 1px solid var(--post-border);
-                max-height: 260px;
-            }
-        }
-
-        @media (max-width: 640px) {
-            .top-bar { padding: 0.6rem 0.8rem; font-size: 0.62rem; letter-spacing: 0.12em; }
-            .top-bar .sep { margin: 0 0.5rem; }
-
-            .corner-controls { top: 52px; right: 12px; gap: 0.4rem; }
+            .corner-controls { top: calc(52px + env(safe-area-inset-top, 0)); right: 12px; gap: 0.4rem; }
             .theme-toggle { padding: 0.45rem 0.9rem; font-size: 0.6rem; }
-            .user-badge {
-                font-size: 0.72rem;
-                padding: 0.4rem 0.8rem 0.4rem 0.4rem;
-            }
+            .user-badge { font-size: 0.72rem; padding: 0.4rem 0.8rem 0.4rem 0.4rem; }
             .user-badge .avatar { width: 24px; height: 24px; font-size: 0.7rem; }
             .user-badge .name { max-width: 60px; }
 
@@ -1169,6 +1089,11 @@
             .tab { font-size: 0.7rem; padding: 1rem 0; }
 
             .content { padding: 2rem 1.5rem 3rem; }
+
+            /* Когда на мобилке открыта вкладка "Сообщения" — скрываем hero и делаем компактный отступ */
+            body.mobile-messages .hero { display: none; }
+            body.mobile-messages .tabs { margin-top: 1rem; }
+            body.mobile-messages .content { padding: 1rem 0.75rem 1rem; }
 
             .post { padding: 1.4rem 1.4rem; border-radius: 18px; }
             .post h3 { font-size: 1.15rem; }
@@ -1182,6 +1107,39 @@
                 align-items: flex-start;
                 padding: 3rem 1.5rem 2rem;
             }
+
+            /* ---- МЕССЕНДЖЕР на мобилке: одна панель ---- */
+            .messenger {
+                grid-template-columns: 1fr;
+                height: calc(100vh - 160px);
+                min-height: 480px;
+                max-height: 780px;
+                border-radius: 16px;
+            }
+
+            /* по умолчанию показываем только список диалогов */
+            .messenger:not(.mobile-chat-open) .chat { display: none; }
+            .messenger.mobile-chat-open .conversations { display: none; }
+            .messenger.mobile-chat-open .chat { display: flex; }
+
+            .chat-back { display: block; }
+
+            .conversations-header { padding: 1rem 1.1rem; }
+            .conv-item { padding: 0.7rem 0.7rem; }
+
+            .chat-header { padding: 0.7rem 0.9rem; min-height: 56px; gap: 0.6rem; }
+            .chat-header .chat-avatar { width: 36px; height: 36px; font-size: 0.9rem; }
+            .chat-header .chat-name { font-size: 0.92rem; }
+            .chat-header .chat-status { font-size: 0.68rem; }
+
+            .chat-messages { padding: 1rem 0.9rem; gap: 0.4rem; }
+            .msg { font-size: 0.9rem; padding: 0.6rem 0.9rem; max-width: 82%; }
+
+            .chat-input { padding: 0.7rem 0.8rem; padding-bottom: calc(0.7rem + env(safe-area-inset-bottom, 0)); gap: 0.5rem; }
+            .chat-input textarea { padding: 9px 14px; font-size: 1rem; min-height: 38px; }
+            .chat-input button { width: 38px; height: 38px; }
+
+            .search-modal-content { padding: 1.2rem; border-radius: 16px; }
         }
     </style>
 </head>
@@ -1288,7 +1246,8 @@
         function createStarfield() {
             const field = document.createElement('div');
             field.className = 'starfield';
-            const count = window.innerWidth < 640 ? 140 : 260;
+            const isMobile = window.innerWidth < 800;
+            const count = isMobile ? 60 : 220;
             const configs = [
                 { prob: 0.55, min: 0.5, max: 1.0, size: 's-1', speed: 't-1' },
                 { prob: 0.20, min: 0.9, max: 1.4, size: 's-2', speed: 't-2' },
@@ -1339,6 +1298,9 @@
                 el.classList.toggle('active', el.dataset.tab === tab);
             });
 
+            // На мобилке — скрываем hero, чтобы мессенджер занял экран
+            document.body.classList.toggle('mobile-messages', tab === 'messages');
+
             const content = document.getElementById('content');
 
             if (tab === 'channel') {
@@ -1353,10 +1315,7 @@
         let currentIsAdmin = false;
 
         async function checkAdminStatus() {
-            if (!currentUser) {
-                currentIsAdmin = false;
-                return;
-            }
+            if (!currentUser) { currentIsAdmin = false; return; }
             try {
                 const { data } = await db
                     .from('profiles')
@@ -1364,17 +1323,13 @@
                     .eq('id', currentUser.id)
                     .single();
                 currentIsAdmin = data?.is_admin === true;
-            } catch (e) {
-                currentIsAdmin = false;
-            }
+            } catch (e) { currentIsAdmin = false; }
         }
 
         async function loadPosts() {
             const container = document.getElementById('posts-container');
             if (!container) return;
-
             container.innerHTML = '<p class="state-msg">Загрузка...</p>';
-
             await checkAdminStatus();
 
             try {
@@ -1382,7 +1337,6 @@
                     .from('posts')
                     .select('*')
                     .order('created_at', { ascending: false });
-
                 if (error) throw error;
 
                 container.innerHTML = '';
@@ -1404,11 +1358,8 @@
                         </form>
                     `;
                     container.appendChild(adminPanel);
-
                     const dateInput = document.getElementById('new-post-date');
-                    if (dateInput) {
-                        dateInput.value = new Date().toISOString().slice(0, 10);
-                    }
+                    if (dateInput) dateInput.value = new Date().toISOString().slice(0, 10);
                 }
 
                 if (!data || data.length === 0) {
@@ -1456,7 +1407,6 @@
             const text = document.getElementById('new-post-text').value.trim();
             const date = document.getElementById('new-post-date').value;
             const image = document.getElementById('new-post-image').value.trim();
-
             if (!title || !text) return;
 
             btn.disabled = true;
@@ -1465,19 +1415,15 @@
 
             try {
                 const { error } = await db.from('posts').insert({
-                    title,
-                    text,
+                    title, text,
                     date: date || new Date().toISOString().slice(0, 10),
                     image_url: image || null
                 });
-
                 if (error) throw error;
-
                 status.textContent = '✓ Пост опубликован';
                 status.style.color = '#34d399';
                 await loadPosts();
             } catch (err) {
-                console.error(err);
                 status.textContent = 'Ошибка: ' + err.message;
                 status.style.color = '#d94848';
             } finally {
@@ -1488,38 +1434,27 @@
 
         async function deletePost(postId) {
             if (!confirm('Удалить пост? Это действие нельзя отменить.')) return;
-
             try {
                 const { error } = await db.from('posts').delete().eq('id', postId);
                 if (error) throw error;
                 await loadPosts();
-            } catch (err) {
-                alert('Ошибка: ' + err.message);
-            }
+            } catch (err) { alert('Ошибка: ' + err.message); }
         }
 
         // ================= КОММЕНТАРИИ =================
         async function loadCommentsForPost(postId) {
             const list = document.getElementById(`comments-${postId}`);
             if (!list) return;
-
             const { data, error } = await db
-                .from('comments')
-                .select('*')
+                .from('comments').select('*')
                 .eq('post_id', postId)
                 .order('created_at', { ascending: true });
-
-            if (error) {
-                list.innerHTML = '<p class="state-msg error">Ошибка загрузки</p>';
-                return;
-            }
-
+            if (error) { list.innerHTML = '<p class="state-msg error">Ошибка загрузки</p>'; return; }
             if (!data || data.length === 0) {
                 list.innerHTML = '<p style="color:var(--post-dim); font-size:0.85rem; text-align:center; padding:0.4rem;">Пока нет комментариев</p>';
             } else {
                 list.innerHTML = data.map(c => renderComment(c)).join('');
             }
-
             renderCommentForm(postId);
         }
 
@@ -1545,16 +1480,10 @@
         function renderCommentForm(postId) {
             const formBox = document.getElementById(`comment-form-${postId}`);
             if (!formBox) return;
-
             if (!currentUser) {
-                formBox.innerHTML = `
-                    <p class="comment-login-msg">
-                        <a onclick="openAuthModal()">Войдите</a>, чтобы оставить комментарий
-                    </p>
-                `;
+                formBox.innerHTML = `<p class="comment-login-msg"><a onclick="openAuthModal()">Войдите</a>, чтобы оставить комментарий</p>`;
                 return;
             }
-
             formBox.innerHTML = `
                 <form class="comment-form" onsubmit="submitComment(event, ${postId})">
                     <textarea id="comment-text-${postId}" placeholder="Напишите что-нибудь..." maxlength="500" required></textarea>
@@ -1569,26 +1498,20 @@
             const btn = document.getElementById(`comment-btn-${postId}`);
             const text = textarea.value.trim();
             if (!text) return;
-
             btn.disabled = true;
             btn.textContent = 'Отправка...';
-
             try {
                 const { error } = await db.from('comments').insert({
                     post_id: postId,
                     user_id: currentUser.id,
                     author_name: currentProfile?.username || currentUser.email.split('@')[0],
-                    text: text
+                    text
                 });
                 if (error) throw error;
                 textarea.value = '';
                 await loadCommentsForPost(postId);
-            } catch (err) {
-                alert('Ошибка: ' + err.message);
-            } finally {
-                btn.disabled = false;
-                btn.textContent = 'Отправить';
-            }
+            } catch (err) { alert('Ошибка: ' + err.message); }
+            finally { btn.disabled = false; btn.textContent = 'Отправить'; }
         }
 
         async function deleteComment(commentId, postId) {
@@ -1604,7 +1527,7 @@
 
             if (!currentUser) {
                 content.innerHTML = `
-                    <div class="messenger" style="display:flex;align-items:center;justify-content:center;">
+                    <div class="messenger noauth">
                         <div class="chat-empty">
                             <div class="big">✦</div>
                             <p style="margin-bottom:1rem;">Чтобы пользоваться сообщениями, войдите в аккаунт.</p>
@@ -1616,7 +1539,7 @@
             }
 
             content.innerHTML = `
-                <div class="messenger">
+                <div class="messenger" id="messenger">
                     <div class="conversations">
                         <div class="conversations-header">
                             <div class="header-text">
@@ -1643,11 +1566,7 @@
 
         // ================= ПОИСК ПОЛЬЗОВАТЕЛЕЙ =================
         function openSearchModal() {
-            if (!currentUser) {
-                openAuthModal();
-                return;
-            }
-
+            if (!currentUser) { openAuthModal(); return; }
             const old = document.getElementById('search-modal');
             if (old) old.remove();
 
@@ -1669,15 +1588,11 @@
 
             const input = document.getElementById('search-input');
             input.focus();
-
             let searchTimeout = null;
             input.addEventListener('input', () => {
                 clearTimeout(searchTimeout);
-                searchTimeout = setTimeout(() => {
-                    searchUsers(input.value.trim());
-                }, 250);
+                searchTimeout = setTimeout(() => searchUsers(input.value.trim()), 250);
             });
-
             searchUsers('');
         }
 
@@ -1689,28 +1604,16 @@
         async function searchUsers(query) {
             const results = document.getElementById('search-results');
             if (!results) return;
-
             results.innerHTML = '<div class="search-empty">Поиск...</div>';
-
             try {
-                let request = db
-                    .from('profiles')
-                    .select('id, username')
-                    .neq('id', currentUser.id)
-                    .limit(30);
-
-                if (query) {
-                    request = request.ilike('username', `%${query}%`);
-                }
-
+                let request = db.from('profiles').select('id, username').neq('id', currentUser.id).limit(30);
+                if (query) request = request.ilike('username', `%${query}%`);
                 const { data, error } = await request;
                 if (error) throw error;
-
                 if (!data || data.length === 0) {
                     results.innerHTML = '<div class="search-empty">Никого не найдено</div>';
                     return;
                 }
-
                 results.innerHTML = '';
                 data.forEach(user => {
                     const item = document.createElement('div');
@@ -1718,9 +1621,7 @@
                     item.onclick = () => {
                         closeSearchModal();
                         const tab = document.querySelector('[data-tab="messages"]');
-                        if (tab && !tab.classList.contains('active')) {
-                            switchTab('messages');
-                        }
+                        if (tab && !tab.classList.contains('active')) switchTab('messages');
                         setTimeout(() => openChat(user.id, user.username), 100);
                     };
                     item.innerHTML = `
@@ -1732,7 +1633,6 @@
                     `;
                     results.appendChild(item);
                 });
-
             } catch (err) {
                 console.error(err);
                 results.innerHTML = '<div class="search-empty">Ошибка поиска</div>';
@@ -1745,28 +1645,20 @@
         async function loadConversations() {
             const list = document.getElementById('conversations-list');
             if (!list) return;
-
             try {
                 const { data, error } = await db
-                    .from('messages')
-                    .select('*')
+                    .from('messages').select('*')
                     .or(`sender_id.eq.${currentUser.id},receiver_id.eq.${currentUser.id}`)
                     .order('created_at', { ascending: false });
-
                 if (error) throw error;
 
                 const convMap = {};
                 (data || []).forEach(m => {
                     const otherId = m.sender_id === currentUser.id ? m.receiver_id : m.sender_id;
                     if (!convMap[otherId]) {
-                        convMap[otherId] = {
-                            id: otherId,
-                            lastMessage: m.text,
-                            lastTime: m.created_at
-                        };
+                        convMap[otherId] = { id: otherId, lastMessage: m.text, lastTime: m.created_at };
                     }
                 });
-
                 const conversations = Object.values(convMap);
 
                 if (conversations.length === 0) {
@@ -1775,11 +1667,7 @@
                 }
 
                 const ids = conversations.map(c => c.id);
-                const { data: profiles } = await db
-                    .from('profiles')
-                    .select('id, username')
-                    .in('id', ids);
-
+                const { data: profiles } = await db.from('profiles').select('id, username').in('id', ids);
                 const profMap = {};
                 (profiles || []).forEach(p => profMap[p.id] = p.username);
 
@@ -1802,7 +1690,6 @@
 
                 const countEl = document.getElementById('conv-count');
                 if (countEl) countEl.textContent = conversations.length + ' ' + pluralize(conversations.length, ['диалог', 'диалога', 'диалогов']);
-
             } catch (err) {
                 console.error(err);
                 list.innerHTML = '<p style="padding:1.5rem;text-align:center;color:var(--post-dim);font-size:0.85rem;">Ошибка загрузки</p>';
@@ -1820,6 +1707,10 @@
         async function openChat(userId, userName) {
             window.currentChatUserId = userId;
 
+            // На мобилке — переключаем мессенджер в режим "открыт чат"
+            const messenger = document.getElementById('messenger');
+            if (messenger) messenger.classList.add('mobile-chat-open');
+
             document.querySelectorAll('.conv-item').forEach(el => {
                 el.classList.toggle('active', el.dataset.userId === userId);
             });
@@ -1827,6 +1718,7 @@
             const panel = document.getElementById('chat-panel');
             panel.innerHTML = `
                 <div class="chat-header">
+                    <button class="chat-back" onclick="closeChatMobile()" title="Назад">←</button>
                     <div class="chat-avatar">${userName.charAt(0).toUpperCase()}</div>
                     <div>
                         <div class="chat-name">${escapeHtml(userName)}</div>
@@ -1857,28 +1749,28 @@
             await loadChatMessages(userId);
         }
 
+        // Возврат к списку диалогов на мобилке
+        window.closeChatMobile = function() {
+            const messenger = document.getElementById('messenger');
+            if (messenger) messenger.classList.remove('mobile-chat-open');
+            window.currentChatUserId = null;
+            document.querySelectorAll('.conv-item').forEach(el => el.classList.remove('active'));
+        };
+
         async function loadChatMessages(userId) {
             const box = document.getElementById('chat-messages');
             if (!box) return;
-
             const { data, error } = await db
-                .from('messages')
-                .select('*')
+                .from('messages').select('*')
                 .or(`and(sender_id.eq.${currentUser.id},receiver_id.eq.${userId}),and(sender_id.eq.${userId},receiver_id.eq.${currentUser.id})`)
                 .order('created_at', { ascending: true });
-
-            if (error) {
-                box.innerHTML = '<p class="state-msg error">Ошибка загрузки</p>';
-                return;
-            }
+            if (error) { box.innerHTML = '<p class="state-msg error">Ошибка загрузки</p>'; return; }
 
             box.innerHTML = '';
-
             if (!data || data.length === 0) {
                 box.innerHTML = '<p style="color:var(--post-dim); font-size:0.85rem; text-align:center;">Начните переписку первым</p>';
                 return;
             }
-
             data.forEach(m => {
                 const div = document.createElement('div');
                 div.className = 'msg ' + (m.sender_id === currentUser.id ? 'mine' : 'theirs');
@@ -1889,7 +1781,6 @@
                 `;
                 box.appendChild(div);
             });
-
             box.scrollTop = box.scrollHeight;
         }
 
@@ -1900,9 +1791,7 @@
             if (box.querySelector(`[data-msg-id="${m.id}"]`)) return;
 
             const placeholder = box.querySelector('p[style*="text-align:center"]');
-            if (placeholder && box.children.length === 1) {
-                box.innerHTML = '';
-            }
+            if (placeholder && box.children.length === 1) box.innerHTML = '';
 
             const div = document.createElement('div');
             div.className = 'msg ' + (m.sender_id === currentUser.id ? 'mine' : 'theirs');
@@ -1944,7 +1833,7 @@
                 const { error } = await db.from('messages').insert({
                     sender_id: currentUser.id,
                     receiver_id: window.currentChatUserId,
-                    text: text
+                    text
                 });
                 if (error) throw error;
                 await loadChatMessages(window.currentChatUserId);
@@ -1959,23 +1848,17 @@
 
         // ================= USER =================
         function handleUserClick() {
-            if (currentUser) {
-                if (confirm('Выйти из аккаунта?')) logout();
-            } else {
-                openAuthModal();
-            }
+            if (currentUser) { if (confirm('Выйти из аккаунта?')) logout(); }
+            else openAuthModal();
         }
 
         const originalUpdateAuthUI = window.updateAuthUI;
         window.updateAuthUI = function() {
             if (originalUpdateAuthUI) originalUpdateAuthUI();
-
             const badge = document.getElementById('user-badge');
             const nameEl = document.getElementById('user-name');
             const avatarEl = document.getElementById('user-avatar');
-
             if (!badge) return;
-
             if (currentUser) {
                 const name = currentProfile?.username || currentUser.email.split('@')[0];
                 nameEl.textContent = name;
@@ -1984,7 +1867,6 @@
                 nameEl.textContent = 'Войти';
                 avatarEl.textContent = '?';
             }
-
             if (typeof loadPosts === 'function') {
                 const postsContainer = document.getElementById('posts-container');
                 if (postsContainer) loadPosts();
