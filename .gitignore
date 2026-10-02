@@ -16,3 +16,11 @@ Thumbs.db
 desktop.ini
 
 config.py
+
+# Node.js и backend
+node_modules/
+backend/node_modules/
+backend/.env
+.env
+*.log
+git add .gitignore backend
