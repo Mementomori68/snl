@@ -40,7 +40,7 @@ function connectWebSocket() {
     ws = null;
   }
 
-  ws = new WebSocket('ws://localhost:3000/ws?token=' + token);
+ws = new WebSocket('wss://boxlike.fxtun.ru/ws?token=' + token);
 
   ws.onopen = () => console.log('[ws] Подключено');
   ws.onclose = () => console.log('[ws] Отключено');

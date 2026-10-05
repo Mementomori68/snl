@@ -1,6 +1,6 @@
 // api-client.js — обёртка для запросов к нашему бэкенду
 // Пока локально, потом заменим на https://api.твой-домен.ru
-const API_URL = 'http://localhost:3000';
+const API_URL = 'https://boxlike.fxtun.ru';
 
 // ---------- Токен и юзер ----------
 function getToken() {
