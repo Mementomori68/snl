@@ -7,7 +7,7 @@
     <link rel="icon" type="image/png" href="images/icon-192x192.png" />
     <link rel="apple-touch-icon" href="images/icon-512x512.png" />
     <meta http-equiv="X-Content-Type-Options" content="nosniff" />
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'unsafe-inline' https://fonts.googleapis.com https://onesignal.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://*; script-src 'self' 'unsafe-inline' https://cdn.onesignal.com https://api.onesignal.com https://cdn.jsdelivr.net; connect-src 'self' https://api.onesignal.com https://onesignal.com https://cdn.onesignal.com https://mwnanyuukoidlabekeft.supabase.co wss://mwnanyuukoidlabekeft.supabase.co; worker-src 'self' blob:;" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'unsafe-inline' https://fonts.googleapis.com https://onesignal.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://*; script-src 'self' 'unsafe-inline' https://cdn.onesignal.com https://api.onesignal.com https://cdn.jsdelivr.net; connect-src 'self' https://api.onesignal.com https://onesignal.com https://cdn.onesignal.com http://localhost:3000 ws://localhost:3000; worker-src 'self' blob:;" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet" />
@@ -106,7 +106,6 @@
             pointer-events: none;
         }
 
-        /* ================= ЗВЁЗДЫ ================= */
         .starfield {
             position: fixed; inset: 0; z-index: 0;
             pointer-events: none; overflow: hidden;
@@ -143,7 +142,6 @@
             padding-bottom: 4rem;
         }
 
-        /* ================= TOP BAR ================= */
         .top-bar {
             background: var(--topbar-bg);
             backdrop-filter: blur(14px);
@@ -163,7 +161,6 @@
         .top-bar a:hover { color: var(--ink); }
         .top-bar .sep { display: inline-block; margin: 0 1rem; opacity: 0.4; }
 
-        /* ================= КНОПКИ В УГЛУ ================= */
         .corner-controls {
             position: absolute;
             top: calc(60px + env(safe-area-inset-top, 0));
@@ -230,7 +227,6 @@
             text-overflow: ellipsis;
         }
 
-        /* ================= HERO ================= */
         .hero {
             max-width: 1000px;
             margin: 0 auto;
@@ -258,7 +254,6 @@
             margin: 0 auto;
         }
 
-        /* ================= TABS ================= */
         .tabs {
             max-width: 1400px;
             margin: 3rem auto 0;
@@ -306,7 +301,6 @@
         }
         .tab.active .tab-dot { background: var(--ink); }
 
-        /* ================= CONTENT ================= */
         .content {
             max-width: 1400px;
             margin: 0 auto;
@@ -317,7 +311,6 @@
             z-index: 5;
         }
 
-        /* ================= АДМИН-ПАНЕЛЬ ================= */
         .admin-panel {
             max-width: 720px;
             margin: 0 auto 2rem;
@@ -396,7 +389,6 @@
         .post:hover .post-delete-btn { opacity: 1; }
         .post-delete-btn:hover { background: #d94848; border-color: #d94848; color: #fff; }
 
-        /* ================= ПОСТЫ ================= */
         .posts {
             display: flex;
             flex-direction: column;
@@ -450,7 +442,6 @@
             word-wrap: break-word;
         }
 
-        /* ================= КОММЕНТАРИИ ================= */
         .comments-section {
             margin-top: 1.6rem;
             padding-top: 1.4rem;
@@ -543,7 +534,6 @@
             border-bottom: 1px dotted var(--post-border-hover);
         }
 
-        /* ================= МЕССЕНДЖЕР ================= */
         .messenger {
             display: grid;
             grid-template-columns: 300px 1fr;
@@ -559,7 +549,6 @@
             position: relative;
         }
 
-        /* Состояние "не залогинен" — центрируем сообщение */
         .messenger.noauth {
             display: flex;
             align-items: center;
@@ -665,7 +654,6 @@
             margin-top: 2px;
         }
 
-        /* ---- ЧАТ ---- */
         .chat {
             display: flex;
             flex-direction: column;
@@ -675,7 +663,6 @@
             height: 100%;
         }
 
-        /* Шапка чата (была без стилей!) */
         .chat-header {
             display: flex;
             align-items: center;
@@ -775,7 +762,6 @@
         .msg.mine .msg-time { text-align: right; color: #1a1a1a; }
         .msg.theirs .msg-time { color: var(--post-dim); }
 
-        /* Пустое состояние чата */
         .chat-empty {
             flex: 1;
             display: flex;
@@ -844,7 +830,6 @@
         .chat-input button:hover { opacity: 0.85; }
         .chat-input button:disabled { opacity: 0.3; cursor: not-allowed; }
 
-        /* ================= МОДАЛКА ПОИСКА ================= */
         #search-modal {
             display: none;
             position: fixed;
@@ -945,11 +930,9 @@
         }
         .search-close:hover { color: var(--post-text); }
 
-        /* ================= СОСТОЯНИЯ ================= */
         .state-msg { text-align: center; color: var(--dim); padding: 4rem 1rem; font-size: 0.95rem; }
         .state-msg.error { color: var(--ink-soft); }
 
-        /* ================= FOOTER ================= */
         .footer {
             max-width: 1400px;
             margin: 0 auto;
@@ -966,7 +949,6 @@
         .footer a:hover { color: var(--ink); }
         .footer .links { display: flex; gap: 2.5rem; }
 
-        /* ================= МОДАЛЬНОЕ ОКНО АВТОРИЗАЦИИ ================= */
         #auth-modal {
             display: none;
             position: fixed;
@@ -1073,7 +1055,6 @@
         }
         .messenger-login-btn:hover { opacity: 0.9; }
 
-        /* ================= МОБИЛЬНАЯ ВЕРСИЯ ================= */
         @media (max-width: 800px) {
             .corner-controls { top: calc(52px + env(safe-area-inset-top, 0)); right: 12px; gap: 0.4rem; }
             .theme-toggle { padding: 0.45rem 0.9rem; font-size: 0.6rem; }
@@ -1090,7 +1071,6 @@
 
             .content { padding: 2rem 1.5rem 3rem; }
 
-            /* Когда на мобилке открыта вкладка "Сообщения" — скрываем hero и делаем компактный отступ */
             body.mobile-messages .hero { display: none; }
             body.mobile-messages .tabs { margin-top: 1rem; }
             body.mobile-messages .content { padding: 1rem 0.75rem 1rem; }
@@ -1108,7 +1088,6 @@
                 padding: 3rem 1.5rem 2rem;
             }
 
-            /* ---- МЕССЕНДЖЕР на мобилке: одна панель ---- */
             .messenger {
                 grid-template-columns: 1fr;
                 height: calc(100vh - 160px);
@@ -1117,7 +1096,6 @@
                 border-radius: 16px;
             }
 
-            /* по умолчанию показываем только список диалогов */
             .messenger:not(.mobile-chat-open) .chat { display: none; }
             .messenger.mobile-chat-open .conversations { display: none; }
             .messenger.mobile-chat-open .chat { display: flex; }
@@ -1281,8 +1259,7 @@
     })();
     </script>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="supabase-client.js"></script>
+    <script src="api-client.js"></script>
     <script src="auth.js"></script>
 
     <script>
@@ -1297,10 +1274,7 @@
             document.querySelectorAll('.tab').forEach(el => {
                 el.classList.toggle('active', el.dataset.tab === tab);
             });
-
-            // На мобилке — скрываем hero, чтобы мессенджер занял экран
             document.body.classList.toggle('mobile-messages', tab === 'messages');
-
             const content = document.getElementById('content');
 
             if (tab === 'channel') {
@@ -1312,36 +1286,19 @@
         }
 
         // ================= ПОСТЫ =================
-        let currentIsAdmin = false;
-
-        async function checkAdminStatus() {
-            if (!currentUser) { currentIsAdmin = false; return; }
-            try {
-                const { data } = await db
-                    .from('profiles')
-                    .select('is_admin')
-                    .eq('id', currentUser.id)
-                    .single();
-                currentIsAdmin = data?.is_admin === true;
-            } catch (e) { currentIsAdmin = false; }
-        }
-
         async function loadPosts() {
             const container = document.getElementById('posts-container');
             if (!container) return;
             container.innerHTML = '<p class="state-msg">Загрузка...</p>';
-            await checkAdminStatus();
+
+            const isAdmin = !!(currentUser && currentUser.is_admin);
 
             try {
-                const { data, error } = await db
-                    .from('posts')
-                    .select('*')
-                    .order('created_at', { ascending: false });
-                if (error) throw error;
+                const data = await api('/api/posts');
 
                 container.innerHTML = '';
 
-                if (currentIsAdmin) {
+                if (isAdmin) {
                     const adminPanel = document.createElement('div');
                     adminPanel.className = 'admin-panel';
                     adminPanel.innerHTML = `
@@ -1375,7 +1332,7 @@
                     div.className = 'post';
                     div.dataset.postId = post.id;
                     div.innerHTML = `
-                        ${currentIsAdmin ? `<button class="post-delete-btn" onclick="deletePost(${post.id})" title="Удалить">×</button>` : ''}
+                        ${isAdmin ? `<button class="post-delete-btn" onclick="deletePost(${post.id})" title="Удалить">×</button>` : ''}
                         <h3>${escapeHtml(post.title)}</h3>
                         <span class="date">${escapeHtml(post.date || '')}</span>
                         ${post.image_url ? `<img src="${escapeHtml(post.image_url)}" alt="${escapeHtml(post.title)}" loading="lazy" />` : ''}
@@ -1392,7 +1349,6 @@
                 });
 
                 data.forEach(post => loadCommentsForPost(post.id));
-
             } catch (err) {
                 console.error('Ошибка загрузки постов:', err);
                 container.innerHTML = '<p class="state-msg error">Не удалось загрузить посты.</p>';
@@ -1414,12 +1370,14 @@
             status.textContent = '';
 
             try {
-                const { error } = await db.from('posts').insert({
-                    title, text,
-                    date: date || new Date().toISOString().slice(0, 10),
-                    image_url: image || null
+                await api('/api/posts', {
+                    method: 'POST',
+                    body: {
+                        title, text,
+                        date: date || new Date().toISOString().slice(0, 10),
+                        image_url: image || null
+                    }
                 });
-                if (error) throw error;
                 status.textContent = '✓ Пост опубликован';
                 status.style.color = '#34d399';
                 await loadPosts();
@@ -1435,8 +1393,7 @@
         async function deletePost(postId) {
             if (!confirm('Удалить пост? Это действие нельзя отменить.')) return;
             try {
-                const { error } = await db.from('posts').delete().eq('id', postId);
-                if (error) throw error;
+                await api('/api/posts/' + postId, { method: 'DELETE' });
                 await loadPosts();
             } catch (err) { alert('Ошибка: ' + err.message); }
         }
@@ -1445,17 +1402,17 @@
         async function loadCommentsForPost(postId) {
             const list = document.getElementById(`comments-${postId}`);
             if (!list) return;
-            const { data, error } = await db
-                .from('comments').select('*')
-                .eq('post_id', postId)
-                .order('created_at', { ascending: true });
-            if (error) { list.innerHTML = '<p class="state-msg error">Ошибка загрузки</p>'; return; }
-            if (!data || data.length === 0) {
-                list.innerHTML = '<p style="color:var(--post-dim); font-size:0.85rem; text-align:center; padding:0.4rem;">Пока нет комментариев</p>';
-            } else {
-                list.innerHTML = data.map(c => renderComment(c)).join('');
+            try {
+                const data = await api('/api/comments/' + postId);
+                if (!data || data.length === 0) {
+                    list.innerHTML = '<p style="color:var(--post-dim); font-size:0.85rem; text-align:center; padding:0.4rem;">Пока нет комментариев</p>';
+                } else {
+                    list.innerHTML = data.map(c => renderComment(c)).join('');
+                }
+                renderCommentForm(postId);
+            } catch (err) {
+                list.innerHTML = '<p class="state-msg error">Ошибка загрузки</p>';
             }
-            renderCommentForm(postId);
         }
 
         function renderComment(c) {
@@ -1501,13 +1458,10 @@
             btn.disabled = true;
             btn.textContent = 'Отправка...';
             try {
-                const { error } = await db.from('comments').insert({
-                    post_id: postId,
-                    user_id: currentUser.id,
-                    author_name: currentProfile?.username || currentUser.email.split('@')[0],
-                    text
+                await api('/api/comments', {
+                    method: 'POST',
+                    body: { post_id: postId, text }
                 });
-                if (error) throw error;
                 textarea.value = '';
                 await loadCommentsForPost(postId);
             } catch (err) { alert('Ошибка: ' + err.message); }
@@ -1516,9 +1470,10 @@
 
         async function deleteComment(commentId, postId) {
             if (!confirm('Удалить комментарий?')) return;
-            const { error } = await db.from('comments').delete().eq('id', commentId);
-            if (error) { alert('Ошибка: ' + error.message); return; }
-            await loadCommentsForPost(postId);
+            try {
+                await api('/api/comments/' + commentId, { method: 'DELETE' });
+                await loadCommentsForPost(postId);
+            } catch (err) { alert('Ошибка: ' + err.message); }
         }
 
         // ================= МЕССЕНДЖЕР =================
@@ -1606,10 +1561,8 @@
             if (!results) return;
             results.innerHTML = '<div class="search-empty">Поиск...</div>';
             try {
-                let request = db.from('profiles').select('id, username').neq('id', currentUser.id).limit(30);
-                if (query) request = request.ilike('username', `%${query}%`);
-                const { data, error } = await request;
-                if (error) throw error;
+                const q = query ? '?q=' + encodeURIComponent(query) : '';
+                const data = await api('/api/users' + q);
                 if (!data || data.length === 0) {
                     results.innerHTML = '<div class="search-empty">Никого не найдено</div>';
                     return;
@@ -1639,57 +1592,47 @@
             }
         }
 
-        // Глобальная переменная — используется handleIncomingMessage из auth.js
         window.currentChatUserId = window.currentChatUserId || null;
 
         async function loadConversations() {
             const list = document.getElementById('conversations-list');
             if (!list) return;
             try {
-                const { data, error } = await db
-                    .from('messages').select('*')
-                    .or(`sender_id.eq.${currentUser.id},receiver_id.eq.${currentUser.id}`)
-                    .order('created_at', { ascending: false });
-                if (error) throw error;
-
-                const convMap = {};
-                (data || []).forEach(m => {
-                    const otherId = m.sender_id === currentUser.id ? m.receiver_id : m.sender_id;
-                    if (!convMap[otherId]) {
-                        convMap[otherId] = { id: otherId, lastMessage: m.text, lastTime: m.created_at };
-                    }
-                });
-                const conversations = Object.values(convMap);
-
-                if (conversations.length === 0) {
+                const peerIds = await api('/api/dialogs');
+                if (!peerIds || peerIds.length === 0) {
                     list.innerHTML = '<p style="padding:1.5rem;text-align:center;color:var(--post-dim);font-size:0.85rem;">Пока нет диалогов. Нажмите + чтобы начать.</p>';
                     return;
                 }
 
-                const ids = conversations.map(c => c.id);
-                const { data: profiles } = await db.from('profiles').select('id, username').in('id', ids);
-                const profMap = {};
-                (profiles || []).forEach(p => profMap[p.id] = p.username);
+                const allUsers = await api('/api/users');
+                const userMap = {};
+                allUsers.forEach(u => userMap[u.id] = u.username);
 
                 list.innerHTML = '';
-                conversations.forEach(c => {
-                    const name = profMap[c.id] || 'Пользователь';
+                for (const peerId of peerIds) {
+                    const name = userMap[peerId] || 'Пользователь';
+                    let preview = '';
+                    try {
+                        const msgs = await api('/api/messages/' + peerId);
+                        if (msgs && msgs.length > 0) preview = msgs[msgs.length - 1].text;
+                    } catch (e) {}
+
                     const item = document.createElement('div');
                     item.className = 'conv-item';
-                    item.dataset.userId = c.id;
-                    item.onclick = () => openChat(c.id, name);
+                    item.dataset.userId = peerId;
+                    item.onclick = () => openChat(peerId, name);
                     item.innerHTML = `
                         <div class="conv-avatar">${name.charAt(0).toUpperCase()}</div>
                         <div class="conv-info">
                             <div class="conv-name">${escapeHtml(name)}</div>
-                            <div class="conv-preview">${escapeHtml(c.lastMessage)}</div>
+                            <div class="conv-preview">${escapeHtml(preview)}</div>
                         </div>
                     `;
                     list.appendChild(item);
-                });
+                }
 
                 const countEl = document.getElementById('conv-count');
-                if (countEl) countEl.textContent = conversations.length + ' ' + pluralize(conversations.length, ['диалог', 'диалога', 'диалогов']);
+                if (countEl) countEl.textContent = peerIds.length + ' ' + pluralize(peerIds.length, ['диалог', 'диалога', 'диалогов']);
             } catch (err) {
                 console.error(err);
                 list.innerHTML = '<p style="padding:1.5rem;text-align:center;color:var(--post-dim);font-size:0.85rem;">Ошибка загрузки</p>';
@@ -1707,7 +1650,6 @@
         async function openChat(userId, userName) {
             window.currentChatUserId = userId;
 
-            // На мобилке — переключаем мессенджер в режим "открыт чат"
             const messenger = document.getElementById('messenger');
             if (messenger) messenger.classList.add('mobile-chat-open');
 
@@ -1749,7 +1691,6 @@
             await loadChatMessages(userId);
         }
 
-        // Возврат к списку диалогов на мобилке
         window.closeChatMobile = function() {
             const messenger = document.getElementById('messenger');
             if (messenger) messenger.classList.remove('mobile-chat-open');
@@ -1760,28 +1701,27 @@
         async function loadChatMessages(userId) {
             const box = document.getElementById('chat-messages');
             if (!box) return;
-            const { data, error } = await db
-                .from('messages').select('*')
-                .or(`and(sender_id.eq.${currentUser.id},receiver_id.eq.${userId}),and(sender_id.eq.${userId},receiver_id.eq.${currentUser.id})`)
-                .order('created_at', { ascending: true });
-            if (error) { box.innerHTML = '<p class="state-msg error">Ошибка загрузки</p>'; return; }
-
-            box.innerHTML = '';
-            if (!data || data.length === 0) {
-                box.innerHTML = '<p style="color:var(--post-dim); font-size:0.85rem; text-align:center;">Начните переписку первым</p>';
-                return;
+            try {
+                const data = await api('/api/messages/' + userId);
+                box.innerHTML = '';
+                if (!data || data.length === 0) {
+                    box.innerHTML = '<p style="color:var(--post-dim); font-size:0.85rem; text-align:center;">Начните переписку первым</p>';
+                    return;
+                }
+                data.forEach(m => {
+                    const div = document.createElement('div');
+                    div.className = 'msg ' + (m.sender_id === currentUser.id ? 'mine' : 'theirs');
+                    div.dataset.msgId = m.id;
+                    div.innerHTML = `
+                        ${escapeHtml(m.text)}
+                        <span class="msg-time">${new Date(m.created_at).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' })}</span>
+                    `;
+                    box.appendChild(div);
+                });
+                box.scrollTop = box.scrollHeight;
+            } catch (err) {
+                box.innerHTML = '<p class="state-msg error">Ошибка загрузки</p>';
             }
-            data.forEach(m => {
-                const div = document.createElement('div');
-                div.className = 'msg ' + (m.sender_id === currentUser.id ? 'mine' : 'theirs');
-                div.dataset.msgId = m.id;
-                div.innerHTML = `
-                    ${escapeHtml(m.text)}
-                    <span class="msg-time">${new Date(m.created_at).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' })}</span>
-                `;
-                box.appendChild(div);
-            });
-            box.scrollTop = box.scrollHeight;
         }
 
         // ================= REALTIME UI =================
@@ -1830,12 +1770,10 @@
             input.style.height = 'auto';
 
             try {
-                const { error } = await db.from('messages').insert({
-                    sender_id: currentUser.id,
-                    receiver_id: window.currentChatUserId,
-                    text
+                await api('/api/messages', {
+                    method: 'POST',
+                    body: { receiver_id: window.currentChatUserId, text }
                 });
-                if (error) throw error;
                 await loadChatMessages(window.currentChatUserId);
                 loadConversations();
             } catch (err) {
